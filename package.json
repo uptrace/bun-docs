@@ -1,0 +1,30 @@
+{
+  "name": "bun-docs",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Vladimir Mihailenco <vladimir.webdev@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs",
+    "lint:wording": "textlint ./docs/**/*.md"
+  },
+  "devDependencies": {
+    "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.7",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.13",
+    "element-plus": "^1.0.2-beta.41",
+    "markdown-it-include": "^2.0.0",
+    "markdown-link-check": "^3.8.7",
+    "textlint": "^11.9.0",
+    "textlint-filter-rule-comments": "^1.2.2",
+    "textlint-rule-common-misspellings": "^1.0.1",
+    "textlint-rule-en-capitalization": "^2.0.3",
+    "textlint-rule-stop-words": "^2.0.9",
+    "textlint-rule-terminology": "^2.1.5",
+    "textlint-rule-write-good": "^1.6.2",
+    "vuepress": "^2.0.0-beta.13",
+    "axios": "^0.21.1",
+    "lodash": "^4.17.21",
+    "vue-prism-component": "^2.0.0"
+  }
+}
