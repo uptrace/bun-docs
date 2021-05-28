@@ -26,7 +26,7 @@ using those packages.
 
 It is usually easier to write complex queries using Bun rather than GORM. Out of the box, Bun has
 better integration with database-specific functionality, for example, PostgreSQL arrays. Bun is also
-faster, partly because it is smaller in size.
+faster, partly because it is smaller in size and scope.
 
 Bun does not support such popular GORM features like auto migrations (you can try
 [fixtures](fixtures.md) instead), optimizer/index/comment hints, database resolver.

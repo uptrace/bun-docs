@@ -55,6 +55,7 @@
 </template>
 
 <script lang="ts">
+import fetch from 'cross-fetch'
 import { defineComponent, ref, computed, watch } from 'vue'
 import { useFetch } from '@vueuse/core'
 
