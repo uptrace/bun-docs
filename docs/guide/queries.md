@@ -661,9 +661,28 @@ q.Join("LEFT JOIN authors AS a").
 To create a table:
 
 ```go
-_, err := db.NewCreateTable().Model((*Book)(nil)).Exec(ctx)
+_, err := db.NewCreateTable().
+	Model((*Book)(nil)).
+	ForeignKey(`("author_id") REFERENCES "users" ("id") ON DELETE CASCADE`)
+	Exec(ctx)
 if err != nil {
-    panic(err)
+	panic(err)
+}
+```
+
+You can also add query options from the `BeforeCreateTableQuery` hook. For example, the query above
+can be written as:
+
+```go
+var _ bun.BeforeCreateTableQueryHook = (*Book)(nil)
+
+func (*Book) BeforeCreateTableQuery(ctx context.Context, query *bun.CreateTableQuery) error {
+	query.ForeignKey(`("author_id") REFERENCES "users" ("id") ON DELETE CASCADE`)
+	return nil
+}
+
+if _, err := db.NewCreateTable().Model((*Book)(nil)).Exec(ctx); err != nil {
+	panic(err)
 }
 ```
 
@@ -673,7 +692,7 @@ To create an index on the table, define `AfterCreateTableQuery` on the model:
 var _ bun.AfterCreateTableQueryHook = (*Book)(nil)
 
 func (*Book) AfterCreateTableQuery(ctx context.Context, query *bun.CreateTableQuery) error {
-	_, err := query.GetDB().NewCreateIndex().
+	_, err := query.DB().NewCreateIndex().
 		Model((*Book)(nil)).
 		Index("category_id_idx").
 		Column("category_id").
