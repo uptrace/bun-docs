@@ -1,4 +1,13 @@
-$accentColor: #e91e63 !default;
+:root {
+  --c-brand: #e91e63;
+  --c-brand-light: #ec407a;
+}
+
+html.dark {
+  // brand colors
+  --c-brand: #e91e63;
+  --c-brand-light: #ec407a;
+}
 
 .theme-container.theme-container--wide {
   .theme-default-content {

@@ -6,8 +6,8 @@ fixtures in YAML format and load them on demand from tests or migrations.
 ## Creating fixtures
 
 A fixture is a plain YAML file with the only exception being that you can use
-[text/template](<(https://golang.org/pkg/text/template/)>) expressions to generate values. Here is
-how a fixture for a User model might look like:
+[text/template](https://golang.org/pkg/text/template/) expressions to generate values. Here is how a
+fixture for a User model might look like:
 
 ```yaml
 - model: User

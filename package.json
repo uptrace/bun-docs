@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.7",
-    "@vuepress/plugin-google-analytics": "^2.0.0-beta.13",
+    "@vuepress/plugin-google-analytics": "^2.0.0-beta.17",
     "element-plus": "^1.0.2-beta.41",
     "markdown-it-include": "^2.0.0",
     "markdown-link-check": "^3.8.7",
@@ -23,7 +23,7 @@
     "textlint-rule-terminology": "^2.1.5",
     "textlint-rule-write-good": "^1.6.2",
     "vue-prism-component": "^2.0.0",
-    "vuepress": "^2.0.0-beta.13"
+    "vuepress": "^2.0.0-beta.17"
   },
   "dependencies": {
     "cross-fetch": "^3.1.4"
