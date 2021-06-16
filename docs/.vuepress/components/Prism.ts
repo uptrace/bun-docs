@@ -2,6 +2,7 @@ import { h, defineComponent } from 'vue'
 import Prism from 'prismjs'
 import 'prismjs/components/prism-go'
 import 'prismjs/components/prism-sql'
+import 'prismjs/components/prism-yaml'
 
 export default defineComponent({
   props: {
