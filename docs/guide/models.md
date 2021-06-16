@@ -105,3 +105,25 @@ type User struct {
     Name string `bun:",nullzero,notnull,default:'unknown'"`
 }
 ```
+
+## Automatic timestamps
+
+Use the following code to automatically set creation and update time on `INSERT`:
+
+```go
+type User struct {
+	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	UpdatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+}
+```
+
+If you don't want to set update time, use `bun.NullTime`:
+
+```go
+type User struct {
+	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	UpdatedAt bun.NullTime
+}
+```
+
+Note that you need to manually set `updated_at` column when updating rows.
