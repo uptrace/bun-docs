@@ -1,5 +1,24 @@
 # Tracing and errors monitoring
 
+Bun enables debugging through the AddQueryHook method, it expects an interface with two methods:
+* **BeforeQuery** - recieves a QueryEvent object right before a query is executed
+* **AfterQuery** - recives a QueryEvent object right after a query has been executed or an error has occured
+
+Mock implementation:
+```go
+type MockLoggingHook struct {}
+func (h *MockLoggingHook) BeforeQuery(ctx context.Context, event *bun.QueryEvent) context.Context {
+    return ctx
+}
+func (h *MockLoggingHook) AfterQuery(ctx context.Context, event *bun.QueryEvent) {
+}
+db := bun.NewDB(sqldb, dialect)
+db.AddQueryHook(MockLoggingHook{})
+
+```
+
+Following are several packages utilizing the QueryHook interface
+
 ## OpenTelemetry
 
 Bun supports distributed [tracing](https://docs.uptrace.dev/guide/tracing.html) via
@@ -42,4 +61,20 @@ To print all queries, use `WithVerbose` option:
 
 ```go
 bundebug.NewQueryHook(bundebug.WithVerbose())
+```
+
+## Logrus hook
+
+Enables writing bun queries and errors to [Logrus](https://github.com/sirupsen/logrus)
+
+```shell
+go get https://github.com/oiime/logrusbun
+```
+
+Use `QueryHookOptions` to adjust log levels and behavior
+
+```go
+db := bun.NewDB(sqldb, dialect)
+log := logrus.New()
+db.AddQueryHook(logrusbun.NewQueryHook(logrusbun.QueryHookOptions{Logger: log}))
 ```
