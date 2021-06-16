@@ -2,8 +2,8 @@
 
 ## Query hooks
 
-Bun also supports query hooks which are called before and after executing a query. Bun uses query
-hooks for [tracing and errors monitoring](tracing.md).
+Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
+for [tracing and errors monitoring](tracing.md).
 
 To ensure that your hook implements the correct interface, use
 [compile time checks](https://medium.com/@matryer/golang-tip-compile-time-checks-to-ensure-your-type-satisfies-an-interface-c167afed3aae),
@@ -45,7 +45,8 @@ func (m *Model) AfterScan(ctx context.Context) error { return nil }
 
 You can also define model query hooks that are called before and after executing certain type of
 queries on a certain model. Such hooks are called once for a query and using a `nil` model. To
-access the query data, use `query.GetModel().Value()`.
+access the query data, use `query.GetModel().Value()`. See
+[example](https://github.com/uptrace/bun/tree/master/example/model-hooks) for details.
 
 ```go
 var _ bun.BeforeSelectHook = (*Model)(nil)

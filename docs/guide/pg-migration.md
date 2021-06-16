@@ -75,6 +75,8 @@ type User struct {
 
 ## Other changes
 
+- Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
+  used the wrong names for these relations.
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
 - Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``.
 - To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, bun does not
@@ -93,7 +95,7 @@ type User struct {
 
 ## pg.Listener
 
-You have 2 options if you need to replace `pg.Listener`:
+You have 2 options if you need `pg.Listener`:
 
 - Use [pgdriver.Listener](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Listener). Note
   that at the moment pgdriver does not support prepared statements.
@@ -105,7 +107,7 @@ Bun supports migrations via [bun/migrate](migrations.md) package. Because it use
 migration names, you need to rename your migration files, for example, `1_initial.up.sql` should be
 renamed to `20210505110026_initial.up.sql`.
 
-After you are done porting migrations, you need to initialize Bun migration tables (use
+After you are done porting migrations, you need to initialize Bun tables (use
 [starter kit](starter-kit.md)):
 
 ```go

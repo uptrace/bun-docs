@@ -1,23 +1,7 @@
 # Tracing and errors monitoring
 
-Bun enables debugging through the AddQueryHook method, it expects an interface with two methods:
-* **BeforeQuery** - recieves a QueryEvent object right before a query is executed
-* **AfterQuery** - recives a QueryEvent object right after a query has been executed or an error has occured
-
-Mock implementation:
-```go
-type MockLoggingHook struct {}
-func (h *MockLoggingHook) BeforeQuery(ctx context.Context, event *bun.QueryEvent) context.Context {
-    return ctx
-}
-func (h *MockLoggingHook) AfterQuery(ctx context.Context, event *bun.QueryEvent) {
-}
-db := bun.NewDB(sqldb, dialect)
-db.AddQueryHook(MockLoggingHook{})
-
-```
-
-Following are several packages utilizing the QueryHook interface
+Bun enables debugging through the various [hooks](hooks.md). Following are several packages
+utilizing the `QueryHook` interface.
 
 ## OpenTelemetry
 
@@ -30,7 +14,7 @@ go get github.com/uptrace/bun/extra/bunotel
 ```
 
 Then you can instrument the database using the `bunotel` query hook. The hook sends the raw query
-along with any errors to the configured tracing backend.
+along with any errors to the configured OpenTelemetry backend(s).
 
 ```go
 db := bun.NewDB(sqldb, dialect)
