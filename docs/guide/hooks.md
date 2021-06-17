@@ -1,5 +1,28 @@
 # Hooks
 
+## Disclaimer
+
+It may sound like a good idea to use hooks for validation or caching, because this way you can't
+forget to sanitize data or check permissions. It gives false sense of safety.
+
+Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and
+error-prone. Instead write code like
+[this](https://github.com/uptrace/bun/tree/master/example/tx-composition):
+
+```go
+func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
+	// before insert
+
+	if _, err := db.NewInsert().Model(user).Exec(ctx); err != nil {
+		return err
+	}
+
+	// after insert
+
+	return nil
+}
+```
+
 ## Query hooks
 
 Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
@@ -102,24 +125,4 @@ func (*Model) BeforeDropTable(ctx context.Context, query *DropTableQuery) error 
 var _ bun.AfterDropTableHook = (*Model)(nil)
 
 func (*Model) AfterDropTable(ctx context.Context, query *DropTableQuery) error { return nil }
-```
-
-It may sound like a good idea to use hooks for validation or caching, because this way you can't
-forget to sanitize data or check permissions. It gives false sense of safety.
-
-Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and
-error-prone. Instead write something like this:
-
-```go
-func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
-	// before insert
-
-	if _, err := db.NewInsert().Model(user).Exec(ctx); err != nil {
-		return err
-	}
-
-	// after insert
-
-	return nil
-}
 ```

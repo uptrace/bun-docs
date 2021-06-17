@@ -24,8 +24,8 @@ lock only in the end of a transaction. And if a concurrent transaction actually 
 migrations fails.
 
 Using transactions only works well if your migration is small and fast (less than 5-10 seconds).
-Even for a medium database using transactions either makes the migration slower (in some cases 10x
-slower) or causes the migration to fail.
+Even for a medium database, using long transactions either makes a migration slower (in some cases
+10x slower) or causes a migration to fail.
 
 ## Split long-running queries into smaller batches
 
@@ -38,21 +38,33 @@ split the job into 10 batches each containing 100k rows. And execute the same `U
 separately on each batch. Now you have 10 queries instead of 1, but you can be sure that migration
 will succeed.
 
-## Update rows in some consistent order
+## Update rows in a consistent order
 
-When possible update rows in some consistent order. This helps avoiding deadlocks when 2 conurrent
+When possible, update rows in a consistent order. This helps avoiding deadlocks when 2 conurrent
 transactions try to update the same rows but in a different order.
 
 For example, deadlock happens when transaction 1 locks row #1 and transaction 2 locks row #2. Now
 transaction 1 waits for a lock on row #2 and transaction 2 waits for a lock on row #1. They lock
 each other and PostgreSQL has to kill one of them.
 
+Bad:
+
 ```sql
-# transaction 1
+-- transaction 1
 UPDATE test WHERE id IN (1, 2)
 
-# transaction 2
+-- transaction 2
 UPDATE test WHERE id IN (2, 1)
+```
+
+Good:
+
+```sql
+-- transaction 1
+UPDATE test WHERE id IN (1, 2)
+
+-- transaction 2
+UPDATE test WHERE id IN (1, 2)
 ```
 
 The same rule applies when you are using `INSERT ON CONFLICT DO UPDATE`. In this case you may need
@@ -60,8 +72,8 @@ to sort rows before inserting them.
 
 ## Don't add column with NOT NULL
 
-`ADD column NOT NULL` query fails on tables that already have some data, because existing rows does
-not have the column which means `NULL`.
+Queries like `ADD column NOT NULL` fail on tables that already have some rows. Because existing rows
+do not have values for the newly added column, PostgreSQL refuses to add the column.
 
 ```sql
 > ALTER TABLE test ADD COLUMN foo text NOT NULL;
@@ -71,9 +83,9 @@ ERROR:  column "foo" of relation "test" contains null values
 
 Your alternatives are:
 
-- Drop `NOT NULL` and add some validation against `NULL` elsewhere.
-- Add default value `foo text DEFAULT ''` that is returned instead of `NULL`.
-- Split the query into multiple migrations:
+1. Add a default value, for example, `foo text NOT NULL DEFAULT ''`.
+2. Drop `NOT NULL` althogether and add some validation against `NULL` elsewhere.
+3. Split the query into multiple migrations:
 
 ```sql
 -- migration 1
@@ -85,6 +97,3 @@ UPDATE test SET foo = '';
 -- migration 3
 ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 ```
-
-To avoid this problem altogether I recommend to always set `NOT NULL` constraint with a separate
-query.
