@@ -6,6 +6,7 @@ works with different databases, for example, PostgreSQL, MySQL, and SQLite.
 Bun's query builder is fully compatible with go-pg's builder, but some rarely used APIs are removed
 (for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
 
+There is no urgency in rewriting your app in Bun, but new projects should prefer Bun over go-pg.
 Once you are familiar with the new API, you should be able to migrate a 80-100k lines go-pg app to
 Bun within a single day.
 
@@ -13,12 +14,14 @@ Bun within a single day.
 
 - [Bun starter kit](starter-kit.md).
 - `*pg.Query` is split into smaller structs, for example, `*bun.SelectQuery`, `*bun.InsertQuery`,
-  `*bun.UpdateQuery`, `*bun.DeleteQuery` and so on.
+  `*bun.UpdateQuery`, `*bun.DeleteQuery` and so on. This is one of the reasons Bun inserts/updates
+  data faster than go-pg.
 
   go-pg API:
 
   ```go
   err := db.ModelContext(ctx, &users).Select()
+  err := db.ModelContext(ctx, &users).Select(&var1, &var2)
   res, err := db.ModelContext(ctx, &users).Insert()
   res, err := db.ModelContext(ctx, &user).WherePK().Update()
   res, err := db.ModelContext(ctx, &users).WherePK().Delete()
@@ -28,6 +31,7 @@ Bun within a single day.
 
   ```go
   err := db.NewSelect().Model(&users).Scan(ctx)
+  err := db.NewSelect().Model(&users).Scan(ctx, &var1, &var2)
   res, err := db.NewInsert().Model(&users).Exec(ctx)
   res, err := db.NewUpdate().Model(&users).WherePK().Exec(ctx)
   res, err := db.NewDelete().Model(&users).WherePK().Exec(ctx)
@@ -63,23 +67,23 @@ type User struct {
 }
 ```
 
-For `time.Time` fields you can also use `bun.NullTime`:
+For `time.Time` fields you can use `bun.NullTime`:
 
 ```go
 type User struct {
     Name      string    `bun:",nullzero"`
-    CreatedAt time.Time `bun:",notnull:default:current_timestamp"`
+    CreatedAt time.Time `bun:",notnull,default:current_timestamp"`
     UpdatedAt bun.NullTime
 }
 ```
 
 ## Other changes
 
-- Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
-  used the wrong names for these relations.
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
+- Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
+  used wrong names for these relations.
 - Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``.
-- To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, bun does not
+- To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not
   marshal Go zero values as `NULL` any more.
 - Replace `pg.ErrNoRows` wtih `sql.ErrNoRows`.
 - Replace `db.WithParam` with `db.WithNamedArg`.
@@ -87,7 +91,7 @@ type User struct {
 - Replace `pg.Safe` with `bun.Safe`.
 - Replace `pg.Ident` with `bun.Ident`.
 - Replace `pg.Array` with `pgdialect.Array`.
-- Replace `pg:",discard_unknown_columns"` with `WithDiscardUnknownColumns` option.
+- Replace `pg:",discard_unknown_columns"` with `db.WithDiscardUnknownColumns` option.
 - Replace `q.OnConflict("DO NOTHING")` with `q.On("CONFLICT DO NOTHING")`.
 - Replace `q.OnConflict("(column) DO UPDATE")` with `q.On("CONFLICT (column) DO UPDATE")`.
 - Replace `ForEach` with `sql.Rows` and `db.ScanRow`.

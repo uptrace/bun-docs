@@ -24,7 +24,8 @@ if err != nil {
 db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
-It might be a good idea to disable prepared statements in `pgx` for performance reasons:
+You should also disable prepared statements in `pgx`, because Bun does not benefit from them (but
+works correctly):
 
 ```go
 config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode=disable")
