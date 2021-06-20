@@ -25,6 +25,7 @@ export const en: SidebarConfig = {
       text: 'PostgreSQL',
       children: [
         '/postgres/uuid.md',
+        '/postgres/installing-zfs-ubuntu.md',
         '/postgres/zfs-aws-ebs.md',
         '/postgres/zero-downtime-migrations.md',
       ],
