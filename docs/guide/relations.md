@@ -2,36 +2,11 @@
 
 ## Has one relation
 
-To define a has-one relationship, you need to add `bun:"rel:has-one"` tag to the field. In the the
-following [example](https://github.com/uptrace/bun/tree/master/example/has-one) we define `User`
-model that has one `Profile` model.
+To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following
+[example](https://github.com/uptrace/bun/tree/master/example/has-one) we have `User` model that has
+one `Profile` model.
 
 ```go
-type Profile struct {
-	ID	 int64
-	Lang string
-}
-
-// User has one profile.
-type User struct {
-	ID		  int64
-	Name	  string
-	ProfileID int64
-	Profile	  *Profile `bun:"rel:has-one"`
-}
-```
-
-To override join columns, use `join:base_column=join_column` field tag, for example,
-`bun:"rel:has-one,join:profile_id=id"`.
-
-## Belongs to relation
-
-To define a belongs-to relationship, add `bun:"rel:belongs-to"` tag to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/belongs-to) we have `Profile` model
-that belongs to `User` model.
-
-```go
-// Profile belongs to User.
 type Profile struct {
 	ID	   int64
 	Lang   string
@@ -41,12 +16,35 @@ type Profile struct {
 type User struct {
 	ID		int64
 	Name	string
-	Profile *Profile `bun:"rel:belongs-to"`
+	Profile *Profile `bun:"rel:has-one"`
 }
 ```
 
 To override join columns, use `join:base_column=join_column` field tag, for example,
-`bun:"rel:belongs-to,join:id=user_id"`.
+`bun:"rel:has-one,join:id=user_id"`.
+
+## Belongs to relation
+
+To define a belongs-to relationship, you need to add `bun:"rel:belongs-to"` tag to the field. In the
+the following [example](https://github.com/uptrace/bun/tree/master/example/belongs-to) we define
+`Profile` model that belongs to `User` model.
+
+```go
+type Profile struct {
+	ID	 int64
+	Lang string
+}
+
+type User struct {
+	ID		  int64
+	Name	  string
+	ProfileID int64
+	Profile	  *Profile `bun:"rel:belongs-to"`
+}
+```
+
+To override join columns, use `join:base_column=join_column` field tag, for example,
+`bun:"rel:belongs-to,join:profile_id=id"`.
 
 ## Has many relation
 

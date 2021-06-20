@@ -12,6 +12,7 @@ export const en: SidebarConfig = {
         '/guide/queries.md',
         '/guide/placeholders.md',
         '/guide/relations.md',
+        '/guide/soft-deletes.md',
         '/guide/hooks.md',
         '/guide/fixtures.md',
         '/guide/migrations.md',
