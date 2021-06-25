@@ -50,6 +50,12 @@ Bun within a single day.
       Exec(ctx)
   ```
 
+  Alternatively, you can use `UpdateQuery.Bulk` helper that does the same:
+
+  ```go
+  err := db.NewUpdate().Model(&rows).Bulk().Exec(ctx)
+  ```
+
 - To create an index, use `db.NewCreateIndex()`.
 - To drop an index, use `db.NewDropIndex()`.
 - To truncate a table, use `db.NewTruncateTable()`.
@@ -96,6 +102,7 @@ type User struct {
 - Replace `q.OnConflict("(column) DO UPDATE")` with `q.On("CONFLICT (column) DO UPDATE")`.
 - Replace `ForEach` with `sql.Rows` and `db.ScanRow`.
 - Replace `WhereIn("foo IN (?)", slice)` with `Where("foo IN (?)", bun.In(slice))`.
+- Replace `db.RunInTransaction` with `db.RunInTx`.
 
 ## pg.Listener
 
