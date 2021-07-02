@@ -5,29 +5,33 @@ comes with bun.
 
 ## PostgreSQL
 
+### pgdriver
+
+Bun comes with its own PostgreSQL driver called
+[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver). It is slightly
+[faster](https://github.com/go-bun/bun-benchmark) than pgx.
+
+```go
+import "github.com/uptrace/bun/driver/pgdriver"
+
+dsn = "postgres://postgres:@localhost:5432/test?sslmode=disable"
+sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
+
+db := bun.NewDB(sqldb, pgdialect.New())
+```
+
 ### pgx
 
-To connect to a PostgreSQL server, use pgx [driver](https://github.com/jackc/pgx) and `pgdialect`:
+Alternatively, you can use pgx [driver](https://github.com/jackc/pgx) with `pgdialect`. You need to
+disable prepared statements in `pgx`, because Bun does not benefit from using them:
 
 ```go
 import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
-	_ "github.com/jackc/pgx/v4/stdlib"
+	"github.com/jackc/pgx/v4/stdlib"
 )
 
-sqldb, err := sql.Open("pgx", "postgres://postgres:@localhost:5432/test?sslmode=disable")
-if err != nil {
-	panic(err)
-}
-
-db := bun.NewDB(sqldb, pgdialect.New())
-```
-
-You should also disable prepared statements in `pgx`, because Bun does not benefit from them (but
-works correctly):
-
-```go
 config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode=disable")
 if err != nil {
 	panic(err)
@@ -35,19 +39,6 @@ if err != nil {
 
 config.PreferSimpleProtocol = true
 sqldb := stdlib.OpenDB(*config)
-```
-
-### pgdriver
-
-Bun comes with its own PostgreSQL driver called `pgdriver`. It offers slightly better performance,
-but currently does not support prepared statements and some other features.
-
-```go
-import "github.com/uptrace/bun/driver/pgdriver"
-
-dsn = "postgres://postgres:@localhost:5432/test?sslmode=disable"
-sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
-db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
 ## MySQL

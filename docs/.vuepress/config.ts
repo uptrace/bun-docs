@@ -30,6 +30,11 @@ export default defineUserConfig<DefaultThemeOptions>({
 
   evergreen: process.env.NODE_ENV !== 'production',
 
+  markdown: {
+    code: {
+      lineNumbers: false,
+    },
+  },
   extendsMarkdown: (md) => {
     md.use(require('markdown-it-include'), {
       getRootDir: (options, state, startLine, endLine) => {

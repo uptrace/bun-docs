@@ -68,8 +68,8 @@ if err := rows.Err(); err != nil {
 
 ## Basic example
 
-First we need to load some data for our [basic example](example](/example/basic/). To provide
-initial data we are going to use Bun [fixtures](https://bun.uptrace.dev/guide/fixtures.html):
+First we need to load some data for our [basic example](/example/basic/). To provide initial data we
+are going to use Bun [fixtures](https://bun.uptrace.dev/guide/fixtures.html):
 
 ```go
 import "github.com/uptrace/bun/dbfixture"

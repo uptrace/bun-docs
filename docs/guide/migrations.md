@@ -15,8 +15,8 @@ that information to rollback migrations.
 ## Go-based migrations
 
 A Go-based migration is a regular Go function that can execute arbitrary code, for example, start
-transactions. You should register functions from the corrensponding migration files, because bun
-uses stacktrace file names to discover migration names.
+transactions. You should register functions from the corrensponding migration files, because Bun
+uses stacktraces to discover migration names.
 
 Each migration also has a second function that is run to revert the changes. You can use a `nil`
 function to make no changes.
@@ -42,7 +42,7 @@ func init() {
 }
 ```
 
-[bun-starter-kit](starter-kit.md) provides a command to create a Go-based migration:
+[bun-starter-kit](starter-kit.md) provides a command to create Go-based migrations:
 
 ```shell
 bun db create_go
@@ -63,7 +63,7 @@ SELECT 2
 
 To create a transactional migration, use `.tx.up.sql` extension.
 
-[bun-starter-kit](starter-kit.md) provides a command to create a SQL-based migration:
+[bun-starter-kit](starter-kit.md) provides a command to create SQL-based migrations:
 
 ```shell
 bun db create_sql
@@ -71,9 +71,9 @@ bun db create_sql
 
 ## Migration groups and rollbacks
 
-When there are multiple migrations to run, bun groups migrations together into a group. During
-rollbacks, bun reverts the last group of migrations (not a single migration). Usually that is
-desirable, because it rolls the db back to the last known stable state.
+When there are multiple migrations to run, Bun runs migrations together as a group. During
+rollbacks, Bun reverts the last migration group (not a single migration). Usually that is desirable,
+because it rolls the db back to the last known stable state.
 
 To rollback a single migration, you need to rollback the last group, delete the migration(s) you
 want to skip, and run migrations again. Alternatively, you can add a new migration with the changes

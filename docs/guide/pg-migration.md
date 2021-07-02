@@ -108,9 +108,8 @@ type User struct {
 
 You have 2 options if you need `pg.Listener`:
 
-- Use [pgdriver.Listener](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Listener). Note
-  that at the moment pgdriver does not support prepared statements.
-- Use [pgx](https://pkg.go.dev/github.com/jackc/pgx/v4#hdr-Listen_and_Notify)
+- Use [pgdriver.Listener](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Listener).
+- Use [pgx](https://pkg.go.dev/github.com/jackc/pgx/v4#hdr-Listen_and_Notify).
 
 ## Porting migrations
 
