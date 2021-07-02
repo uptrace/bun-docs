@@ -22,7 +22,7 @@ db := bun.NewDB(sqldb, pgdialect.New())
 
 ### pgx
 
-Alternatively, you can use pgx [driver](https://github.com/jackc/pgx) with `pgdialect`. You need to
+Alternatively, you can use pgx [driver](https://github.com/jackc/pgx) with `pgdialect`. You can
 disable prepared statements in `pgx`, because Bun does not benefit from using them:
 
 ```go
@@ -63,17 +63,19 @@ db := bun.NewDB(sqldb, mysqldialect.New())
 
 ## SQLite
 
-To connect a SQLite database, use SQLite3 [driver](https://github.com/mattn/go-sqlite3) and
-`sqlitedialect`:
+To connect to a SQLite database, use
+[sqliteshim](https://github.com/uptrace/bun/tree/master/driver/sqliteshim) driver which choses
+between [modernc.org/sqlite](https://modernc.org/sqlite/) and
+[mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
 
 ```go
 import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/sqlitedialect"
-	_ "github.com/mattn/go-sqlite3"
+    "github.com/uptrace/bun/driver/sqliteshim"
 )
 
-sqldb, err := sql.Open("sqlite3", ":memory:?cache=shared")
+sqldb, err := sql.Open(sqliteshim.ShimName, "file::memory:?cache=shared")
 if err != nil {
 	panic(err)
 }
