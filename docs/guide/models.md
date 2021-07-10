@@ -1,12 +1,38 @@
 # Defining models
 
-For each database table you need to define a corresponding Go struct (model). Bun maps the exported
-struct fields to the table columns and ignores the unexported fields.
+For each table you need to define a corresponding Go struct (model). Bun maps the exported struct
+fields to the table columns and ignores the unexported fields.
+
+## Struct tags
+
+Bun uses sensible defaults to generate names and deduct types, but you can use the following struct
+tags to override the defaults.
+
+| Tag                                        | Comment                                                                                  |
+| ------------------------------------------ | ---------------------------------------------------------------------------------------- |
+| bun.BaseModel \`bun:"table_name"\`         | Overrides default table name.                                                            |
+| bun.BaseModel \`bun:"alias:table_alias"\`  | Overrides default table alias name.                                                      |
+| bun.BaseModel \`bun:"select:view_name"\`   | Overrides table name for SELECT queries.                                                 |
+| bun:"-"                                    | Ignores the field.                                                                       |
+| bun:"column_name"                          | Overrides default column name.                                                           |
+| bun:"alt:alt_name"                         | Alternative column name. Useful during migrations.                                       |
+| bun:",pk"                                  | Marks column as a primary key. Multiple primary keys are supported.                      |
+| bun:",nopk"                                | Not a primary key. Useful for columns like `id` and `uuid` if they are not primary keys. |
+| bun:"type:uuid"                            | Overrides default SQL type.                                                              |
+| bun:"default:gen_random_uuid()"            | SQL default value for the column.                                                        |
+| bun:",notnull"                             | Adds `NOT NULL` SQL constraint.                                                          |
+| bun:",unique"                              | Makes `CreateTable` to add an unique constraint.                                         |
+| bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
+| bun:",array"                               | Treats the column as a PostgreSQL array.                                                 |
+| bun:",nullzero"                            | Marshals Go zero values as SQL `NULL`.                                                   |
+| bun:",json_use_number"                     | Uses `json.Decoder.UseNumber` to decode JSON.                                            |
+| bun:",msgpack"                             | Encodes/decodes data using MessagePack.                                                  |
+| DeletedAt time.Time \`bun:",soft_delete"\` | Enables soft deletes on the model.                                                       |
 
 ## Table names
 
-Bun derives the table name and the alias from the struct name by underscoring it. It also pluralized
-the table name, for example, struct `User` gets table name `users` and alias `user`.
+Bun derives the table name and the alias from the struct name by underscoring it. It also pluralizes
+table names, for example, struct `User` gets table name `users` and alias `user`.
 
 To override the table name and the alias:
 
@@ -49,6 +75,8 @@ type User struct {
     ID int64 `bun:"type:integer"`
 }
 ```
+
+                                   |
 
 ## SQL naming convention
 

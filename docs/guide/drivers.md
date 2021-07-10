@@ -64,8 +64,8 @@ db := bun.NewDB(sqldb, mysqldialect.New())
 ## SQLite
 
 To connect to a SQLite database, use
-[sqliteshim](https://github.com/uptrace/bun/tree/master/driver/sqliteshim) driver which choses
-between [modernc.org/sqlite](https://modernc.org/sqlite/) and
+[sqliteshim](https://github.com/uptrace/bun/tree/master/driver/sqliteshim) driver which
+automatically imports [modernc.org/sqlite](https://modernc.org/sqlite/) or
 [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
 
 ```go
