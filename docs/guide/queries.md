@@ -141,10 +141,9 @@ Select book user `WHERE ... AND (... OR ...)`:
 err := db.NewSelect().
     Model(book).
     Where("title LIKE ?", "my%").
-    WhereGroup(" AND ", func(q *bun.Query) *bun.Query {
-        q = q.WhereOr("id = 1").
+    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+        return q.WhereOr("id = 1").
             WhereOr("id = 2")
-        return q, nil
     }).
     Limit(1).
     Scan(ctx)

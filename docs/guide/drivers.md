@@ -14,7 +14,7 @@ Bun comes with its own PostgreSQL driver called
 ```go
 import "github.com/uptrace/bun/driver/pgdriver"
 
-dsn = "postgres://postgres:@localhost:5432/test?sslmode=disable"
+dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
 sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 db := bun.NewDB(sqldb, pgdialect.New())
@@ -84,7 +84,7 @@ db := bun.NewDB(sqldb, sqlitedialect.New())
 ```
 
 If you are using an in-memory database, you need to configure `*sql.DB` to NOT close active
-connections. Otherwise the database is deleted when the connection is closed.
+connections. Otherwise, the database is deleted when the connection is closed.
 
 ```go
 sqldb.SetMaxIdleConns(1000)
