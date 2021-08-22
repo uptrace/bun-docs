@@ -7,6 +7,7 @@ export const en: SidebarConfig = {
       text: 'Guide',
       children: [
         '/guide/README.md',
+        '/guide/getting-started.md',
         '/guide/drivers.md',
         '/guide/models.md',
         '/guide/queries.md',

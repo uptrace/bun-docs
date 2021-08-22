@@ -2,12 +2,15 @@
 
 ## Quick start
 
-First you need to create a `sql.DB`, for example, using the SQLite3 [driver](drivers.md):
+First you need to create a `sql.DB`. Here we are using the
+[sqliteshim](https://pkg.go.dev/github.com/uptrace/bun/driver/sqliteshim) driver which choses
+between [modernc.org/sqlite](https://modernc.org/sqlite/) and
+[mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
 
 ```go
-import _ "github.com/mattn/go-sqlite3"
+import "github.com/uptrace/bun/driver/sqliteshim"
 
-sqldb, err := sql.Open("sqlite3", ":memory:?cache=shared")
+sqldb, err := sql.Open(sqliteshim.ShimName, "file::memory:?cache=shared")
 if err != nil {
 	panic(err)
 }

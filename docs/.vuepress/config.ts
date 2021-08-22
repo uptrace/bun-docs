@@ -1,16 +1,14 @@
 import path from 'path'
 
-import * as chokidar from 'chokidar'
 import { defineUserConfig } from 'vuepress'
 import type { DefaultThemeOptions } from 'vuepress'
-import { chalk, logger } from '@vuepress/utils'
 
 import { navbar, sidebar } from './configs'
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'en-US',
   title: 'Bun',
-  description: 'Simple and performant ORM for sql.DB',
+  description: 'Simple and performant ORM for PostgreSQL, MySQL, and SQLite',
 
   themeConfig: {
     logo: '/hero/logo.png',
@@ -52,16 +50,4 @@ export default defineUserConfig<DefaultThemeOptions>({
   },
 
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
-
-  onWatched: (_, watchers, restart) => {
-    const watcher = chokidar.watch('configs/**/*.ts', {
-      cwd: __dirname,
-      ignoreInitial: true,
-    })
-    watcher.on('change', async (file) => {
-      logger.info(`file ${chalk.magenta(file)} is modified`)
-      await restart()
-    })
-    watchers.push(watcher)
-  },
 })

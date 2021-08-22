@@ -25,16 +25,18 @@ tags to override the defaults.
 | bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
 | bun:",array"                               | Treats the column as a PostgreSQL array.                                                 |
 | bun:",nullzero"                            | Marshals Go zero values as SQL `NULL`.                                                   |
+| bun:",allowzero"                           | Can be used on primary keys to undo the effect of `nullzero`.                            |
 | bun:",json_use_number"                     | Uses `json.Decoder.UseNumber` to decode JSON.                                            |
 | bun:",msgpack"                             | Encodes/decodes data using MessagePack.                                                  |
 | DeletedAt time.Time \`bun:",soft_delete"\` | Enables soft deletes on the model.                                                       |
 
 ## Table names
 
-Bun derives the table name and the alias from the struct name by underscoring it. It also pluralizes
-table names, for example, struct `User` gets table name `users` and alias `user`.
+Bun generates table names and aliases from struct names by underscoring them. It also pluralizes
+table names, for example, struct `ArticleCategory` gets table name `article_categories` and alias
+`article_category`.
 
-To override the table name and the alias:
+To override the generated name and the alias:
 
 ```go
 type User struct {
@@ -52,31 +54,29 @@ type Genre struct {
 
 ## Column names
 
-Bun derives the column name from the struct field name by underscoring it. For example, struct field
+Bun generates column names from struct field names by underscoring them. For example, struct field
 `UserID` gets column name `user_id`.
 
-To override the column name and the type:
+To override the generated column name:
 
 ```go
 type User struct {
-	Name string `bun:"myname,type:varchar(100)"`
+	Name string `bun:"myname"`
 }
 ```
 
 ## Column types
 
-Bun derives the column type from the struct field type. For example, Go `string` gets SQL type
-`varchar`.
+Bun generates column types from struct field types. For example, Go type `string` is translated to
+SQL type `varchar`.
 
-To override the column type:
+To override the generated column type:
 
 ```go
 type User struct {
     ID int64 `bun:"type:integer"`
 }
 ```
-
-                                   |
 
 ## SQL naming convention
 
@@ -87,7 +87,7 @@ check if the problem goes away.
 <!-- prettier-ignore -->
 ::: warning
 Don't use [SQL keywords](https://www.postgresql.org/docs/13/sql-keywords-appendix.html) (for example
-`order`, `user`) as an identifier.
+`order`, `user`) as identifiers.
 :::
 
 <!-- prettier-ignore -->
@@ -98,7 +98,7 @@ Don't use case-sensitive names because such names are folded to lower case (for 
 
 ## Modeling NULL values
 
-To represent SQL `NULL`, can use pointers or `sql.Null*` types:
+To represent SQL `NULL`, you can use pointers or `sql.Null*` types:
 
 ```go
 type Item struct {
@@ -121,6 +121,14 @@ To marshal a zero Go value as `NULL`, add `nullzero` tag option:
 ```go
 type User struct {
     Name string `bun:",nullzero"`
+}
+```
+
+Sometimes it can be useful to allow zero values on primary keys:
+
+```go
+type User struct {
+    ID int64 `bun:",allowzero"`
 }
 ```
 

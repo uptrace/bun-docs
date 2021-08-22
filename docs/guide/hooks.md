@@ -6,7 +6,7 @@ It may sound like a good idea to use hooks for validation or caching, because th
 forget to sanitize data or check permissions. It gives false sense of safety.
 
 Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and
-error-prone. Instead write code like
+error-prone. Where possible prefer writing simple code like
 [this](https://github.com/uptrace/bun/tree/master/example/tx-composition):
 
 ```go

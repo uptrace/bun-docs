@@ -1,6 +1,6 @@
 # Migrations
 
-You write migrations to change database schema and data. A migration can be a regular Go function or
+You write migrations to change database schema or data. A migration can be a regular Go function or
 a text file with SQL commands.
 
 ## Migration names

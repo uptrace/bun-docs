@@ -1,7 +1,7 @@
 # Migrating from go-pg
 
-Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) on top of `sql.DB`. As a consequence, it
-works with different databases, for example, PostgreSQL, MySQL, and SQLite.
+Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) that works with PostgreSQL, MySQL, and
+SQLite.
 
 Bun's query builder is fully compatible with go-pg's builder, but some rarely used APIs are removed
 (for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
@@ -60,7 +60,7 @@ Bun within a single day.
 - To drop an index, use `db.NewDropIndex()`.
 - To truncate a table, use `db.NewTruncateTable()`.
 - To overwrite model table name, use `q.Model((*MyModel)(nil)).ModelTableExpr("my_table_name")`.
-- Use [fixtures](fixtures.md) to provide initial data.
+- To provide initial data, Use [fixtures](fixtures.md).
 
 ## Go zero values and NULL
 

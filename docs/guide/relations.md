@@ -1,5 +1,30 @@
 # Table relationships
 
+## Introduction
+
+Bun can help you join and select other tables if you are using one of 4 supported table relations:
+
+- [has-one](#has-one-relation)
+- [belongs-to](#belongs-to-relation)
+- [has-many](#has-many-relation)
+- [many-to-many](#many-to-many-relation)
+
+For example, if you define `User` has-one `Profile` relation:
+
+```go
+err := db.NewSelect().
+	Model(user).
+	Relation("Profile").
+	Where("user.id = 1").
+	Scan(ctx)
+```
+
+```sql
+SELECT * FROM users AS user
+LEFT JOIN profiles AS profile ON profile.user_id = user.id
+WHERE user.id = 1
+```
+
 ## Has one relation
 
 To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following

@@ -3,14 +3,14 @@
 ## Design
 
 Bun's goal is to help you write good SQL, not to hide it behind awkward constructs. It is a good
-idea to write and test your query using CLI for your database, then to rewrite in using Bun's query
-builder.
+idea to start writing and testing queries using CLI for your database (for example, psql), and then
+re-construct resulting queries using Bun's query builder.
 
-The main bun features are:
+The main features are:
 
 - Splitting long queries into logically separated blocks.
-- Replacing `?` placeholders with properly escaped values.
-- Generating the list of columns and some joins for Go models.
+- Replacing `?` placeholders with properly escaped values (see `bun.Ident` and `bun.Safe`).
+- Generating the list of columns and some [joins](relations.md) from Go models.
 
 For example, the following Go code:
 
@@ -22,13 +22,50 @@ err := db.NewSelect().
 	Scan(ctx)
 ```
 
-Generates the following query:
+Unsurprsingly generates the following query:
 
 ```sql
 SELECT lower(name)
 FROM "books"
 WHERE "id" = 'some-id'
 ```
+
+## API overview
+
+You can create queries using [bun.DB](https://pkg.go.dev/github.com/uptrace/bun#DB),
+[bun.Tx](https://pkg.go.dev/github.com/uptrace/bun#Tx), or
+[bun.Conn](https://pkg.go.dev/github.com/uptrace/bun#Conn):
+
+- [db.NewSelect](https://pkg.go.dev/github.com/uptrace/bun#DB.NewSelect)
+- [db.NewInsert](https://pkg.go.dev/github.com/uptrace/bun#DB.NewInsert)
+- [db.NewUpdate](https://pkg.go.dev/github.com/uptrace/bun#DB.NewUpdate)
+- [db.NewDelete](https://pkg.go.dev/github.com/uptrace/bun#DB.NewDelete)
+
+Once you have a query, you can execute it with `Exec`:
+
+```go
+result, err := db.NewInsert().Model(user).Exec(ctx)
+```
+
+Or scan returned columns with `Scan` (only available for selects):
+
+```go
+err := db.NewSelect().Model(user).Where("id = 1").Scan(ctx)
+```
+
+But `Exec` can scan columns too:
+
+```go
+var id int64
+err := db.NewInsert().Model(user).Returning("id").Exec(ctx, &id)
+```
+
+You can scan into
+
+- structs,
+- `map[string]interface{}`,
+- scalars,
+- and slices of the types above.
 
 ## Select
 
