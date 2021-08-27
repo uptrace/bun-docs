@@ -18,6 +18,10 @@ export const en: NavbarConfig = [
     link: '/guide/starter-kit.html',
   },
   {
+    text: 'Reference',
+    link: 'https://pkg.go.dev/github.com/uptrace/bun',
+  },
+  {
     text: 'GitHub',
     link: 'https://github.com/uptrace/bun',
   },

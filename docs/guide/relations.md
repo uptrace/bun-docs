@@ -25,6 +25,60 @@ LEFT JOIN profiles AS profile ON profile.user_id = user.id
 WHERE user.id = 1
 ```
 
+To select a book and the associated author:
+
+```go
+err := db.NewSelect().Model(book).Relation("Author").Where("id = 1").Scan(ctx)
+```
+
+```sql
+SELECT
+  "book"."id", "book"."title", "book"."text",
+  "author"."id" AS "author__id", "author"."name" AS "author__name"
+FROM "books"
+LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
+WHERE id = 1
+```
+
+To select book ID and the associated author id:
+
+```go
+err := db.NewSelect().
+	Model(book).
+	Column("book.id").
+	Relation("Author", func (q *bun.SelectQuery) *bun.SelectQuery {
+		return q.Column("id")
+	}).
+    Where("id = 1").
+	Scan(ctx)
+```
+
+```sql
+SELECT "book"."id", "author"."id" AS "author__id"
+FROM "books"
+LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
+WHERE id = 1
+```
+
+To select a book and join the author without selecting it:
+
+```go
+err := db.NewSelect().
+	Model(book).
+	Relation("Author", func (q *bun.SelectQuery) *bun.SelectQuery {
+		return q.Exclude("*")
+	}).
+    Where("id = 1").
+	Scan(ctx)
+```
+
+```sql
+SELECT "book"."id"
+FROM "books"
+LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
+WHERE id = 1
+```
+
 ## Has one relation
 
 To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following

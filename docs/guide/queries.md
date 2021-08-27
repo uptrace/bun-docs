@@ -9,7 +9,8 @@ re-construct resulting queries using Bun's query builder.
 The main features are:
 
 - Splitting long queries into logically separated blocks.
-- Replacing `?` placeholders with properly escaped values (see `bun.Ident` and `bun.Safe`).
+- Replacing [placeholders](placeholders.md) with properly escaped values (see `bun.Ident` and
+  `bun.Safe`).
 - Generating the list of columns and some [joins](relations.md) from Go models.
 
 For example, the following Go code:
@@ -30,7 +31,7 @@ FROM "books"
 WHERE "id" = 'some-id'
 ```
 
-## API overview
+## Scan and Exec
 
 You can create queries using [bun.DB](https://pkg.go.dev/github.com/uptrace/bun#DB),
 [bun.Tx](https://pkg.go.dev/github.com/uptrace/bun#Tx), or
@@ -40,218 +41,178 @@ You can create queries using [bun.DB](https://pkg.go.dev/github.com/uptrace/bun#
 - [db.NewInsert](https://pkg.go.dev/github.com/uptrace/bun#DB.NewInsert)
 - [db.NewUpdate](https://pkg.go.dev/github.com/uptrace/bun#DB.NewUpdate)
 - [db.NewDelete](https://pkg.go.dev/github.com/uptrace/bun#DB.NewDelete)
+- [db.NewCreateTable](https://pkg.go.dev/github.com/uptrace/bun#DB.NewCreateTable)
 
 Once you have a query, you can execute it with `Exec`:
 
 ```go
-result, err := db.NewInsert().Model(user).Exec(ctx)
+result, err := db.NewInsert().Model(&user).Exec(ctx)
 ```
 
-Or scan returned columns with `Scan` (only available for selects):
+Or use `Scan` which does the same but omits the result (only available for selects):
 
 ```go
-err := db.NewSelect().Model(user).Where("id = 1").Scan(ctx)
+err := db.NewSelect().Model(&user).Where("id = 1").Scan(ctx)
 ```
 
-But `Exec` can scan columns too:
+By default `Exec` scans columns into the model, but you can specify a different destination too:
 
 ```go
-var id int64
-err := db.NewInsert().Model(user).Returning("id").Exec(ctx, &id)
+err := db.NewSelect().Model((*User)(nil)).Where("id = 1").Scan(ctx, &user)
 ```
 
 You can scan into
 
-- structs,
-- `map[string]interface{}`,
-- scalars,
+- a struct,
+- a `map[string]interface{}`,
+- scalar types,
 - and slices of the types above.
+
+```go
+// Scan into a map.
+m := make(map[string]interface{})
+err := db.NewSelect().Model(&user).Where("id = 1").Scan(ctx, &m)
+
+// Scan into a slice of maps.
+ms := make([]map[string]interface{}, 0)
+err := db.NewSelect().Model(&user).Limit(100).Scan(ctx, &ms)
+
+// Scan into a var.
+var name string
+err := db.NewSelect().Model(&user).Column("name").Where("id = 1").Scan(ctx, &name)
+
+// Scan all names.
+var names []string
+err := db.NewSelect().Model(&user).Column("name").Limit(100).Scan(ctx, &names)
+```
+
+## Scanning rows
+
+To execute custom query and scan all rows:
+
+```go
+rows, err := db.QueryContext(ctx, "SELECT * FROM users")
+if err != nil {
+    panic(err)
+}
+
+err = db.ScanRows(ctx, rows, &users)
+```
+
+To scan row by row:
+
+```go
+rows, err := db.NewSelect().Model((*User)(nil)).Rows(ctx)
+if err != nil {
+	panic(err)
+}
+defer rows.Close()
+
+for rows.Next() {
+	user := new(User)
+	if err := db.ScanRow(ctx, rows, user); err != nil {
+		panic(err)
+	}
+}
+
+if err := rows.Err(); err != nil {
+	panic(err)
+}
+```
 
 ## Select
 
-| SQL                                 | Bun                                                     |
-| ----------------------------------- | ------------------------------------------------------- |
-| SELECT col1, col2                   | Column("col1", "col2")                                  |
-| SELECT col1, col2                   | ColumnExpr("col1, col2")                                |
-| SELECT count()                      | ColumnExpr("count()")                                   |
-| SELECT count("id")                  | ColumnExpr("count(?)", bun.Ident("id"))                 |
-| FROM "table1", "table2"             | Table("table1", "table2")                               |
-| FROM table1, table2                 | TableExpr("table1, table2")                             |
-| JOIN table1 ON col1 = 'value1'      | Join("JOIN table1 ON col1 = ?", "value1")               |
-| JOIN table1 ON col1 = 'value1'      | Join("JOIN table1").JoinOn("col1 = ?", "value1")        |
-| LEFT JOIN table1 ON col1 = 'value1' | Join("LEFT JOIN table1 ON col1 = ?", "value1")          |
-| WHERE id = 1                        | Where("id = ?", 1)                                      |
-| WHERE "foo" = 'bar'                 | Where("? = ?", bun.Ident("foo"), "bar")                 |
-| WHERE id = 1 OR foo = 'bar'         | Where("id = ?", 1).WhereOr("foo = ?", "bar")            |
-| GROUP BY "col1", "col2"             | Group("col1", "col2")                                   |
-| GROUP BY col1, col2                 | GroupExpr("col1, col2")                                 |
-| GROUP BY "col1", "col2"             | GroupExpr("?, ?", bun.Ident("col1"), bun.Ident("col2")) |
-| ORDER BY "col1" ASC                 | Order("col1 ASC")                                       |
-| ORDER BY col1 ASC                   | OrderExpr("col1 ASC")                                   |
-| ORDER BY "col1" ASC                 | OrderExpr("? ASC", bun.Ident("col1"))                   |
-| LIMIT 10                            | Limit(10)                                               |
-| OFFSET 1000                         | Offset(1000)                                            |
-
-Select book by id:
+For the full list of supported methods, see
+[API reference](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
 
 ```go
-book := new(Book)
-err := db.NewSelect().Model(book).Where("id = ?", 1).Scan(ctx)
-```
+// Subquery.
+subq := db.NewSelect().Model((*User)(nil)).Column("id").Limit(100)
 
-```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books" WHERE id = 1
-```
+db.NewSelect().
+    With("subq_name", subq).
 
-Select only book title and text:
+    Model(&strct).
+    Model(&slice).
 
-```go
-err := db.NewSelect().
-	Model(book).
-	Column("title", "text").
-	Where("id = ?", 1).
-	Scan(ctx)
-```
+    Column("col1", "col2"). // quotes column names
+    ColumnExpr("col1, col2"). // arbitrary expression
+    ColumnExpr("count(*)").
+    ColumnExpr("count(?)", bun.Ident("id")).
+    ColumnExpr("(?) AS alias", subq).
+    ExcludeColumn("col1"). // all columns except col1
+    ExcludeColumn("*"). // exclude all columns
 
-```sql
-SELECT "title", "text" FROM "books" WHERE id = 1
-```
+    Table("table1", "table2"). // quotes table names
+    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("(?) AS subq", subq).
+    ModelTableExpr("table1 AS t1"). // overrides model table name
 
-Select only book title and text into variables:
+    Join("JOIN table2 AS t2 ON t2.id = t1.id").
+    Join("LEFT JOIN table2 AS t2").JoinOn("t2.id = t1.id").
 
-```go
-var title, text string
-err := db.NewSelect().
-	Model((*Book)(nil)).
-	Column("title", "text").
-	Where("id = ?", 1).
-	Scan(ctx, &title, &text)
-```
-
-```sql
-SELECT "title", "text"
-FROM "books" WHERE id = 1
-```
-
-Select book using `WHERE ... AND ...`:
-
-```go
-err := db.
-	NewSelect().
-	Model(book).
-	Where("id > ?", 100).
-	Where("title LIKE ?", "my%").
-	Limit(1).
-	Scan(ctx)
-```
-
-```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books"
-WHERE (id > 100) AND (title LIKE 'my%')
-LIMIT 1
-```
-
-Select book using `WHERE ... OR ...`:
-
-```go
-err := db.
-	NewSelect().
-	Model(book).
-	Where("id > ?", 100).
-	WhereOr("title LIKE ?", "my%").
-	Limit(1).
-	Scan(ctx)
-```
-
-```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books"
-WHERE (id > 100) OR (title LIKE 'my%')
-LIMIT 1
-```
-
-Select book user `WHERE ... AND (... OR ...)`:
-
-```go
-err := db.NewSelect().
-    Model(book).
-    Where("title LIKE ?", "my%").
+    WherePK(). // where using primary keys
+    Where("id = ?", 123).
+    Where("name LIKE ?", "my%").
+    Where("? = 123", bun.Ident("id")).
+    Where("id IN (?)", bun.In([]int64{1, 2, 3})).
+    Where("id IN (?)", subq).
+    Where("FALSE").WhereOr("TRUE").
     WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
         return q.WhereOr("id = 1").
             WhereOr("id = 2")
     }).
+
+    Group("col1", "col2"). // quotes column names
+    GroupExpr("lower(col1)"). // arbitrary expression
+
+    Order("col1 ASC", "col2 DESC"). // quotes column names
+    OrderExpr("col1 ASC NULLS FIRST"). // arbitrary expression
+
+    Limit(100).
+    Offset(100).
+
+    For("UPDATE").
+    For("SHARE").
+
+    Scan(ctx)
+```
+
+Bun provides a helper to count returned rows:
+
+```go
+count, err := db.NewSelect().Model((*User)(nil)).Count(ctx)
+```
+
+You can also select and count users with one call (but 2 queries):
+
+```go
+count, err := db.NewSelect().Model(&users).Limit(20).ScanAndCount(ctx)
+```
+
+To select a book and manually join the book author:
+
+```go
+book := new(Book)
+err := db.NewSelect().
+    Model(&book).
+    ColumnExpr("book.*").
+    ColumnExpr("a.id AS author__id, a.name AS author__name").
+    Join("JOIN authors AS a ON a.id = book.author_id").
+    OrderExpr("book.id ASC").
     Limit(1).
     Scan(ctx)
 ```
 
 ```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books"
-WHERE (title LIKE 'my%') AND (id = 1 OR id = 2)
+SELECT book.*, a.id AS author__id, a.name AS author__name
+FROM books
+JOIN authors AS a ON a.id = book.author_id
+ORDER BY book.id ASC
 LIMIT 1
 ```
 
-Select first 20 books:
-
-```go
-var books []Book
-err := db.NewSelect().Model(&books).Order("id ASC").Limit(20).Scan(ctx)
-```
-
-```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books"
-ORDER BY id ASC LIMIT 20
-```
-
-Count books:
-
-```go
-count, err := db.NewSelect().Model((*Book)(nil)).Count(ctx)
-```
-
-```sql
-SELECT count(*) FROM "books"
-```
-
-Select 20 books and count all books:
-
-```go
-count, err := db.NewSelect().Model(&books).Limit(20).ScanAndCount(ctx)
-```
-
-```sql
-SELECT "book"."id", "book"."title", "book"."text"
-FROM "books" LIMIT 20;
-
-SELECT count(*) FROM "books";
-```
-
-Select author ID and number of books:
-
-```go
-var res []struct {
-	AuthorID  int
-	BookCount int
-}
-err := db.Model((*Book)(nil)).
-	Column("author_id").
-	ColumnExpr("count(*) AS book_count").
-	Group("author_id").
-	Order("book_count DESC").
-	Scan(ctx, &res)
-```
-
-```sql
-SELECT "author_id", count(*) AS book_count
-FROM "books" AS "book"
-GROUP BY author_id
-ORDER BY book_count DESC
-```
-
-Select book IDs as PostgreSQL array:
+To select PostgreSQL array:
 
 ```go
 var ids []int
@@ -261,88 +222,12 @@ err := db.NewSelect().
 	Scan(ctx, pgdialect.Array(&ids))
 ```
 
-```sql
-SELECT array_agg(id) FROM "books"
-```
-
-Select by multiple ids:
+To use subqueries:
 
 ```go
-ids := []int{1, 2, 3}
-err := db.NewSelect().
-	Model((*Book)(nil)).
-	Where("id IN (?)", bun.In(ids)).
-	Scan(ctx)
-```
+subq := db.NewSelect().Model((*Book)(nil)).Where("author_id = ?", 1)
 
-```sql
-SELECT * FROM books WHERE id IN (1, 2, 3)
-```
-
-Select books for update:
-
-```go
-book := new(Book)
-err := db.NewSelect().
-	Model(book).
-	Where("id = ?", 1).
-	For("UPDATE").
-	Scan(ctx)
-```
-
-```sql
-SELECT * FROM books WHERE id = 1 FOR UPDATE
-```
-
-## CTE
-
-Select books using WITH statement:
-
-```go
-authorBooks := db.NewSelect().Model((*Book)(nil)).Where("author_id = ?", 1)
-
-err := db.NewSelect().
-	Model().
-	With("author_books", authorBooks).
-	Table("author_books").
-	Scan(ctx, &books)
-```
-
-```sql
-WITH "author_books" AS (
-  SELECT "book"."id", "book"."title", "book"."text"
-  FROM "books" AS "book" WHERE (author_id = 1)
-)
-SELECT * FROM "author_books"
-```
-
-Same query using WrapWith:
-
-```go
-err := db.NewSelect().
-	Model(&books).
-	Where("author_id = ?", 1).
-	WrapWith("author_books").
-	Table("author_books").
-	Scan(ctx, &books)
-```
-
-```sql
-WITH "author_books" AS (
-  SELECT "book"."id", "book"."title", "book"."text"
-  FROM "books" AS "book" WHERE (author_id = 1)
-)
-SELECT * FROM "author_books"
-```
-
-## Subqueries
-
-Subquery in FROM:
-
-```go
-authorBooks := db.NewSelect().Model((*Book)(nil)).Where("author_id = ?", 1)
-
-err := db.NewSelect().Model().TableExpr("(?) AS book", authorBooks).Scan(ctx, &books)
+err := db.NewSelect().Model().TableExpr("(?) AS book", subq).Scan(ctx, &books)
 ```
 
 ```sql
@@ -352,103 +237,55 @@ SELECT * FROM (
 ) AS book
 ```
 
-Subquery in WHERE:
-
-```go
-authorBooks := db.NewSelect().Model((*Book)(nil)).ColumnExpr("id").Where("author_id = ?", 1)
-
-err := db.NewSelect().Model(&books).Where("id IN (?)", authorBooks).Scan(ctx)
-```
-
-```sql
-SELECT * FROM "books" WHERE id IN (
-  SELECT id FROM "books" AS "book" WHERE (author_id = 1)
-)
-```
-
-### Relations
-
-Select book and associated author:
-
-```go
-err := db.NewSelect().Model(book).Relation("Author").Scan(ctx)
-```
-
-```sql
-SELECT
-  "book"."id", "book"."title", "book"."text",
-  "author"."id" AS "author__id", "author"."name" AS "author__name"
-FROM "books"
-LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
-WHERE id = 1
-```
-
-Select book ID and the associated author id:
-
-```go
-err := db.NewSelect().
-	Model(book).
-	Column("book.id").
-	Relation("Author", func (q *bun.SelectQuery) *bun.SelectQuery {
-		return q.ColumnExpr("id")
-	}).
-	Scan(ctx)
-```
-
-```sql
-SELECT "book"."id", "author"."id" AS "author__id"
-FROM "books"
-LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
-WHERE id = 1
-```
-
-Select book and join author without selecting it:
-
-```go
-err := db.NewSelect().
-	Model(book).
-	Relation("Author", func (q *bun.SelectQuery) *bun.SelectQuery {
-		return q.Exclude("*")
-	}).
-	Scan(ctx)
-```
-
-```sql
-SELECT "book"."id"
-FROM "books"
-LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
-WHERE id = 1
-```
-
 ## Insert
 
-### Insert struct
-
-Insert new book returning primary keys:
-
-```go
-_, err := db.NewInsert().Model(book).Exec(ctx)
-```
-
-```sql
-INSERT INTO "books" (title, text) VALUES ('my title', 'my text') RETURNING "id"
-```
-
-Insert new book returning all columns:
+For the full list of supported methods, see
+[API reference](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
 
 ```go
-_, err := db.NewInsert().Model(book).Returning("*").Exec(ctx)
+db.NewInsert().
+    With("subq_name", subq).
+
+    Model(&strct).
+    Model(&slice).
+    Model(&map). // only map[string]interface{}
+
+    Column("col1", "col2"). // list of columns to insert
+    ExcludeColumn("col1"). // all columns except col1
+    ExcludeColumn("*"). // exclude all columns
+
+    Table("table1", "table2"). // quotes table names
+    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("(?) AS subq", subq).
+    ModelTableExpr("table1 AS t1"). // overrides model table name
+
+    On("CONFLICT (id) DO UPDATE").
+	Set("title = EXCLUDED.title").
+
+    WherePK(). // where using primary keys
+    Where("id = ?", 123).
+    Where("name LIKE ?", "my%").
+    Where("? = 123", bun.Ident("id")).
+    Where("id IN (?)", bun.In([]int64{1, 2, 3})).
+    Where("id IN (?)", subq).
+    Where("FALSE").WhereOr("TRUE").
+    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+        return q.WhereOr("id = 1").
+            WhereOr("id = 2")
+    }).
+
+    Returning("*").
+    Returning("col1, col2").
+    Returning("NULL"). // don't return anything
+
+    Exec(ctx)
 ```
 
-```sql
-INSERT INTO "books" (title, text) VALUES ('my title', 'my text') RETURNING *
-```
-
-Insert new book or update existing one:
+To insert a new book or update an existing one:
 
 ```go
 _, err := db.NewInsert().
-	Model(book).
+	Model(&book).
 	On("CONFLICT (id) DO UPDATE").
 	Set("title = EXCLUDED.title").
 	Exec(ctx)
@@ -456,25 +293,10 @@ _, err := db.NewInsert().
 
 ```sql
 INSERT INTO "books" ("id", "title") VALUES (100, 'my title')
-ON CONFLICT (id) DO UPDATE SET title = 'title version #1'
+ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title
 ```
 
-### Insert slice
-
-Insert slice in a single query:
-
-```go
-books := []*Book{book1, book2}
-_, err := db.NewInsert().Model(&books).Exec(ctx)
-```
-
-```sql
-INSERT INTO "books" (title, text) VALUES ('title1', 'text2'), ('title2', 'text2') RETURNING "id"
-```
-
-### Insert map
-
-Insert `map[string]interface{}`:
+To insert a `map[string]interface{}`:
 
 ```go
 values := map[string]interface{}{
@@ -488,12 +310,12 @@ _, err := db.NewInsert().Model(&values).TableExpr("books").Exec()
 INSERT INTO books (title, text) VALUES ('title1', 'text2')
 ```
 
-### Insert from Select
+To copy all rows from a table:
 
 ```go
 selq := db.NewSelect().
 	Model((*Book)(nil)).
-	Where("1 = 1")
+	Where("TRUE")
 
 _, err := db.NewInsert().
 	Model((*Book)(nil)).
@@ -506,7 +328,7 @@ _, err := db.NewInsert().
 WITH "sel" AS (
   SELECT "book"."id"
   FROM "books" AS "book"
-  WHERE (1 = 1)
+  WHERE (TRUE)
 )
 INSERT INTO "books"
 SELECT * FROM sel
@@ -514,38 +336,52 @@ SELECT * FROM sel
 
 ## Update
 
-### Update struct
-
-Update all columns except primary keys:
-
-```go
-book := &Book{
-	ID:	   1,
-	Title: "my title",
-	Text:  "my text",
-}
-res, err := db.NewUpdate().Model(book).WherePK().Exec(ctx)
-```
-
-```sql
-UPDATE books SET title = 'my title', text = 'my text' WHERE id = 1
-```
-
-Update only column `title` using `SET`:
+For the full list of supported methods, see
+[API reference](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery).
 
 ```go
-res, err := db.NewUpdate().Model(book).Set("title = ?title").WherePK().Exec(ctx)
+db.NewUpdate().
+    With("subq_name", subq).
+
+    Model(&strct).
+    Model(&slice).
+    Model(&map). // only map[string]interface{}
+
+    Column("col1", "col2"). // list of columns to insert
+    ExcludeColumn("col1"). // all columns except col1
+    ExcludeColumn("*"). // exclude all columns
+
+    Table("table1", "table2"). // quotes table names
+    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("(?) AS subq", subq).
+    ModelTableExpr("table1 AS t1"). // overrides model table name
+
+    Set("col1 = ?", "value1").
+
+    WherePK(). // where using primary keys
+    Where("id = ?", 123).
+    Where("name LIKE ?", "my%").
+    Where("? = 123", bun.Ident("id")).
+    Where("id IN (?)", bun.In([]int64{1, 2, 3})).
+    Where("id IN (?)", subq).
+    Where("FALSE").WhereOr("TRUE").
+    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+        return q.WhereOr("id = 1").
+            WhereOr("id = 2")
+    }).
+
+    Returning("*").
+    Returning("col1, col2").
+    Returning("NULL"). // don't return anything
+
+    Exec(ctx)
 ```
 
-```sql
-UPDATE books SET title = 'my title' WHERE id = 1
-```
-
-Alternatively:
+To update single column:
 
 ```go
 res, err := db.NewUpdate().
-	Model(book).
+	Model(&book).
 	Column("title").
 	Where("id = ?", 1).
 	Exec(ctx)
@@ -555,24 +391,7 @@ res, err := db.NewUpdate().
 UPDATE books SET title = 'my title' WHERE id = 1
 ```
 
-Upper column `title` and scan it:
-
-```go
-var title string
-res, err := db.Model(book).
-	Set("title = upper(title)").
-	Where("id = ?", 1).
-	Returning("title").
-	Exec(ctx, &title)
-```
-
-```sql
-UPDATE books SET title = upper(title) WHERE id = 1 RETURNING title
-```
-
-### Update slice
-
-Update multiple books with single query:
+To update multiple books with a single query:
 
 ```go
 res, err := db.NewUpdate().
@@ -593,9 +412,7 @@ FROM _data
 WHERE book.id = _data.id
 ```
 
-### Update map
-
-Update `map[string]interface{}`:
+To update using a `map[string]interface{}`:
 
 ```go
 value := map[string]interface{}{
@@ -611,48 +428,45 @@ UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
 
 ## Delete
 
-### Delete struct
-
-Delete book by id:
-
-```go
-res, err := db.NewDelete().Model(book).Where("id = ?", 1).Exec(ctx)
-```
-
-```sql
-DELETE FROM "books" WHERE id = 1
-```
-
-Delete book by title:
+For the full list of supported methods, see
+[API reference](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery).
 
 ```go
-res, err := db.NewDelete().Model(book).Where("title = ?", "title").Exec(ctx)
+db.NewDelete().
+    With("subq_name", subq).
+
+    Model(&strct).
+    Model(&slice).
+    Model(&map). // only map[string]interface{}
+
+    Table("table1", "table2"). // quotes table names
+    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("(?) AS subq", subq).
+    ModelTableExpr("table1 AS t1"). // overrides model table name
+
+    WherePK(). // where using primary keys
+    Where("id = ?", 123).
+    Where("name LIKE ?", "my%").
+    Where("? = 123", bun.Ident("id")).
+    Where("id IN (?)", bun.In([]int64{1, 2, 3})).
+    Where("id IN (?)", subq).
+    Where("FALSE").WhereOr("TRUE").
+    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+        return q.WhereOr("id = 1").
+            WhereOr("id = 2")
+    }).
+
+    Returning("*").
+    Returning("col1, col2").
+    Returning("NULL"). // don't return anything
+
+    Exec(ctx)
 ```
 
-```sql
-DELETE FROM "books" WHERE title = 'my title'
-```
-
-### Delete slice
-
-Delete multiple books using ids:
-
-```go
-res, err := db.NewDelete().
-	Model((*Book)(nil)).
-	Where("id IN (?)", bun.In([]int{1, 2})).
-	Exec(ctx)
-```
-
-```sql
-DELETE FROM "books" WHERE id IN (1, 2)
-```
-
-Delete multiple books using structs:
+To delete multiple books by a primary key:
 
 ```go
 books := []*Book{book1, book2} // slice of books with ids
-
 res, err := db.NewDelete().Model(&books).WherePK().Exec(ctx)
 ```
 
@@ -660,39 +474,28 @@ res, err := db.NewDelete().Model(&books).WherePK().Exec(ctx)
 DELETE FROM "books" WHERE id IN (1, 2)
 ```
 
-## Joins
-
-Select a book and manually join the book author:
-
-```go
-book := new(Book)
-err := db.NewSelect().
-    Model(book).
-    ColumnExpr("book.*").
-    ColumnExpr("a.id AS author__id, a.name AS author__name").
-    Join("JOIN authors AS a ON a.id = book.author_id").
-    OrderExpr("book.id ASC").
-    Limit(1).
-    Scan(ctx)
-```
-
-```
-SELECT book.*, a.id AS author__id, a.name AS author__name
-FROM books
-JOIN authors AS a ON a.id = book.author_id
-ORDER BY book.id ASC
-LIMIT 1
-```
-
-Join conditions can be split using `JoinOn`:
-
-```go
-q.Join("LEFT JOIN authors AS a").
-    JoinOn("a.id = book.author_id").
-    JoinOn("a.active = ?", true)
-```
-
 ## Creating tables
+
+For the full list of supported methods, see
+[API reference](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
+
+```go
+db.NewCreateTable().
+
+    Model(&strct).
+
+    Table("table1"). // quotes table names
+    TableExpr("table1"). // arbitrary expression
+    ModelTableExpr("table1"). // overrides model table name
+
+    Temp().
+    IfNotExists().
+    Varchar(100). // turns VARCHAR into VARCHAR(100)
+
+    ForeignKey(`(fkey) REFERENCES table1 (pkey) ON DELETE CASCADE`)
+
+    Exec(ctx)
+```
 
 To create a table:
 
@@ -706,8 +509,7 @@ if err != nil {
 }
 ```
 
-You can also add query options from the `BeforeCreateTableQuery` hook. For example, the query above
-can be written as:
+You can also modify query from the `BeforeCreateTableQuery` hook.
 
 ```go
 var _ bun.BeforeCreateTableQueryHook = (*Book)(nil)
@@ -722,7 +524,7 @@ if _, err := db.NewCreateTable().Model((*Book)(nil)).Exec(ctx); err != nil {
 }
 ```
 
-To create an index on the table, define `AfterCreateTableQuery` on the model:
+To create an index on the table, you can use `AfterCreateTableQuery` hook:
 
 ```go
 var _ bun.AfterCreateTableQueryHook = (*Book)(nil)
@@ -738,37 +540,3 @@ func (*Book) AfterCreateTableQuery(ctx context.Context, query *bun.CreateTableQu
 ```
 
 See [example](https://github.com/uptrace/bun/tree/master/example/create-table-index) for details.
-
-## Scanning rows
-
-To execute custom query and scan all rows:
-
-```go
-rows, err := db.QueryContext(ctx, "SELECT * FROM books")
-if err != nil {
-    panic(err)
-}
-
-err = db.ScanRows(ctx, rows, &books)
-```
-
-To execute custom query and scan row by row:
-
-```go
-rows, err := db.NewSelect().Model((*Book)(nil)).Rows(ctx)
-if err != nil {
-	panic(err)
-}
-defer rows.Close()
-
-for rows.Next() {
-	book := new(Book)
-	if err := db.ScanRow(ctx, rows, book); err != nil {
-		panic(err)
-	}
-}
-
-if err := rows.Err(); err != nil {
-	panic(err)
-}
-```

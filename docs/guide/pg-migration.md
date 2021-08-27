@@ -1,21 +1,29 @@
 # Migrating from go-pg
 
 Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) that works with PostgreSQL, MySQL, and
-SQLite.
+SQLite. It consists of:
 
-Bun's query builder is fully compatible with go-pg's builder, but some rarely used APIs are removed
-(for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
+- Bun core that provides a query builder and models.
+- [pgdriver](drivers.md#pgdriver) package to connect to PostgreSQL.
+- [migrate](migrations.md) package to run migrations.
+- [dbfixture](fixtures.md) to load initial data from YAML files.
+- Optional [starter kit](starter-kit.md) that provides modern app skeleton.
 
-There is no urgency in rewriting your app in Bun, but new projects should prefer Bun over go-pg.
-Once you are familiar with the new API, you should be able to migrate a 80-100k lines go-pg app to
-Bun within a single day.
+Bun's query builder tries to be compatible with go-pg's builder, but some rarely used APIs are
+removed (for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
+
+go-pg is still maintained and there is no urgency in rewriting go-pg apps in Bun, but new projects
+should prefer Bun over go-pg. And once you are familiar with the updated API, you should be able to
+migrate a 80-100k lines go-pg app to Bun within a single day.
 
 ## New features
 
-- [Bun starter kit](starter-kit.md).
-- `*pg.Query` is split into smaller structs, for example, `*bun.SelectQuery`, `*bun.InsertQuery`,
-  `*bun.UpdateQuery`, `*bun.DeleteQuery` and so on. This is one of the reasons Bun inserts/updates
-  data faster than go-pg.
+- `*pg.Query` is split into smaller structs, for example,
+  [bun.SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery),
+  [bun.InsertQuery](<(https://pkg.go.dev/github.com/uptrace/bun#InsertQuery)>),
+  [bun.UpdateQuery](<(https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery)>),
+  [bun.DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery) and so on. This is one of
+  the reasons Bun inserts/updates data faster than go-pg.
 
   go-pg API:
 
@@ -60,7 +68,7 @@ Bun within a single day.
 - To drop an index, use `db.NewDropIndex()`.
 - To truncate a table, use `db.NewTruncateTable()`.
 - To overwrite model table name, use `q.Model((*MyModel)(nil)).ModelTableExpr("my_table_name")`.
-- To provide initial data, Use [fixtures](fixtures.md).
+- To provide initial data, use [fixtures](fixtures.md).
 
 ## Go zero values and NULL
 

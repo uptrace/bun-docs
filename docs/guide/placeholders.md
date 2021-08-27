@@ -2,10 +2,10 @@
 
 ## Introduction
 
-Bun recognizes `?` in queries as a placeholder and replaces it with an arg. Bun quotes and escapes
-stringly values while also removing any null bytes.
+Bun recognizes `?` in queries as placeholders and replaces them with provided args. Bun quotes and
+escapes stringly values and removes null bytes.
 
-## Basic placeholders
+## Basic and positional placeholders
 
 To use basic placeholders:
 
@@ -39,14 +39,14 @@ q.TableExpr("(?) AS foo", bun.Safe("generate_series(0, 10)"))
 
 ## IN
 
-To use `IN` with multiple values, use `bun.In`:
+Provides a `bun.In` helper to generate `IN (...)` queries:
 
 ```go
 // WHERE foo IN ('hello', 'world')
 q.Where("foo IN (?)", bun.In([]string{"hello", "world"}))
 ```
 
-To use `IN` with composite (multiple) keys:
+For composite (multiple) keys you can use nested slices:
 
 ```go
 // WHERE (foo, bar) IN (('hello', 'world'), ('hell', 'yeah'))
@@ -56,9 +56,24 @@ q.Where("(foo, bar) IN (?)", bun.In([][]string{
 }))
 ```
 
-## Global DB args
+## Model placeholders
 
-Bun also supports global args:
+Bun also supports the following model placeholders:
+
+- `?TableName` - model table name, for example, `"users"`.
+- `?TableAlias` - model table alias, for example, `"user"`.
+- `?PKs` - table primary keys, for example, `"id"`
+- `?TablePKs` - table primary keys with the alias, for example, `"user"."id"`
+- `?Columns` - table columns, for example, `"id", "name", "emails"`.
+- `?TableColumns` - table columns with the alias, for example,
+  `"user"."id", "user"."name", "user"."emails"`.
+
+See [placeholders](https://github.com/uptrace/bun/tree/master/example/placeholders) example for
+details.
+
+## Global placeholders
+
+Bun also supports global placeholders:
 
 ```go
 // db1 and db2 share the same *sql.DB, but have different named args.

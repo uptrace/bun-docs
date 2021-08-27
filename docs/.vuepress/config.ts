@@ -1,15 +1,15 @@
-import path from 'path'
-
 import { defineUserConfig } from 'vuepress'
 import type { DefaultThemeOptions } from 'vuepress'
+import { path } from '@vuepress/utils'
 
 import { navbar, sidebar } from './configs'
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'en-US',
   title: 'Bun',
-  description: 'Simple and performant ORM for PostgreSQL, MySQL, and SQLite',
+  description: 'Simple and performant DB client for PostgreSQL, MySQL, and SQLite',
 
+  theme: path.resolve(__dirname, './theme'),
   themeConfig: {
     logo: '/hero/logo.png',
 
@@ -49,5 +49,14 @@ export default defineUserConfig<DefaultThemeOptions>({
     })
   },
 
+  plugins: [
+    ['@vuepress/plugin-debug'],
+    [
+      '@vuepress/plugin-register-components',
+      {
+        componentsDir: path.resolve(__dirname, './components'),
+      },
+    ],
+  ],
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
 })

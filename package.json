@@ -12,6 +12,8 @@
   "devDependencies": {
     "@textlint-rule/textlint-rule-no-unmatched-pair": "^1.0.7",
     "@vuepress/plugin-google-analytics": "^2.0.0-beta.24",
+    "@vuepress/plugin-debug": "2.0.0-beta.24",
+    "@vuepress/plugin-register-components": "2.0.0-beta.24",
     "element-plus": "^1.0.2-beta.41",
     "markdown-it-include": "^2.0.0",
     "markdown-link-check": "^3.8.7",

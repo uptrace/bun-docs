@@ -25,8 +25,9 @@ export const en: SidebarConfig = {
     },
     {
       isGroup: true,
-      text: 'PostgreSQL',
+      text: 'Articles',
       children: [
+        '/treemux/json-rest-api.md',
         '/postgres/uuid.md',
         '/postgres/installing-zfs-ubuntu.md',
         '/postgres/zfs-aws-ebs.md',

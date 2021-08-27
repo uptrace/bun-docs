@@ -34,7 +34,7 @@ Bun does not support such popular GORM features like auto migrations (you can tr
 ### go-pg
 
 Bun is a rewrite of go-pg that works on top of `sql.DB` instead of using custom API. As a
-consequence, Bun is slightly slower than go-pg but is able to work with different databases.
+consequence, Bun is less effecient than go-pg but works with different databases.
 
 Bun will eventually replace go-pg. To migrate an existing go-pg app to Bun, see this
 [guide](pg-migration.md).
