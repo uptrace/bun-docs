@@ -1,29 +1,42 @@
-# Tracing and errors monitoring
+---
+title: Performance and errors monitoring
+---
 
-Bun enables debugging through the various [hooks](hooks.md). Following are several packages
-utilizing the `QueryHook` interface.
+# Debugging
 
-## OpenTelemetry
+## Performance and errors monitoring
 
-Bun supports distributed [tracing](https://docs.uptrace.dev/guide/tracing.html) via
-[OpenTelemetry](https://opentelemetry.io/) API. First you need to need to install the `bunotel`
-package:
+You can monitor DB performance and errors using
+[distributed tracing](https://docs.uptrace.dev/guide/tracing.html). Tracing allows you to see how a
+request progresses through different services and systems, timings of every operation, any logs and
+errors as they occur.
+
+Bun supports tracing using [OpenTelemetry](https://opentelemetry.io/) API. OpenTelemetry is a
+vendor-neutral API for distributed traces and metrics. It specifies how to collect and send
+telemetry data to backend platforms. It means that you can instrument your application once and then
+add or change vendors (backends) as required.
+
+Bun comes with an OpenTelemetry instrumentation called
+[bunotel](https://github.com/uptrace/bun/tree/master/extra/bunotel) that is distributed as a
+separate module:
 
 ```shell
 go get github.com/uptrace/bun/extra/bunotel
 ```
 
-Then you can instrument the database using the `bunotel` query hook. The hook sends the raw query
-along with any errors to the configured OpenTelemetry backend(s).
+To instrument Bun database, you need to add a hook provided by bunotel:
 
 ```go
 db := bun.NewDB(sqldb, dialect)
 db.AddQueryHook(bunotel.NewQueryHook())
 ```
 
-As a tracing backend you can try [Uptrace](https://uptrace.dev/?utm_source=bun), which uses the
-collected data to optimize app performance and monitor errors. Uptrace offers 20 millions of spans
-per month for free which should be enough for small and medium sites.
+As may be expected, Bun creates [spans](https://docs.uptrace.dev/guide/tracing.html#spans) for
+processed queries and records any errors as they occur. Here is how the collected information is
+displayed at
+[Uptrace](https://uptrace.dev/explore/1/groups/?system=db%3Apostgresql&utm_source=bun&utm_campaign=bun-tracing):
+
+![Bun trace](/img/bun-trace.png)
 
 ## Debug hook
 
@@ -34,7 +47,7 @@ For quick debugging you can also print queries to the stdout. First you need to 
 go get github.com/uptrace/bun/extra/bundebug
 ```
 
-Then you need to install the `bundebug` query hook which by default only prints failed queries:
+Then you need to add provided query hook which by default only prints failed queries:
 
 ```go
 db := bun.NewDB(sqldb, dialect)
