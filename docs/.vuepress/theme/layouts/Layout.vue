@@ -5,7 +5,6 @@
 
       <a href="https://uptrace.dev/">Tracing tool</a>
       <a href="https://redis.uptrace.dev/">Redis client</a>
-      <a href="https://bun.uptrace.dev/">SQL client</a>
     </div>
     <Layout></Layout>
   </div>
@@ -22,20 +21,12 @@ export default {
 </script>
 
 <style lang="scss">
+:root {
+  --header-height: 6rem;
+}
+
 .navbar {
-  top: 40px;
-}
-
-.sidebar {
-  top: 94px;
-}
-
-.theme-default-content {
-  padding-top: 2.5rem !important;
-}
-
-.home {
-  padding-top: 6rem;
+  top: 2.4rem;
 }
 </style>
 
@@ -61,7 +52,7 @@ export default {
 .system-bar--fixed {
   position: fixed;
   width: 100%;
-  height: 40px;
+  height: 2.4rem;
   top: 0;
   right: 0;
   z-index: 20;

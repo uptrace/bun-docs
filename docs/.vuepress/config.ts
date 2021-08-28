@@ -4,6 +4,8 @@ import { path } from '@vuepress/utils'
 
 import { navbar, sidebar } from './configs'
 
+const isProd = process.env.NODE_ENV === 'production'
+
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'en-US',
   title: 'Bun',
@@ -26,7 +28,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     },
   },
 
-  evergreen: process.env.NODE_ENV !== 'production',
+  evergreen: isProd,
 
   markdown: {
     code: {
