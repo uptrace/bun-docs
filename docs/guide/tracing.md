@@ -31,9 +31,8 @@ db := bun.NewDB(sqldb, dialect)
 db.AddQueryHook(bunotel.NewQueryHook())
 ```
 
-As may be expected, Bun creates [spans](https://docs.uptrace.dev/guide/tracing.html#spans) for
-processed queries and records any errors as they occur. Here is how the collected information is
-displayed at
+As expected, Bun creates [spans](https://docs.uptrace.dev/guide/tracing.html#spans) for processed
+queries and records any errors as they occur. Here is how the collected information is displayed at
 [Uptrace](https://uptrace.dev/explore/1/groups/?system=db%3Apostgresql&utm_source=bun&utm_campaign=bun-tracing):
 
 ![Bun trace](/img/bun-trace.png)

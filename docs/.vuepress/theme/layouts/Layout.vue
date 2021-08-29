@@ -3,8 +3,9 @@
     <div class="system-bar system-bar--fixed">
       <div class="spacer"></div>
 
-      <a href="https://uptrace.dev/">Tracing tool</a>
-      <a href="https://redis.uptrace.dev/">Redis client</a>
+      <a href="https://uptrace.dev/" target="_blank">Tracing tool</a>
+      <a href="https://redis.uptrace.dev/" target="_blank">Redis client</a>
+      <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
     </div>
     <Layout></Layout>
   </div>
@@ -46,6 +47,10 @@ export default {
     padding-left: 32px;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 700;
+
+    &:hover {
+      color: #fff;
+    }
   }
 }
 

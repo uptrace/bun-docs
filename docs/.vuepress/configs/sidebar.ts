@@ -25,14 +25,8 @@ export const en: SidebarConfig = {
     },
     {
       isGroup: true,
-      text: 'Articles',
-      children: [
-        '/treemux/json-rest-api.md',
-        '/postgres/uuid.md',
-        '/postgres/installing-zfs-ubuntu.md',
-        '/postgres/zfs-aws-ebs.md',
-        '/postgres/zero-downtime-migrations.md',
-      ],
+      text: 'PostgreSQL',
+      children: ['/postgres/uuid.md', '/postgres/zero-downtime-migrations.md'],
     },
   ],
 }
