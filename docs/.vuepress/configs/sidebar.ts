@@ -26,7 +26,11 @@ export const en: SidebarConfig = {
     {
       isGroup: true,
       text: 'PostgreSQL',
-      children: ['/postgres/uuid.md', '/postgres/zero-downtime-migrations.md'],
+      children: [
+        '/postgres/uuid.md',
+        '/postgres/arrays.md',
+        '/postgres/zero-downtime-migrations.md',
+      ],
     },
   ],
 }

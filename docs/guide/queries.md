@@ -391,6 +391,22 @@ res, err := db.NewUpdate().
 UPDATE books SET title = 'my title' WHERE id = 1
 ```
 
+To update using a `map[string]interface{}`:
+
+```go
+value := map[string]interface{}{
+    "title": "title1",
+    "text":  "text1",
+}
+res, err := db.NewUpdate().Model(&value).TableExpr("books").Where("id = ?", 1).Exec(ctx)
+```
+
+```sql
+UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
+```
+
+## Bulk-update
+
 To update multiple books with a single query:
 
 ```go
@@ -412,18 +428,14 @@ FROM _data
 WHERE book.id = _data.id
 ```
 
-To update using a `map[string]interface{}`:
+Alternatively, you can use `Bulk` helper and `Column` to specify columns to update:
 
 ```go
-value := map[string]interface{}{
-    "title": "title1",
-    "text":  "text1",
-}
-res, err := db.NewUpdate().Model(&value).TableExpr("books").Where("id = ?", 1).Exec(ctx)
-```
-
-```sql
-UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
+res, err := db.NewUpdate().
+    Model(&books).
+    Column("title", "text").
+    Bulk().
+    Exec(ctx)
 ```
 
 ## Delete
