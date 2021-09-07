@@ -1,0 +1,76 @@
+# PostgreSQL data types
+
+## timestamptz vs timestamp
+
+**TLDR** You should prefer using `timestamptz` over `timestamp`. None of the types store the
+provided timezone, but `timestamptz` at least properly parses the time with a timezone. To save user
+timezone, create a separate column for it.
+
+---
+
+Let's use the following table as an example:
+
+```sql
+CREATE TABLE test (
+  t1 timestamptz,
+  t2 timestamp
+);
+```
+
+The first difference between `timestamptz` and `timestamp` is that `timestamp` discards/ignores the
+provided timezone:
+
+```sql
+INSERT INTO test VALUES ('2021-01-01 02:00:00+02', '2021-01-01 02:00:00+02') RETURNING *;
+
+           t1           |         t2
+------------------------+---------------------
+ 2021-01-01 00:00:00+00 | 2021-01-01 02:00:00
+```
+
+`timestamp` also ignores the server/session timezone:
+
+```sql
+SET timezone = 'America/Los_Angeles';
+```
+
+The result:
+
+```sql
+SELECT * FROM test;
+
+           t1           |         t2
+------------------------+---------------------
+ 2020-12-31 16:00:00-08 | 2021-01-01 02:00:00
+```
+
+## JSONB
+
+Bun uses `JSONB` data type to store maps and slices. To change the default type, use `type` struct
+tag option:
+
+```go
+type Model struct {
+	Data map[string]interface{} `bun:"type:json"`
+}
+```
+
+To enable `json.Decoder.UseNumber` option:
+
+```go
+type Model struct {
+	Data map[string]interface{} `bun:",json_use_number"`
+}
+```
+
+## Arrays
+
+See [Working with PostgreSQL arrays](arrays.md).
+
+## UUID
+
+See [Using UUID in PostgreSQL](uuid.md).
+
+## What's next
+
+See [Don't do this](https://wiki.postgresql.org/wiki/Don%27t_Do_This) for some tips.

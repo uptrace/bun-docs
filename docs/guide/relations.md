@@ -2,7 +2,8 @@
 
 ## Introduction
 
-Bun can help you join and select other tables if you are using one of 4 supported table relations:
+Bun can help you join and select other tables if you are using one of the 4 supported table
+relations:
 
 - [has-one](#has-one-relation)
 - [belongs-to](#belongs-to-relation)

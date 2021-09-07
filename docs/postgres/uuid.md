@@ -24,10 +24,10 @@ For working with UUIDs in Go you need to install
 go get github.com/google/uuid
 ```
 
-[satori/go.uuid](https://github.com/satori/go.uuid) works too, but it has not been updated for some
-time.
+[satori/go.uuid](https://github.com/satori/go.uuid) works too, but it does not look maintained any
+more.
 
-## Definining a model
+## Defining a model
 
 Now all you need to do is to specify a SQL type and a default expression:
 
@@ -38,5 +38,15 @@ type Story struct {
 	ID       uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()"`
 	Title    string
 	AuthorID uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()"`
+}
+```
+
+`UUID` field name also works well:
+
+```go
+type Story struct {
+	UUID       uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()"`
+	Title      string
+	AuthorUUID uuid.UUID `bun:"type:uuid,default:uuid_generate_v4()"`
 }
 ```

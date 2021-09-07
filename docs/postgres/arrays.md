@@ -1,6 +1,6 @@
 # Working with PostgreSQL arrays
 
-`pgdialect` supports PostgreSQL one-dimensional arrays using a struct field tag:
+`pgdialect` supports PostgreSQL one-dimensional arrays using `array` struct field tag:
 
 ```go
 type Article struct {
@@ -9,7 +9,7 @@ type Article struct {
 }
 ```
 
-To scan PostgreSQL arrays into a variable, use `pgdialect.Array`:
+To scan a PostgreSQL array into a variable, use `pgdialect.Array`:
 
 ```go
 import "github.com/uptrace/bun/dialect/pgdialect"
@@ -23,7 +23,7 @@ err := db.NewSelect().
 	Scan(ctx, pgdialect.Array(&tags))
 ```
 
-You can also use it to insert/update arrays:
+You can also use `pgdialect.Array` to insert/update arrays:
 
 ```go
 res, err := db.NewUpdate().

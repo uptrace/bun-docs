@@ -14,6 +14,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   theme: path.resolve(__dirname, './theme'),
   themeConfig: {
     logo: '/hero/logo.png',
+    darkMode: false,
 
     locales: {
       '/': {

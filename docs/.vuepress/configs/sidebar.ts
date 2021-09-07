@@ -10,9 +10,26 @@ export const en: SidebarConfig = {
         '/guide/getting-started.md',
         '/guide/drivers.md',
         '/guide/models.md',
+      ],
+    },
+    {
+      isGroup: true,
+      text: 'Querying',
+      children: [
         '/guide/queries.md',
-        '/guide/placeholders.md',
+        '/guide/query-select.md',
+        '/guide/query-insert.md',
+        '/guide/query-update.md',
+        '/guide/query-delete.md',
+        '/guide/query-create-table.md',
         '/guide/relations.md',
+        '/guide/placeholders.md',
+      ],
+    },
+    {
+      isGroup: true,
+      text: 'Tutorials',
+      children: [
         '/guide/transactions.md',
         '/guide/soft-deletes.md',
         '/guide/hooks.md',
@@ -27,6 +44,7 @@ export const en: SidebarConfig = {
       isGroup: true,
       text: 'PostgreSQL',
       children: [
+        '/postgres/data-types.md',
         '/postgres/uuid.md',
         '/postgres/arrays.md',
         '/postgres/zero-downtime-migrations.md',
