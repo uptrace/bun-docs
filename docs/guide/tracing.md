@@ -24,7 +24,7 @@ separate module:
 go get github.com/uptrace/bun/extra/bunotel
 ```
 
-To instrument Bun database, you need to add a hook provided by bunotel:
+To instrument Bun database, you need to add the hook provided by bunotel:
 
 ```go
 db := bun.NewDB(sqldb, dialect)
@@ -36,6 +36,9 @@ queries and records any errors as they occur. Here is how the collected informat
 [Uptrace](https://uptrace.dev/explore/1/groups/?system=db%3Apostgresql&utm_source=bun&utm_campaign=bun-tracing):
 
 ![Bun trace](/img/bun-trace.png)
+
+If you need an example, see
+[GitHub](https://github.com/uptrace/bun/tree/master/example/opentelemetry).
 
 ## Debug hook
 

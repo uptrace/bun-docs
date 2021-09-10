@@ -41,7 +41,7 @@ config.PreferSimpleProtocol = true
 sqldb := stdlib.OpenDB(*config)
 ```
 
-## MySQL
+## MySQL5+ and MariaDB
 
 To connect to a MySQL database, use MySQL [driver](https://github.com/go-sql-driver/mysql) and
 `mysqldialect`:
