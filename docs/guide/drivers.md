@@ -8,7 +8,7 @@ comes with bun.
 ### pgdriver
 
 Bun comes with its own PostgreSQL driver called
-[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver). It is slightly
+[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver). pgdriver is slightly
 [faster](https://github.com/go-bun/bun-benchmark) than pgx.
 
 ```go
@@ -20,10 +20,28 @@ sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
+pgdriver exposes [Error](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Error) type to
+work with errors that PostgreSQL returns:
+
+```go
+import "github.com/jackc/pgerrcode"
+
+_, err := db.NewInsert().Model(&model).Exec(ctx)
+if err != nil {
+    if err, ok := err.(pgdriver.Error); ok && err.IntegrityViolation() {
+        // ...
+    } else if err.Field('C') == pgerrcode.InvalidTransactionState {
+        // ...
+    } else {
+        // ...
+    }
+}
+```
+
 ### pgx
 
-Alternatively, you can use pgx [driver](https://github.com/jackc/pgx) with `pgdialect`. You can
-disable prepared statements in `pgx`, because Bun does not benefit from using them:
+Alternatively, you can use [pgx](https://github.com/jackc/pgx) with `pgdialect`. You can disable
+prepared statements in `pgx`, because Bun does not benefit from using them:
 
 ```go
 import (

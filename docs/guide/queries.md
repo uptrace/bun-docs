@@ -86,6 +86,23 @@ var names []string
 err := db.NewSelect().Model(&user).Column("name").Limit(100).Scan(ctx, &names)
 ```
 
+## bun.IDB
+
+Bun provides `bun.IDB` interface which you can use to accept `bun.DB`, `bun.Tx`, and `bun.Conn`:
+
+```go
+func InsertUser(ctx context.Context, db bun.IDB, user *User) error {
+	_, err := db.NewInsert().Model(user).Exec(ctx)
+	return err
+}
+
+err := InsertUser(ctx, db, user)
+
+err := db.RunInTx(ctx, nil, func(ctx context.Context, tx bun.Tx) error {
+	return InsertUser(ctx, tx, user)
+})
+```
+
 ## Scanning rows
 
 To execute custom query and scan all rows:
@@ -117,5 +134,18 @@ for rows.Next() {
 
 if err := rows.Err(); err != nil {
 	panic(err)
+}
+```
+
+## Scanonly
+
+Sometimes, you want to ignore some fields when inserting or updating data, but still be able to scan
+columns into such fields. You can achieve that with `scanonly` option:
+
+```diff
+type Model struct {
+    Foo string
+-    Bar string `"bun:"-"`
++    Bar string `"bun:",scanonly"`
 }
 ```

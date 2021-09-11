@@ -1,11 +1,13 @@
 # Update
 
+## API
+
 For the full list of supported methods, see
 [API reference](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery).
 
 ```go
 db.NewUpdate().
-    With("subq_name", subquery).
+    With("cte_name", subquery).
 
     Model(&strct).
     Model(&slice).
@@ -16,7 +18,7 @@ db.NewUpdate().
     ExcludeColumn("*"). // exclude all columns
 
     Table("table1", "table2"). // quotes table names
-    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("table1 AS t1"). // arbitrary unsafe expression
     TableExpr("(?) AS alias", subquery).
     ModelTableExpr("table1 AS t1"). // overrides model table name
 
@@ -56,27 +58,15 @@ res, err := db.NewUpdate().
 UPDATE books SET title = 'my title' WHERE id = 1
 ```
 
-To update using a `map[string]interface{}`:
-
-```go
-value := map[string]interface{}{
-    "title": "title1",
-    "text":  "text1",
-}
-res, err := db.NewUpdate().Model(&value).TableExpr("books").Where("id = ?", 1).Exec(ctx)
-```
-
-```sql
-UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
-```
-
 ## Bulk-update
 
-To update multiple books with a single query:
+To bulk-update books, you can use a [CTE](query-common-table-expressions.md):
 
 ```go
+values := db.NewValues([]*Book{book1, book2})
+
 res, err := db.NewUpdate().
-    With("_data", db.NewValues([]*Book{book1, book2})).
+    With("_data", values).
     Model((*Book)(nil)).
     TableExpr("_data").
     Set("title = _data.title").
@@ -93,7 +83,7 @@ FROM _data
 WHERE book.id = _data.id
 ```
 
-Alternatively, you can use `Bulk` helper and `Column` to specify columns to update:
+Alternatively, you can use `Bulk` helper which does the same for you:
 
 ```go
 res, err := db.NewUpdate().
@@ -101,4 +91,20 @@ res, err := db.NewUpdate().
     Column("title", "text").
     Bulk().
     Exec(ctx)
+```
+
+## Maps
+
+To update using a `map[string]interface{}`:
+
+```go
+value := map[string]interface{}{
+    "title": "title1",
+    "text":  "text1",
+}
+res, err := db.NewUpdate().Model(&value).TableExpr("books").Where("id = ?", 1).Exec(ctx)
+```
+
+```sql
+UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
 ```

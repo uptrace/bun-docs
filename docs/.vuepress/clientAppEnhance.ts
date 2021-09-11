@@ -14,7 +14,7 @@ export default defineClientAppEnhance(({ app, router }) => {
   router.beforeResolve((to, from, next) => {
     const redirectMap = {
       '/treemux/json-rest-api.html': 'https://blog.uptrace.dev/posts/go-json-rest-api/',
-      '/postgres/zfs-aws-ebs.html': 'https://blog.uptrace.dev/posts/zfs-aws-ebs/',
+      '/postgres/zfs-aws-ebs.html': 'https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs/',
       '/postgres/installing-zfs-ubuntu.html': 'https://blog.uptrace.dev/posts/ubuntu-install-zfs/',
     }
 

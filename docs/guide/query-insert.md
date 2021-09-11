@@ -1,11 +1,13 @@
 # Insert
 
+## API
+
 For the full list of supported methods, see
 [API reference](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
 
 ```go
 db.NewInsert().
-    With("subq_name", subquery).
+    With("cte_name", subquery).
 
     Model(&strct).
     Model(&slice).
@@ -16,7 +18,7 @@ db.NewInsert().
     ExcludeColumn("*"). // exclude all columns
 
     Table("table1", "table2"). // quotes table names
-    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("table1 AS t1"). // arbitrary unsafe expression
     TableExpr("(?) AS subq", subquery).
     ModelTableExpr("table1 AS t1"). // overrides model table name
 
@@ -44,7 +46,25 @@ db.NewInsert().
     Exec(ctx)
 ```
 
-To insert a new book or update an existing one:
+## Bulk-insert
+
+To bulk-insert books, use a slice:
+
+```go
+books := []Book{book1, book2}
+res, err := db.NewInsert().Model(&books).Exec()
+if err != nil {
+    panic(err)
+}
+
+for _, book := range books {
+    fmt.Println(book.ID) // book id is scanned automatically
+}
+```
+
+## Upsert
+
+To insert a new book or update the existing one:
 
 ```go
 _, err := db.NewInsert().
@@ -58,6 +78,8 @@ _, err := db.NewInsert().
 INSERT INTO "books" ("id", "title") VALUES (100, 'my title')
 ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title
 ```
+
+## Maps
 
 To insert a `map[string]interface{}`:
 
@@ -73,26 +95,17 @@ _, err := db.NewInsert().Model(&values).TableExpr("books").Exec()
 INSERT INTO books (title, text) VALUES ('title1', 'text2')
 ```
 
-To copy all rows from a table:
+## INSERT ... SELECT
+
+To copy rows between tables:
 
 ```go
-selq := db.NewSelect().
-	Model((*Book)(nil)).
-	Where("TRUE")
-
 _, err := db.NewInsert().
-	Model((*Book)(nil)).
-	With("sel", selq).
-	TableExpr("sel").
+    Table("books_backup").
+	Table("books").
 	Exec(ctx)
 ```
 
 ```sql
-WITH "sel" AS (
-  SELECT "book"."id"
-  FROM "books" AS "book"
-  WHERE (TRUE)
-)
-INSERT INTO "books"
-SELECT * FROM sel
+INSERT INTO "books_backup" SELECT * FROM books
 ```

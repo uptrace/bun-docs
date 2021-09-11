@@ -96,10 +96,11 @@ type User struct {
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
 - Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
   used wrong names for these relations.
-- Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``.
+- Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``. This
+  helps with linters that mark the field as unused.
 - To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not
   marshal Go zero values as `NULL` any more.
-- Replace `pg.ErrNoRows` wtih `sql.ErrNoRows`.
+- Replace `pg.ErrNoRows` with `sql.ErrNoRows`.
 - Replace `db.WithParam` with `db.WithNamedArg`.
 - Replace `orm.RegisterTable` with `db.RegisterModel`.
 - Replace `pg.Safe` with `bun.Safe`.
@@ -111,6 +112,31 @@ type User struct {
 - Replace `ForEach` with `sql.Rows` and `db.ScanRow`.
 - Replace `WhereIn("foo IN (?)", slice)` with `Where("foo IN (?)", bun.In(slice))`.
 - Replace `db.RunInTransaction` with `db.RunInTx`.
+- Replace `db.SelectOrInsert` with an upsert:
+
+```go
+res, err := db.NewInsert().Model(&model).On("CONFLICT DO NOTHING").Exec(ctx)
+res, err := db.NewInsert().Model(&model).On("CONFLICT DO UPDATE").Exec(ctx)
+```
+
+## Ignored columns
+
+Unlike go-pg, Bun does not allow scanning into explicitly ignored fields. For example, the following
+code does not work:
+
+```go
+type Model struct {
+    Foo string `bun:"-"`
+}
+```
+
+But you can fix it by adding `scanonly` option:
+
+```go
+type Model struct {
+    Foo string `bun:",scanonly"`
+}
+```
 
 ## pg.Listener
 

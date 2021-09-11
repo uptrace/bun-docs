@@ -9,7 +9,7 @@ db.NewCreateTable().
     Model(&strct).
 
     Table("table1"). // quotes table names
-    TableExpr("table1"). // arbitrary expression
+    TableExpr("table1"). // arbitrary unsafe expression
     ModelTableExpr("table1"). // overrides model table name
 
     Temp().

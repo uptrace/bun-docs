@@ -23,9 +23,10 @@ tags to override the defaults.
 | bun:",notnull"                             | Adds `NOT NULL` SQL constraint.                                                          |
 | bun:",unique"                              | Makes `CreateTable` to add an unique constraint.                                         |
 | bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
-| bun:",array"                               | Treats the column as a PostgreSQL array.                                                 |
 | bun:",nullzero"                            | Marshals Go zero values as SQL `NULL`.                                                   |
 | bun:",allowzero"                           | Can be used on primary keys to undo the effect of `nullzero`.                            |
+| bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                   |
+| bun:",array"                               | Treats the column as a PostgreSQL array.                                                 |
 | bun:",json_use_number"                     | Uses `json.Decoder.UseNumber` to decode JSON.                                            |
 | bun:",msgpack"                             | Encodes/decodes data using MessagePack.                                                  |
 | DeletedAt time.Time \`bun:",soft_delete"\` | Enables soft deletes on the model.                                                       |

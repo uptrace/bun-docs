@@ -1,17 +1,19 @@
 # Delete
 
+## API
+
 For the full list of supported methods, see
 [API reference](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery).
 
 ```go
 db.NewDelete().
-    With("subq_name", subquery).
+    With("cte_name", subquery).
 
     Model(&strct).
     Model(&slice).
 
     Table("table1", "table2"). // quotes table names
-    TableExpr("table1 AS t1"). // arbitrary expression
+    TableExpr("table1 AS t1"). // arbitrary unsafe expression
     TableExpr("(?) AS alias", subquery).
     ModelTableExpr("table1 AS t1"). // overrides model table name
 
@@ -34,7 +36,9 @@ db.NewDelete().
     Exec(ctx)
 ```
 
-To delete multiple books by a primary key:
+## Bulk-delete
+
+To bulk-delete books by a primary key:
 
 ```go
 books := []*Book{book1, book2} // slice of books with ids
@@ -45,23 +49,20 @@ res, err := db.NewDelete().Model(&books).WherePK().Exec(ctx)
 DELETE FROM "books" WHERE id IN (1, 2)
 ```
 
-To delete using a subquery:
+## DELETE ... USING
+
+To delete rows using another table:
 
 ```go
-subq := db.NewSelect().Model((*Book)(nil)).Limit(1000)
-
 res, err := db.NewDelete().
-    With("todo", subq).
     Model((*Book)(nil)).
-    Table("todo").
-    Where("book.id = todo.id").
+    TableExpr("archived_books AS src").
+    Where("book.id = src.id").
     Exec(ctx)
 ```
 
 ```sql
-WITH todo AS (
-    SELECT * FROM books LIMIT 1000
-)
-DELETE FROM books AS book USING todo
-WHERE book.id = todo.id
+DELETE FROM "books" AS book
+USING archived_books AS src
+WHERE book.id = src.id
 ```
