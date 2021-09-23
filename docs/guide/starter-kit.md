@@ -2,7 +2,7 @@
 
 Bun [starter kit](https://github.com/go-bun/bun-starter-kit) consists of:
 
-- [treemux](https://github.com/vmihailenco/treemux)
+- [treemux](https://github.com/uptrace/treemux)
 - [bun](https://github.com/uptrace/bun)
 - Hooks to decouple and initialize the app.
 - CLI to run migrations.
@@ -85,7 +85,7 @@ func init() {
 
 ## Treemux
 
-[treemux](https://github.com/vmihailenco/treemux) is a fast and flexible HTTP router with error
+[treemux](https://github.com/uptrace/treemux) is a fast and flexible HTTP router with error
 handling. Using treemux, you can replace the following classic HTTP handler:
 
 ```go
@@ -133,11 +133,11 @@ type Request struct {
 }
 ```
 
-To customize error handling (and [more](https://github.com/vmihailenco/treemux/tree/master/extra)),
-you can use middlewares:
+To customize error handling (and [more](https://github.com/uptrace/treemux/tree/master/extra)), you
+can use middlewares:
 
 ```go
-import "github.com/vmihailenco/treemux"
+import "github.com/uptrace/treemux"
 
 router := treemux.New(
     treemux.WithMiddleware(errorHandler),

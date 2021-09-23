@@ -119,6 +119,9 @@ res, err := db.NewInsert().Model(&model).On("CONFLICT DO NOTHING").Exec(ctx)
 res, err := db.NewInsert().Model(&model).On("CONFLICT DO UPDATE").Exec(ctx)
 ```
 
+- Bun uses a database/sql pool, so use [sql.DBStats](https://pkg.go.dev/database/sql#DBStats)
+  instead of `pg.PoolStats.`
+
 ## Ignored columns
 
 Unlike go-pg, Bun does not allow scanning into explicitly ignored fields. For example, the following

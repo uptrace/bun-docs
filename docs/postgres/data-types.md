@@ -63,6 +63,14 @@ type Model struct {
 }
 ```
 
+You can also use `json.RawMessage` to work with raw bytes:
+
+```go
+type Model struct {
+	Data json.RawMessage `bun:"type:jsonb"`
+}
+```
+
 ## Arrays
 
 See [Working with PostgreSQL arrays](arrays.md).
@@ -71,6 +79,6 @@ See [Working with PostgreSQL arrays](arrays.md).
 
 See [Using UUID in PostgreSQL](uuid.md).
 
-## What's next
+## What's next?
 
 See [Don't do this](https://wiki.postgresql.org/wiki/Don%27t_Do_This) for some tips.

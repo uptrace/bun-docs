@@ -54,9 +54,10 @@ config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode
 if err != nil {
 	panic(err)
 }
-
 config.PreferSimpleProtocol = true
+
 sqldb := stdlib.OpenDB(*config)
+db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
 ## MySQL5+ and MariaDB

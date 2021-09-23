@@ -149,3 +149,20 @@ type Model struct {
 +    Bar string `"bun:",scanonly"`
 }
 ```
+
+## Ignoring columns
+
+To ignore unknown SQL columns, you can use `WithDiscardUnknownColumns` option:
+
+```go
+db := bun.NewDB(sqldb, pgdialect.New(), bun.WithDiscardUnknownColumns())
+```
+
+If you want to ignore one column, underscore it:
+
+```go
+err := db.NewSelect().
+    ColumnExpr("1 AS _rank"). // ignore the column when scanning
+    OrderExpr("_rank DESC").  // but use it for sorting
+    Scan(ctx)
+```

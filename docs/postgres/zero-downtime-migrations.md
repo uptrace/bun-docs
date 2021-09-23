@@ -97,3 +97,7 @@ UPDATE test SET foo = '';
 -- migration 3
 ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 ```
+
+## Related material
+
+- [Safe and unsafe operations for high volume PostgreSQL](https://leopard.in.ua/2016/09/20/safe-and-unsafe-operations-postgresql#.YT4FFPwzZH7)

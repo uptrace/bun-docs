@@ -57,16 +57,42 @@ db.NewSelect().
 
 ## Count rows
 
-Bun provides a helper to generate `count(*)` queries:
+Bun provides [Count](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Count) helper to generate
+`count(*)` queries:
 
 ```go
 count, err := db.NewSelect().Model((*User)(nil)).Count(ctx)
 ```
 
-You can also select and count users with one call (but 2 queries):
+Because selecting and counting rows is a common operation, Bun also provides
+[ScanAndCount](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.ScanAndCount):
 
 ```go
+var users []User
 count, err := db.NewSelect().Model(&users).Limit(20).ScanAndCount(ctx)
+if err != nil {
+	panic(err)
+}
+fmt.Println(users, count)
+```
+
+## EXISTS
+
+You can also use [Exists](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Exists) helper to
+use the corresponding `EXISTS` SQL operator:
+
+```go
+exists, err := db.NewSelect().Model((*User)(nil)).Where("name LIKE '%foo%'").Exists(ctx)
+if err != nil {
+	panic(err)
+}
+if !exists {
+	fmt.Println("such user does not exist")
+}
+```
+
+```sql
+SELECT EXISTS (SELECT * FROM users WHERE name LIKE '%foo%')
 ```
 
 ## Joins

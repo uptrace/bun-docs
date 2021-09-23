@@ -4,16 +4,16 @@
       <div class="spacer"></div>
 
       <div class="d-none d-sm-block">
-        <span>Blog: </span>
-        <a href="https://blog.uptrace.dev/posts/opentelemetry-metrics-cache-stats/" target="_blank"
-          >Monitoring cache stats using OpenTelemetry Metrics</a
-        >
+        <span class="emoji">&#9889;</span>
+        <a :href="link.href" :target="link.href.startsWith('/') ? '_self' : '_blank'">{{
+          link.text
+        }}</a>
       </div>
 
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://uptrace.dev/" target="_blank">Tracing tool</a>
+        <a href="https://uptrace.dev/" target="_blank">Tracing & Metrics</a>
         <a href="https://redis.uptrace.dev/" target="_blank">Redis client</a>
         <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
       </div>
@@ -23,11 +23,49 @@
 </template>
 
 <script>
+import { ref } from 'vue'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 export default {
   components: {
     Layout,
+  },
+
+  setup() {
+    const link = ref(randLink())
+
+    const stop = setInterval(() => {
+      link.value = randLink()
+    }, 30000)
+
+    function randLink() {
+      const links = [
+        {
+          text: 'Monitoring cache stats using OpenTelemetry Metrics',
+          href: 'https://blog.uptrace.dev/posts/opentelemetry-metrics-cache-stats/',
+        },
+        {
+          text: 'Get latest updates right to your email',
+          href: 'https://blog.uptrace.dev/newsletter/',
+        },
+        {
+          text: 'Running PostgreSQL on ZFS and AWS',
+          href: 'https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs/',
+        },
+        {
+          text: 'Soft deletes via Bun models or PostgreSQL views',
+          href: '/guide/soft-deletes.html',
+        },
+        {
+          text: 'Running Bun in production using PostgreSQL',
+          href: '/postgres/running-bun-in-production.html',
+        },
+      ]
+
+      return links[Math.floor(Math.random() * links.length)]
+    }
+
+    return { link }
   },
 }
 </script>
@@ -88,6 +126,12 @@ a {
 
   &:hover {
     color: #fff;
+    text-decoration: underline;
   }
+}
+
+.emoji {
+  font-size: 1.1rem;
+  padding-right: 6px;
 }
 </style>
