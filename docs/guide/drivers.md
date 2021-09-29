@@ -8,8 +8,7 @@ comes with bun.
 ### pgdriver
 
 Bun comes with its own PostgreSQL driver called
-[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver). pgdriver is slightly
-[faster](https://github.com/go-bun/bun-benchmark) than pgx.
+[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver).
 
 ```go
 import "github.com/uptrace/bun/driver/pgdriver"
@@ -20,23 +19,7 @@ sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
-pgdriver exposes [Error](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Error) type to
-work with errors that PostgreSQL returns:
-
-```go
-import "github.com/jackc/pgerrcode"
-
-_, err := db.NewInsert().Model(&model).Exec(ctx)
-if err != nil {
-    if err, ok := err.(pgdriver.Error); ok && err.IntegrityViolation() {
-        // ...
-    } else if err.Field('C') == pgerrcode.InvalidTransactionState {
-        // ...
-    } else {
-        // ...
-    }
-}
-```
+See [PostgreSQL](/postgres/) section for more information about pgdriver and PostgreSQL.
 
 ### pgx
 
@@ -59,6 +42,8 @@ config.PreferSimpleProtocol = true
 sqldb := stdlib.OpenDB(*config)
 db := bun.NewDB(sqldb, pgdialect.New())
 ```
+
+See [PostgreSQL](/postgres/) section for more information about pgx and PostgreSQL.
 
 ## MySQL5+ and MariaDB
 

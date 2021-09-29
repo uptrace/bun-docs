@@ -6,15 +6,23 @@ export const en: NavbarConfig = [
     link: '/guide/starter-kit.html',
   },
   {
-    text: 'GitHub',
-    link: 'https://github.com/uptrace/bun',
+    text: 'PostgreSQL',
+    link: '/postgres/',
+  },
+  {
+    text: 'Playground',
+    link: '/playground/',
+  },
+  {
+    text: 'Newsletter',
+    link: 'https://blog.uptrace.dev/pages/newsletter.html',
   },
   {
     text: 'Reference',
     link: 'https://pkg.go.dev/github.com/uptrace/bun',
   },
   {
-    text: 'Newsletter',
-    link: 'https://blog.uptrace.dev/newsletter/',
+    text: 'GitHub',
+    link: 'https://github.com/uptrace/bun',
   },
 ]

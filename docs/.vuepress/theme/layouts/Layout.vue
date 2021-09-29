@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
 export default {
@@ -34,23 +34,25 @@ export default {
   setup() {
     const link = ref(randLink())
 
-    const stop = setInterval(() => {
-      link.value = randLink()
-    }, 30000)
+    onMounted(() => {
+      setInterval(() => {
+        link.value = randLink()
+      }, 30000)
+    })
 
     function randLink() {
       const links = [
         {
           text: 'Monitoring cache stats using OpenTelemetry Metrics',
-          href: 'https://blog.uptrace.dev/posts/opentelemetry-metrics-cache-stats/',
+          href: 'https://blog.uptrace.dev/posts/opentelemetry-metrics-cache-stats.html',
         },
         {
           text: 'Get latest updates right to your email',
-          href: 'https://blog.uptrace.dev/newsletter/',
+          href: 'https://blog.uptrace.dev/pages/newsletter.html',
         },
         {
           text: 'Running PostgreSQL on ZFS and AWS',
-          href: 'https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs/',
+          href: 'https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs.html',
         },
         {
           text: 'Soft deletes via Bun models or PostgreSQL views',

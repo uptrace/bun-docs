@@ -27,16 +27,6 @@ columns in production:
 db := bun.NewDB(sqldb, pgdialect.New(), bun.WithDiscardUnknownColumns())
 ```
 
-## PgBouncer
+## PostgreSQL
 
-To achieve better performance, you should use a server-side connection pool like
-[PgBouncer](https://www.pgbouncer.org/). The pool that comes with `sql.DB` is a client-side pool and
-it doesn't replace server-side pools like PgBouncer.
-
-## ZFS
-
-If you store large amounts of data (> 100 gigabytes), consider using ZFS filesystem which enables
-2-3x data compression and efficient ARC cache. See:
-
-- [Installing ZFS on Ubuntu](https://blog.uptrace.dev/posts/ubuntu-install-zfs/)
-- [Running PostgreSQL on ZFS and AWS](https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs/)
+See [PostgreSQL](/postgres/) section.
