@@ -119,9 +119,22 @@ ORDER BY book.id ASC
 LIMIT 1
 ```
 
+To generate complex joins, use `JoinOn`:
+
+```go
+q = q.
+    Join("JOIN authors AS a").
+    JoinOn("a.id = book.author_id").
+    JoinOn("a.deleted_at IS NULL")
+```
+
+```sql
+JOIN authors AS a ON a.id = book.author_id AND a.deleted_at IS NULL
+```
+
 ## Subqueries
 
-To use subqueries:
+You can use Bun queries (including `INSERT`, `UPDATE`, and `DELETE` queries) as a subquery:
 
 ```go
 subq := db.NewSelect().Model((*Book)(nil)).Where("author_id = ?", 1)
@@ -134,4 +147,47 @@ SELECT * FROM (
   SELECT "book"."id", "book"."title", "book"."text"
   FROM "books" AS "book" WHERE (author_id = 1)
 ) AS book
+```
+
+## Where
+
+You can use arbitrary unsafe expressions in `WHERE` clauses:
+
+```go
+q = q.Where("column LIKE 'hello%'")
+```
+
+Including subqueries:
+
+```go
+subq := db.NewSelect().Model((*User)(nil)).Column("id").Where("active")
+q = q.Where("user_id IN (?)", subq)
+```
+
+If you already have a list of ids, use `bun.In`:
+
+```go
+q = q.Where("user_id IN (?)", bun.In([]int64{1, 2, 3}))
+```
+
+You can also use `WhereOr` to join conditions with logical `OR`:
+
+```go
+q = q.Where("id = 1").WhereOr("id = 2").WhereOr("id = 3")
+```
+
+Lastly, you can use `WhereGroup` to create complex filters:
+
+```go
+q = q.
+    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery{
+        return q.Where("id = 1").WhereOr("id = 2").WhereOr("id = 3")
+    }).
+    WhereGroup(" AND NOT ", func(q *bun.SelectQuery) *bun.SelectQuery{
+        return q.Where("active").WhereOr("archived")
+    }).
+```
+
+```sql
+WHERE (id = 1 OR id = 2 OR id = 3) AND NOT (active OR archived)
 ```

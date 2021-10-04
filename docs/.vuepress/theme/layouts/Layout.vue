@@ -52,7 +52,7 @@ export default {
         },
         {
           text: 'Running PostgreSQL on ZFS and AWS',
-          href: 'https://blog.uptrace.dev/posts/postgresql-zfs-aws-ebs.html',
+          href: 'https://bun.uptrace.dev/postgres/tuning-zfs-aws-ebs.html',
         },
         {
           text: 'Soft deletes via Bun models or PostgreSQL views',
@@ -61,6 +61,10 @@ export default {
         {
           text: 'Running Bun in production using PostgreSQL',
           href: '/postgres/running-bun-in-production.html',
+        },
+        {
+          text: 'BunRouter is an extremely fast and flexible HTTP router',
+          href: 'https://bunrouter.uptrace.dev/',
         },
       ]
 

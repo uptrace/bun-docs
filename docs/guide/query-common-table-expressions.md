@@ -73,7 +73,7 @@ INSERT INTO comments_backups SELECT * FROM src
 
 ## VALUES
 
-Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) which helps
+Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) to help with
 building CTEs that don't have a source table.
 
 ```go

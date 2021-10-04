@@ -37,7 +37,7 @@ queries and records any errors as they occur. Here is how the collected informat
 
 ![Bun trace](/img/bun-trace.png)
 
-If you need an example, see
+You can find a runnable example on
 [GitHub](https://github.com/uptrace/bun/tree/master/example/opentelemetry).
 
 ## Debug hook

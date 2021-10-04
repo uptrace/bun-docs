@@ -2,7 +2,7 @@
 
 Bun [starter kit](https://github.com/go-bun/bun-starter-kit) consists of:
 
-- [treemux](https://github.com/uptrace/treemux)
+- [bunrouter](https://bunrouter.uptrace.dev/) is an exremely fast and flexible HTTP router.
 - [bun](https://github.com/uptrace/bun)
 - Hooks to decouple and initialize the app.
 - CLI to run migrations.
@@ -80,88 +80,6 @@ func init() {
 
 		return nil
 	})
-}
-```
-
-## Treemux
-
-[treemux](https://github.com/uptrace/treemux) is a fast and flexible HTTP router with error
-handling. Using treemux, you can replace the following classic HTTP handler:
-
-```go
-func myHandler(w http.ResponseWriter, req *http.Request) {
-    user, err := selectUser(req.Context())
-    if err != nil {
-        writeError(w, err)
-        return
-    }
-
-    err = writeResult(w, map[string]interface{}{
-        "user": user
-    })
-    if err != nil {
-        writeError(w, err)
-        return
-    }
-}
-```
-
-With the following treemux handler:
-
-```go
-func myHandler(w http.ResponseWriter, req treemux.Request) error {
-    user, err := selectUser(req.Context(), req.Param("user_id"))
-    if err != nil {
-        return err
-    }
-
-    return treemux.JSON(w, treemux.H{
-        "user": user,
-    })
-}
-```
-
-`treemux.Request` is a thin wrapper around `*http.Request` that carries `context.Context` and
-information about the current route:
-
-```go
-type Request struct {
-	*http.Request
-	ctx context.Context
-	route string
-	Params Params
-}
-```
-
-To customize error handling (and [more](https://github.com/uptrace/treemux/tree/master/extra)), you
-can use middlewares:
-
-```go
-import "github.com/uptrace/treemux"
-
-router := treemux.New(
-    treemux.WithMiddleware(errorHandler),
-)
-
-func errorHandler(next treemux.HandlerFunc) treemux.HandlerFunc {
-    return func(w http.ResponseWriter, req treemux.Request) error {
-        err := next(w, req)
-        if err == nil {
-            return nil
-        }
-
-        if err == sql.ErrNoRows {
-            w.WriteHeader(http.StatusNotFound)
-        } else {
-            w.WriteHeader(http.StatusBadRequest)
-        }
-
-        _ = treemux.JSON(w, treemux.H{
-            "message": err.Error(),
-        })
-
-        return err
-    }
 }
 ```
 

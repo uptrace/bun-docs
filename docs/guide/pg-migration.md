@@ -121,6 +121,14 @@ res, err := db.NewInsert().Model(&model).On("CONFLICT DO UPDATE").Exec(ctx)
 
 - Bun uses a database/sql pool, so use [sql.DBStats](https://pkg.go.dev/database/sql#DBStats)
   instead of `pg.PoolStats.`
+- `WrapWith` is removed. Use `With` instead:
+
+```go
+subq := db.NewSelect()
+q := db.NewSelect().
+	With("subq", subq).
+	Table("subq")
+```
 
 ## Ignored columns
 

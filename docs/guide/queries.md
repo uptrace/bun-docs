@@ -81,9 +81,10 @@ err := db.NewSelect().Model(&user).Limit(100).Scan(ctx, &ms)
 var name string
 err := db.NewSelect().Model(&user).Column("name").Where("id = 1").Scan(ctx, &name)
 
-// Scan all names.
+// Scan columns into separate slices.
+var ids []int64
 var names []string
-err := db.NewSelect().Model(&user).Column("name").Limit(100).Scan(ctx, &names)
+err := db.NewSelect().Model(&user).Column("id", "name").Limit(100).Scan(ctx, &ids, &names)
 ```
 
 ## bun.IDB
@@ -140,7 +141,7 @@ if err := rows.Err(); err != nil {
 ## Scanonly
 
 Sometimes, you want to ignore some fields when inserting or updating data, but still be able to scan
-columns into such fields. You can achieve that with `scanonly` option:
+columns into the ignored fields. You can achieve that with `scanonly` option:
 
 ```diff
 type Model struct {
@@ -150,15 +151,15 @@ type Model struct {
 }
 ```
 
-## Ignoring columns
+## Ignoring unknown columns
 
-To ignore unknown SQL columns, you can use `WithDiscardUnknownColumns` option:
+To discard unknown SQL columns, you can use `WithDiscardUnknownColumns` db option:
 
 ```go
 db := bun.NewDB(sqldb, pgdialect.New(), bun.WithDiscardUnknownColumns())
 ```
 
-If you want to ignore one column, underscore it:
+If you want to ignore a single column, just underscore it:
 
 ```go
 err := db.NewSelect().
