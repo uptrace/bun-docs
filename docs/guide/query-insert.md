@@ -92,7 +92,7 @@ _, err := db.NewInsert().Model(&values).TableExpr("books").Exec()
 ```
 
 ```sql
-INSERT INTO books (title, text) VALUES ('title1', 'text2')
+INSERT INTO "books" ("title", "text") VALUES ('title1', 'text2')
 ```
 
 ## INSERT ... SELECT
@@ -107,5 +107,19 @@ _, err := db.NewInsert().
 ```
 
 ```sql
-INSERT INTO "books_backup" SELECT * FROM books
+INSERT INTO "books_backup" SELECT * FROM "books"
+```
+
+You can also specify columns to copy:
+
+```go
+_, err := db.NewInsert().
+    ColumnExpr("id, name").
+    Table("dest").
+    Table("src").
+    Exec(ctx)
+```
+
+```sql
+INSERT INTO "dest" (id, name) SELECT id, name FROM "src"
 ```

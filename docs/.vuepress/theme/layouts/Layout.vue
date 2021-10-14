@@ -3,7 +3,7 @@
     <div class="system-bar system-bar--fixed">
       <div class="spacer"></div>
 
-      <div class="d-none d-sm-block">
+      <div v-if="link" class="d-none d-sm-block">
         <span class="emoji">&#9889;</span>
         <a :href="link.href" :target="link.href.startsWith('/') ? '_self' : '_blank'">{{
           link.text
@@ -22,9 +22,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { ref, onMounted } from 'vue'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
+
+interface Link {
+  text: string
+  href: string
+}
 
 export default {
   components: {
@@ -32,15 +37,17 @@ export default {
   },
 
   setup() {
-    const link = ref(randLink())
+    const link = ref<Link>()
 
     onMounted(() => {
+      link.value = randLink()
+
       setInterval(() => {
-        link.value = randLink()
+        link.value = randLink(link.value.href)
       }, 30000)
     })
 
-    function randLink() {
+    function randLink(currHref = '') {
       const links = [
         {
           text: 'Monitoring cache stats using OpenTelemetry Metrics',
@@ -55,8 +62,8 @@ export default {
           href: 'https://bun.uptrace.dev/postgres/tuning-zfs-aws-ebs.html',
         },
         {
-          text: 'Soft deletes via Bun models or PostgreSQL views',
-          href: '/guide/soft-deletes.html',
+          text: 'PostgreSQL: faceted navigation and search',
+          href: '/postgres/faceted-full-text-search-tsvector.html',
         },
         {
           text: 'Running Bun in production using PostgreSQL',
@@ -68,7 +75,14 @@ export default {
         },
       ]
 
-      return links[Math.floor(Math.random() * links.length)]
+      for (let i = 0; i < 100; i++) {
+        const link = links[Math.floor(Math.random() * links.length)]
+        if (link.href !== currHref) {
+          return link
+        }
+      }
+
+      return links[0]
     }
 
     return { link }

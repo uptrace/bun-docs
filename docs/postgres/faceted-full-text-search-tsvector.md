@@ -1,5 +1,5 @@
 ---
-title: Faceted navigation and full text search
+title: Faceted navigation and search
 ---
 
 # Building faceted search using PostgreSQL full text search

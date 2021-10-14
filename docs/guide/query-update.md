@@ -108,3 +108,28 @@ res, err := db.NewUpdate().Model(&value).TableExpr("books").Where("id = ?", 1).E
 ```sql
 UPDATE books SET title = 'title1', text = 'text2' WHERE id = 1
 ```
+
+## Omit zero values
+
+You can also tell Bun to omit zero struct fields, for example, the following query does not update
+`email` column because it contains an empty value:
+
+```go
+type User struct {
+    ID    int64
+    Name  string
+    Email string
+}
+
+res, err := db.NewUpdate().
+    Model(&User{ID: 1, Name: "John Doe"}).
+    OmitZero().
+    WherePK().
+    Exec(ctx)
+```
+
+```sql
+UPDATE users
+SET name = "John Doe"
+WHERE id = 1
+```

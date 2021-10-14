@@ -26,9 +26,9 @@ To enable soft deletes on a model, add `DeletedAt` field with `soft_delete` tag:
 
 ```go
 type User struct {
-    ID int64
-    CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-    DeletedAt time.Time `bun:",soft_delete"`
+	ID int64
+	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+	DeletedAt time.Time `bun:",soft_delete"`
 }
 ```
 
@@ -82,9 +82,9 @@ db.NewDelete().Model(user).Where("id = ?", 123).ForceDelete().Exec(ctx)
 DELETE FROM users WHERE id = 123 AND deleted_at IS NOT NULL
 ```
 
-## Using PostgreSQL views
+## Using table views
 
-You can also implement soft deletes using PostgreSQL views. Given the following table schema:
+You can also implement soft deletes using table views. Given the following table schema:
 
 ```sql
 CREATE TABLE all_users (
@@ -115,13 +115,43 @@ type User struct {
 }
 ```
 
-To work with deleted rows, use `ModelTableExpr` to change the table:
+To query deleted rows, use `ModelTableExpr` to change the table:
 
 ```go
-var users []User
+var deletedUsers []User
 err := db.NewSelect().
-	Model(&users).
+	Model(&deletedUsers).
 	ModelTableExpr("all_users").
 	Where("deleted_at IS NOT NULL").
 	Scan(ctx)
+```
+
+## Unique indexes
+
+Using soft deletes with unique indexes can cause conflicts on insert queries, because soft-deleted
+rows are included in unique indexes just like normal rows.
+
+With some DBMS, you can exclude soft-deleted rows from an index:
+
+```sql
+CREATE UNIQUE INDEX index_name ON table (column1) WHERE deleted_at IS NULL;
+```
+
+Alternatively, you can add `deleted_at` column to the index using `coalesce` to convert `NULL` time,
+because `NULL` is not equal to any other value including itself:
+
+```sql
+CREATE UNIQUE INDEX index_name ON table (column1, coalesce(deleted_at, '1970-01-01 00:00:00'))
+```
+
+If your DBMS does not allow to use expressions in index elements, you can configure Bun to not
+append zero time as `NULL` using `allowzero` option:
+
+```diff
+type User struct {
+	ID int64
+	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
+-	 DeletedAt time.Time `bun:",soft_delete"`
++	 DeletedAt time.Time `bun:",soft_delete,allowzero"`
+}
 ```

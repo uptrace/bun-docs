@@ -66,6 +66,24 @@ type User struct {
 }
 ```
 
+## SQL naming convention
+
+Use [snake_case](https://en.wikipedia.org/wiki/Snake_case) identifiers for table and column names.
+If you get spurious SQL parser errors, try to quote the identifier with double quotes (backticks for
+MySQL) to check if the problem goes away.
+
+<!-- prettier-ignore -->
+::: warning
+Don't use [SQL keywords](https://www.postgresql.org/docs/13/sql-keywords-appendix.html) (for example
+`order`, `user`) as identifiers.
+:::
+
+<!-- prettier-ignore -->
+::: warning
+Don't use case-sensitive names because such names are folded to lower case, for example,
+`UserOrders` becomes `userorders`.
+:::
+
 ## Column types
 
 Bun generates column types from struct field types. For example, Go type `string` is translated to
@@ -78,24 +96,6 @@ type User struct {
     ID int64 `bun:"type:integer"`
 }
 ```
-
-## SQL naming convention
-
-To avoid errors, use [snake_case](https://en.wikipedia.org/wiki/Snake_case) names. If you get
-spurious SQL parser errors, try to quote the identifier with double quotes (backticks for MySQL) to
-check if the problem goes away.
-
-<!-- prettier-ignore -->
-::: warning
-Don't use [SQL keywords](https://www.postgresql.org/docs/13/sql-keywords-appendix.html) (for example
-`order`, `user`) as identifiers.
-:::
-
-<!-- prettier-ignore -->
-::: warning
-Don't use case-sensitive names because such names are folded to lower case (for example,
-`UserOrders` becomes `userorders`).
-:::
 
 ## Modeling NULL values
 

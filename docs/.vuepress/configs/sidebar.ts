@@ -31,6 +31,7 @@ export const en: SidebarConfig = {
       isGroup: true,
       text: 'Tutorials',
       children: [
+        '/guide/debugging.md',
         '/guide/running-bun-in-production.md',
         '/guide/tracing.md',
         '/guide/transactions.md',
