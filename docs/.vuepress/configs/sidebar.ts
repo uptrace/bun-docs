@@ -31,6 +31,7 @@ export const en: SidebarConfig = {
       isGroup: true,
       text: 'Tutorials',
       children: [
+        '/guide/starter-kit.md',
         '/guide/debugging.md',
         '/guide/running-bun-in-production.md',
         '/guide/tracing.md',
@@ -39,7 +40,6 @@ export const en: SidebarConfig = {
         '/guide/hooks.md',
         '/guide/fixtures.md',
         '/guide/migrations.md',
-        '/guide/starter-kit.md',
         '/guide/pg-migration.md',
       ],
     },

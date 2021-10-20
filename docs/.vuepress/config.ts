@@ -61,6 +61,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         componentsDir: path.resolve(__dirname, './components'),
       },
     ],
+    ['@vuepress/plugin-search'],
   ],
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
 })

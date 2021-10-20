@@ -83,8 +83,8 @@ WHERE id = 1
 ## Has one relation
 
 To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/has-one) we have `User` model that has
-one `Profile` model.
+[example](https://github.com/uptrace/bun/tree/master/example/rel-has-one) we have `User` model that
+has one `Profile` model.
 
 ```go
 type Profile struct {
@@ -106,7 +106,7 @@ To override join columns, use `join:base_column=join_column` field tag, for exam
 ## Belongs to relation
 
 To define a belongs-to relationship, you need to add `bun:"rel:belongs-to"` tag to the field. In the
-the following [example](https://github.com/uptrace/bun/tree/master/example/belongs-to) we define
+the following [example](https://github.com/uptrace/bun/tree/master/example/rel-belongs-to) we define
 `Profile` model that belongs to `User` model.
 
 ```go
@@ -129,8 +129,8 @@ To override join columns, use `join:base_column=join_column` field tag, for exam
 ## Has many relation
 
 To define a has-many relationship, add `bun:"rel:has-many"` to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/has-many) we have `User` model that has
-many `Profile` models.
+[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many) we have `User` model that
+has many `Profile` models.
 
 ```go
 type Profile struct {
@@ -157,9 +157,9 @@ To define a many-to-many relationship, add `bun:"m2m:order_to_items"` to the fie
 define two has-one relationships on the intermediary model and manually register the model
 (`db.RegisterModel`).
 
-In the following [example](https://github.com/uptrace/bun/tree/master/example/many-to-many) we have
-`Order` model that has many `Item` models. Because the same item can be added to multiple orders, we
-need the intermediary `OrderToItem` model.
+In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-many-to-many) we
+have `Order` model that has many `Item` models. Because the same item can be added to multiple
+orders, we need the intermediary `OrderToItem` model.
 
 ```go
 func init() {

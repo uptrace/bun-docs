@@ -19,11 +19,10 @@ db.AddQueryHook(bundebug.NewQueryHook())
 To print all queries, use `WithVerbose` option:
 
 ```go
-bundebug.NewQueryHook(bundebug.WithVerbose())
+bundebug.NewQueryHook(bundebug.WithVerbose(true))
 ```
 
-You can also disable the hook by default and then use environment variables to enable it when
-needed:
+You can also disable the hook by default and use environment variables to enable it when needed:
 
 ```go
 bundebug.NewQueryHook(

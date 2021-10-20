@@ -83,13 +83,13 @@ db.RegisterModel((*User)(nil), (*Story)(nil))
 // WithRecreateTables tells Bun to drop existing tables and create new ones.
 fixture := dbfixture.New(db, dbfixture.WithRecreateTables())
 
-// Load fixture.yaml which contains data for User and Story models.
-if err := fixture.Load(ctx, os.DirFS("."), "fixture.yaml"); err != nil {
+// Load fixture.yml which contains data for User and Story models.
+if err := fixture.Load(ctx, os.DirFS("."), "fixture.yml"); err != nil {
 	panic(err)
 }
 ```
 
-The `fixture.yaml` looks like this:
+The `fixture.yml` looks like this:
 
 ```yaml
 - model: User

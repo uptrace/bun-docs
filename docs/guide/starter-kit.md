@@ -6,7 +6,8 @@ Bun [starter kit](https://github.com/go-bun/bun-starter-kit) consists of:
 - [bun](https://github.com/uptrace/bun)
 - Hooks to decouple and initialize the app.
 - CLI to run migrations.
-- example package that shows how to load fixtures and test handlers.
+- [example](https://github.com/go-bun/bun-starter-kit/tree/master/example) package that shows how to
+  load fixtures and test handlers.
 
 You can also check [bun-realworld-app](https://github.com/go-bun/bun-realworld-app) which is a JSON
 API built with Bun starter kit.

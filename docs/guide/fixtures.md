@@ -45,14 +45,14 @@ and reference them from other models using text/template syntax:
 
 ## Loading fixtures
 
-Assuming the fixture is stored in `testdata/fixture.yaml`, you can load it with the following code:
+Assuming the fixture is stored in `testdata/fixture.yml`, you can load it with the following code:
 
 ```go
 // Let the db know about the models.
 db.RegisterModel((*User)(nil), (*Org)(nil))
 
 fixture := dbfixture.New(db)
-err := fixture.Load(ctx, os.DirFS("testdata"), "fixture.yaml")
+err := fixture.Load(ctx, os.DirFS("testdata"), "fixture.yml")
 ```
 
 By using `fixture.WithRecreateTables()` option, you can make bun drop existing tables and replace

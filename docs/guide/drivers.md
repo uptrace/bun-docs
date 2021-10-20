@@ -14,6 +14,7 @@ Bun comes with its own PostgreSQL driver called
 import "github.com/uptrace/bun/driver/pgdriver"
 
 dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
+// dsn := "unix://user:pass@dbname/var/run/postgresql/.s.PGSQL.5432"
 sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 db := bun.NewDB(sqldb, pgdialect.New())

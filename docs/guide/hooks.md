@@ -1,5 +1,14 @@
 # Hooks
 
+## Introduction
+
+Hooks are user-defined functions that are called before and/or after certain operations, for
+example, before every processed query.
+
+To ensure that your model implements a hook interface, use
+[compile time checks](https://medium.com/@matryer/golang-tip-compile-time-checks-to-ensure-your-type-satisfies-an-interface-c167afed3aae),
+for example, `var _ bun.QueryHook = (*MyHook)(nil)`.
+
 ## Disclaimer
 
 It may sound like a good idea to use hooks for validation or caching, because this way you can't
@@ -23,59 +32,56 @@ func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
 }
 ```
 
-## Query hooks
+## Model hooks
 
-Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
-for [tracing and errors monitoring](tracing.md).
+### BeforeAppendModel
 
-To ensure that your hook implements the correct interface, use
-[compile time checks](https://medium.com/@matryer/golang-tip-compile-time-checks-to-ensure-your-type-satisfies-an-interface-c167afed3aae),
-for example, `var _ bun.QueryHook = (*QueryHook)(nil)`.
+To update certain fields before inserting or updating a model, use `bun.BeforeAppendModelHook` which
+is called just before constructing a query. For
+[example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
 
 ```go
-type QueryHook struct{}
-
-func (h *QueryHook) BeforeQuery(ctx context.Context, event *bun.QueryEvent) context.Context {
-	return ctx
+type Model struct {
+    ID        int64
+    CreatedAt time.Time
+    UpdatedAt time.Time
 }
 
-func (h *QueryHook) AfterQuery(ctx context.Context, event *bun.QueryEvent) {
-	fmt.Println(time.Since(event.StartTime), string(event.Query))
-}
+var _ bun.BeforeAppendModelHook = (*Model)(nil)
 
-db.AddQueryHook(&QueryHook{})
+func (m *Model) BeforeAppendModel(ctx context.Context, query bun.Query) error {
+	switch query.(type) {
+	case *bun.InsertQuery:
+		m.CreatedAt = time.Now()
+	case *bun.UpdateQuery:
+		m.UpdatedAt = time.Now()
+	}
+	return nil
+}
 ```
 
-## Scan hooks
+### Before/AfterScanRow
 
-Struct and slice models also support `BeforeScanHook`/`AfterScanHook` hooks that are called before
-and after scanning column values. For slices, the hooks are called for each struct in a slice. Use
-these hooks for pre- and post-processing column values.
+Bun also calls `BeforeScanRow` and `AfterScanRow` hooks before and after scanning row values. For
+[example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
 
 ```go
 type Model struct{}
 
-var _ bun.BeforeScanHook = (*Model)(nil)
+var _ bun.BeforeScanRowHook = (*Model)(nil)
 
-func (m *Model) BeforeScan(ctx context.Context) error { return nil }
+func (m *Model) BeforeScanRow(ctx context.Context) error { return nil }
 
-var _ bun.AfterScanHook = (*Model)(nil)
+var _ bun.AfterScanRowHook = (*Model)(nil)
 
-func (m *Model) AfterScan(ctx context.Context) error { return nil }
+func (m *Model) AfterScanRow(ctx context.Context) error { return nil }
 ```
 
-## Model query hooks
-
-<!-- prettier-ignore -->
-::: warning
-Code that uses hooks is less readable and harder to debug. Only use hooks as a last resort. That
-means that most of your models should not have hooks.
-:::
+### Model query hooks
 
 You can also define model query hooks that are called before and after executing certain type of
 queries on a certain model. Such hooks are called once for a query and using a `nil` model. To
-access the query data, use `query.GetModel().Value()`. See
-[example](https://github.com/uptrace/bun/tree/master/example/model-hooks) for details.
+access the query data, use `query.GetModel().Value()`.
 
 ```go
 var _ bun.BeforeSelectHook = (*Model)(nil)
@@ -125,4 +131,23 @@ func (*Model) BeforeDropTable(ctx context.Context, query *DropTableQuery) error 
 var _ bun.AfterDropTableHook = (*Model)(nil)
 
 func (*Model) AfterDropTable(ctx context.Context, query *DropTableQuery) error { return nil }
+```
+
+## Query hooks
+
+Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
+for [logging queries](debugging.md) and for [tracing](tracing.md).
+
+```go
+type QueryHook struct{}
+
+func (h *QueryHook) BeforeQuery(ctx context.Context, event *bun.QueryEvent) context.Context {
+	return ctx
+}
+
+func (h *QueryHook) AfterQuery(ctx context.Context, event *bun.QueryEvent) {
+	fmt.Println(time.Since(event.StartTime), string(event.Query))
+}
+
+db.AddQueryHook(&QueryHook{})
 ```

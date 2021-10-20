@@ -13,6 +13,7 @@ Bun comes with its own PostgreSQL driver called
 import "github.com/uptrace/bun/driver/pgdriver"
 
 dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
+// dsn := "unix://user:pass@dbname/var/run/postgresql/.s.PGSQL.5432"
 sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
 
 db := bun.NewDB(sqldb, pgdialect.New())
@@ -35,24 +36,26 @@ pgdriver treats all unknown options as PostgreSQL configuration parameters, for 
 SET search_path TO 'my_search_path'
 ```
 
-Alternatively, you can also use
-[DriverOption](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#DriverOption):
+In addition to DSN, you can also use
+[pgdriver.Option](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Option) to configure the
+driver:
 
 ```go
 pgconn := pgdriver.NewConnector(
-    pgdriver.WithAddr("localhost:5437"),
-    pgdriver.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
-    pgdriver.WithUser("test"),
-    pgdriver.WithPassword("test"),
-    pgdriver.WithDatabase("test"),
-    pgdriver.WithApplicationName("myapp"),
-    pgdriver.WithTimeout(5 * time.Second),
-    pgdriver.WithDialTimeout(5 * time.Second),
-    pgdriver.WithReadTimeout(5 * time.Second),
-    pgdriver.WithWriteTimeout(5 * time.Second),
-    pgdriver.WithConnParams(map[string]interface{}{
-        "search_path": "my_search_path",
-    }),
+	pgdriver.WithNetwork("tcp"),
+	pgdriver.WithAddr("localhost:5437"),
+	pgdriver.WithTLSConfig(&tls.Config{InsecureSkipVerify: true}),
+	pgdriver.WithUser("test"),
+	pgdriver.WithPassword("test"),
+	pgdriver.WithDatabase("test"),
+	pgdriver.WithApplicationName("myapp"),
+	pgdriver.WithTimeout(5 * time.Second),
+	pgdriver.WithDialTimeout(5 * time.Second),
+	pgdriver.WithReadTimeout(5 * time.Second),
+	pgdriver.WithWriteTimeout(5 * time.Second),
+	pgdriver.WithConnParams(map[string]interface{}{
+		"search_path": "my_search_path",
+	}),
 )
 ```
 
@@ -84,6 +87,11 @@ if err != nil {
     }
 }
 ```
+
+### Debugging
+
+If you suspect an issue with pgdriver, try to replace it with [pgx](/guide/drivers.md#pgx) and check
+if the problem goes away.
 
 ## PgBouncer
 
