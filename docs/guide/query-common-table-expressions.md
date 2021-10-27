@@ -73,8 +73,8 @@ INSERT INTO comments_backups SELECT * FROM src
 
 ## VALUES
 
-Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) to help with
-building CTEs that don't have a source table.
+Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) to help
+building CTEs:
 
 ```go
 values := db.NewValues([]*Book{book1, book2})
@@ -95,4 +95,32 @@ UPDATE books AS book
 SET title = _data.title, text = _data.text
 FROM _data
 WHERE book.id = _data.id
+```
+
+You can also use [WithOrder](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery.WithOrder) to
+include model rank in values:
+
+```go
+users := []User{
+	{ID: 1, "one@my.com"},
+	{ID: 2, "two@my.com"},
+}
+
+err := db.NewSelect().
+	With("data", db.NewValues(&users).WithOrder()).
+	Model(&users).
+	Where("user.id = data.id").
+	OrderExpr("data._order").
+	Scan(ctx)
+```
+
+```sql
+WITH "data" ("id", "email", _order) AS (
+  VALUES (42::BIGINT, 'one@my.com'::VARCHAR, 0),
+  (43::BIGINT, 'two@my.com'::VARCHAR, 1)
+)
+SELECT "user"."id", "user"."email"
+FROM "users" AS "user"
+WHERE (user.id = data.id)
+ORDER BY data._order
 ```

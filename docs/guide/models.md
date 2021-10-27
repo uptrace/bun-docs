@@ -163,4 +163,18 @@ type User struct {
 }
 ```
 
-Note that you need to manually set `updated_at` column when updating rows.
+You can also use [hooks](hooks.md) to set struct fields:
+
+```go
+var _ bun.BeforeAppendModelHook = (*User)(nil)
+
+func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
+	switch query.(type) {
+	case *bun.InsertQuery:
+		u.CreatedAt = time.Now()
+	case *bun.UpdateQuery:
+		u.UpdatedAt = time.Now()
+	}
+	return nil
+}
+```

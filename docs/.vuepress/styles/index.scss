@@ -9,3 +9,9 @@
     color: var(--c-text-light);
   }
 }
+
+.theme-container.theme-container--wide {
+  .theme-default-content {
+    max-width: 960px;
+  }
+}

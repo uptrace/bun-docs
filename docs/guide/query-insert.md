@@ -79,6 +79,20 @@ INSERT INTO "books" ("id", "title") VALUES (100, 'my title')
 ON CONFLICT (id) DO UPDATE SET title = EXCLUDED.title
 ```
 
+For MySQL use:
+
+```go
+_, err := db.NewInsert().
+	Model(&book).
+	On("DUPLICATE KEY UPDATE").
+	Exec(ctx)
+```
+
+```sql
+INSERT INTO `books` (`id`, `title`) VALUES (100, 'my title')
+ON DUPLICATE KEY UPDATE `title` = VALUES(`title`)
+```
+
 ## Maps
 
 To insert a `map[string]interface{}`:

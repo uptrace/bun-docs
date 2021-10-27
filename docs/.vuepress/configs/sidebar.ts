@@ -21,6 +21,7 @@ export const en: SidebarConfig = {
         '/guide/query-insert.md',
         '/guide/query-update.md',
         '/guide/query-delete.md',
+        '/guide/query-where.md',
         '/guide/query-common-table-expressions.md',
         '/guide/query-create-table.md',
         '/guide/relations.md',

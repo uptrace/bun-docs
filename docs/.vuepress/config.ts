@@ -62,6 +62,7 @@ export default defineUserConfig<DefaultThemeOptions>({
       },
     ],
     ['@vuepress/plugin-search'],
+    ['vuepress-plugin-sitemap2', { hostname: 'https://bun.uptrace.dev' }],
   ],
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
 })
