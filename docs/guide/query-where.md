@@ -103,12 +103,12 @@ To group conditions with parentheses, use `WhereGroup`:
 
 ```go
 q = q.
-    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery{
-        return q.Where("id = 1").WhereOr("id = 2").WhereOr("id = 3")
-    }).
-    WhereGroup(" AND NOT ", func(q *bun.SelectQuery) *bun.SelectQuery{
-        return q.Where("active").WhereOr("archived")
-    }).
+	WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+		return q.Where("id = 1").WhereOr("id = 2").WhereOr("id = 3")
+	}).
+	WhereGroup(" AND NOT ", func(q *bun.SelectQuery) *bun.SelectQuery {
+		return q.Where("active").WhereOr("archived")
+	})
 ```
 
 ```sql
