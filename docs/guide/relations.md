@@ -87,21 +87,19 @@ To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In t
 has one `Profile` model.
 
 ```go
+// Profile belongs to User.
 type Profile struct {
-	ID	   int64
+	ID     int64 `bun:",pk"`
 	Lang   string
 	UserID int64
 }
 
 type User struct {
-	ID		int64
-	Name	string
-	Profile *Profile `bun:"rel:has-one"`
+	ID      int64 `bun:",pk"`
+	Name    string
+	Profile *Profile `bun:"rel:has-one,join:id=user_id"`
 }
 ```
-
-To override join columns, use `join:base_column=join_column` field tag, for example,
-`bun:"rel:has-one,join:id=user_id"`.
 
 ## Belongs to relation
 
@@ -111,20 +109,18 @@ the following [example](https://github.com/uptrace/bun/tree/master/example/rel-b
 
 ```go
 type Profile struct {
-	ID	 int64
+	ID   int64 `bun:",pk"`
 	Lang string
 }
 
+// User has one profile.
 type User struct {
-	ID		  int64
-	Name	  string
+	ID        int64 `bun:",pk"`
+	Name      string
 	ProfileID int64
-	Profile	  *Profile `bun:"rel:belongs-to"`
+	Profile   *Profile `bun:"rel:belongs-to,join=profile_id=id"`
 }
 ```
-
-To override join columns, use `join:base_column=join_column` field tag, for example,
-`bun:"rel:belongs-to,join:profile_id=id"`.
 
 ## Has many relation
 
@@ -134,22 +130,19 @@ has many `Profile` models.
 
 ```go
 type Profile struct {
-    ID     int64
-    Lang   string
-    Active bool
-    UserID int64
+	ID     int64 `bun:",pk"`
+	Lang   string
+	Active bool
+	UserID int64
 }
 
 // User has many profiles.
 type User struct {
-    ID       int64
-    Name     string
-    Profiles []*Profile `bun:"rel:has-many"`
+	ID       int64 `bun:",pk"`
+	Name     string
+	Profiles []*Profile `bun:"rel:has-many,join:id=user_id"`
 }
 ```
-
-To override join columns, use `join:base_column=join_column` field tag, for example,
-`bun:"rel:has-many,join:id=user_id"`.
 
 ## Many to many relation
 
@@ -169,18 +162,18 @@ func init() {
 }
 
 type Order struct {
-    ID    int64
-    Items []Item `bun:"m2m:order_to_items"`
+	ID    int64  `bun:",pk"`
+	Items []Item `bun:"m2m:order_to_items,join:Order=Item"`
 }
 
 type Item struct {
-    ID int64
+	ID int64 `bun:",pk"`
 }
 
 type OrderToItem struct {
-    OrderID int64
-	Order   *Order `bun:"rel:has-one"`
-    ItemID  int64
-	Item    *Item `bun:"rel:has-one"`
+	OrderID int64  `bun:",pk"`
+	Order   *Order `bun:"rel:belongs-to,join:order_id=id"`
+	ItemID  int64  `bun:",pk"`
+	Item    *Item  `bun:"rel:belongs-to,join:item_id=id"`
 }
 ```
