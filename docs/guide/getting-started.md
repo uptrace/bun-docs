@@ -1,8 +1,8 @@
 # Getting started
 
-## Quick start
+## Quickstart
 
-First you need to create a `sql.DB`. Here we are using the
+First, you need to create a `sql.DB`. Here we are using the
 [sqliteshim](https://pkg.go.dev/github.com/uptrace/bun/driver/sqliteshim) driver which choses
 between [modernc.org/sqlite](https://modernc.org/sqlite/) and
 [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
@@ -28,7 +28,7 @@ import (
 db := bun.NewDB(sqldb, sqlitedialect.New())
 ```
 
-Now you are ready to issue some queries:
+Now you are ready to issue queries:
 
 ```go
 type User struct {
@@ -45,34 +45,11 @@ err := db.NewSelect().
 	Scan(ctx)
 ```
 
-The code above is equivalent to:
-
-```go
-query := "SELECT id, name FROM users AS user WHERE name != '' ORDER BY id ASC LIMIT 1"
-
-rows, err := sqldb.QueryContext(ctx, query)
-if err != nil {
-	panic(err)
-}
-
-if !rows.Next() {
-    panic(sql.ErrNoRows)
-}
-
-user := new(User)
-if err := db.ScanRow(ctx, rows, user); err != nil {
-	panic(err)
-}
-
-if err := rows.Err(); err != nil {
-    panic(err)
-}
-```
-
 ## Basic example
 
-First we need to load some data for our [basic example](/example/basic/). To provide initial data we
-are going to use Bun [fixtures](https://bun.uptrace.dev/guide/fixtures.html):
+Before we start, let's create some tables and load initial data for our
+[basic example](/example/basic/). To provide initial data, we are going to use Bun
+[fixtures](https://bun.uptrace.dev/guide/fixtures.html):
 
 ```go
 import "github.com/uptrace/bun/dbfixture"
@@ -89,7 +66,7 @@ if err := fixture.Load(ctx, os.DirFS("."), "fixture.yml"); err != nil {
 }
 ```
 
-The `fixture.yml` looks like this:
+The `fixture.yml` file containing the data looks like this:
 
 ```yaml
 - model: User
@@ -167,4 +144,4 @@ if err := db.NewSelect().
 ## What's next
 
 By now, you should have a basic understanding of Bun API. Next, learn how to
-[write queries](queries.md) or jump straight to [starter kit](starter-kit.md).
+[define models](models.md) and [write queries](queries.md).

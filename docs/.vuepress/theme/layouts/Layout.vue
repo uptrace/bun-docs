@@ -13,8 +13,8 @@
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://uptrace.dev/" target="_blank">Tracing & Metrics</a>
-        <a href="https://redis.uptrace.dev/" target="_blank">Redis client</a>
+        <a href="https://opentelemetry.uptrace.dev/" target="_blank">Tracing & Metrics</a>
+        <a href="https://bunrouter.uptrace.dev/" target="_blank">HTTP router</a>
         <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
       </div>
     </div>

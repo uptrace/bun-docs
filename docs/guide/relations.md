@@ -2,34 +2,37 @@
 
 ## Introduction
 
-Bun can help you join and select other tables if you are using one of the 4 supported table
+Bun can help you join and query other tables if you are using one of the 4 supported table
 relations:
 
 - [has-one](#has-one-relation)
 - [belongs-to](#belongs-to-relation)
 - [has-many](#has-many-relation)
+- [polymorphic-has-many](#polymorphic-has-many-relation)
 - [many-to-many](#many-to-many-relation)
 
-For example, if you define `User` has-one `Profile` relation:
+For example, you can define `Author` belongs to `Book` relation:
+
+```go
+type Book struct {
+	ID		 int64
+	AuthorID int64
+	Author	 Author `bun:"rel:belongs-to,join:author_id=id"`
+}
+
+type Author struct {
+	ID int64
+}
+```
+
+And then use `Relation` method to join tables:
 
 ```go
 err := db.NewSelect().
-	Model(user).
-	Relation("Profile").
-	Where("user.id = 1").
+	Model(book).
+	Relation("Author").
+	Where("id = 1").
 	Scan(ctx)
-```
-
-```sql
-SELECT * FROM users AS user
-LEFT JOIN profiles AS profile ON profile.user_id = user.id
-WHERE user.id = 1
-```
-
-To select a book and the associated author:
-
-```go
-err := db.NewSelect().Model(book).Relation("Author").Where("id = 1").Scan(ctx)
 ```
 
 ```sql
@@ -41,7 +44,7 @@ LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
 WHERE id = 1
 ```
 
-To select book ID and the associated author id:
+To select only book ID and the associated author id:
 
 ```go
 err := db.NewSelect().
@@ -80,10 +83,21 @@ LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
 WHERE id = 1
 ```
 
+To use `INNER JOIN` instead of `LEFT JOIN`:
+
+```go
+err := db.NewSelect().
+	Model(book).
+	Relation("Author").
+    Where("id = 1").
+    Where("author.id IS NOT NULL").
+	Scan(ctx)
+```
+
 ## Has one relation
 
 To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/rel-has-one) we have `User` model that
+[example](https://github.com/uptrace/bun/tree/master/example/rel-has-one), we have `User` model that
 has one `Profile` model.
 
 ```go
@@ -100,6 +114,8 @@ type User struct {
 	Profile *Profile `bun:"rel:has-one,join:id=user_id"`
 }
 ```
+
+You can specify multiple join columns, for example, `join:id=user_id,join:vendor_id=vendor_id`.
 
 ## Belongs to relation
 
@@ -122,11 +138,13 @@ type User struct {
 }
 ```
 
+You can specify multiple join columns, for example, `join:profile_id=id,join:vendor_id=vendor_id`.
+
 ## Has many relation
 
 To define a has-many relationship, add `bun:"rel:has-many"` to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many) we have `User` model that
-has many `Profile` models.
+[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many), we have `User` model
+that has many `Profile` models.
 
 ```go
 type Profile struct {
@@ -144,15 +162,49 @@ type User struct {
 }
 ```
 
+You can specify multiple join columns, for example, `join:id=user_id,join:vendor_id=vendor_id`.
+
+## Polymorphic has many relation
+
+You can also define a polymorphic has-many relationship by using `type` virtual column and
+`polymorphic` option.
+
+In the following
+[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many-polymorphic), we store all
+comments in a single table but use `trackable_type` column to save the model table to which this
+comment belongs to.
+
+```go
+type Article struct {
+	ID   int64
+	Name string
+
+	Comments []Comment `bun:"rel:has-many,join:id=trackable_id,join:type=trackable_type,polymorphic"`
+}
+
+type Post struct {
+	ID   int64
+	Name string
+
+	Comments []Comment `bun:"rel:has-many,join:id=trackable_id,join:type=trackable_type,polymorphic"`
+}
+
+type Comment struct {
+	TrackableID   int64  // Article.ID or Post.ID
+	TrackableType string // "article" or "post"
+	Text          string
+}
+```
+
 ## Many to many relation
 
 To define a many-to-many relationship, add `bun:"m2m:order_to_items"` to the field. You also need to
 define two has-one relationships on the intermediary model and manually register the model
 (`db.RegisterModel`).
 
-In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-many-to-many) we
-have `Order` model that has many `Item` models. Because the same item can be added to multiple
-orders, we need the intermediary `OrderToItem` model.
+In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-many-to-many), we
+have `Order` model that can have many items and each `Item` can be added to multiple orders. We also
+use `OrderToItem` model as an intermediary table to join orders and items.
 
 ```go
 func init() {
@@ -163,6 +215,7 @@ func init() {
 
 type Order struct {
 	ID    int64  `bun:",pk"`
+    // Order and Item in join:Order=Item are fields in OrderToItem model
 	Items []Item `bun:"m2m:order_to_items,join:Order=Item"`
 }
 

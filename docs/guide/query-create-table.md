@@ -33,12 +33,12 @@ if err != nil {
 }
 ```
 
-You can also modify query from the `BeforeCreateTableQuery` hook.
+You can also modify query from the `bun.BeforeCreateTableHook` hook.
 
 ```go
-var _ bun.BeforeCreateTableQueryHook = (*Book)(nil)
+var _ bun.BeforeCreateTableHook = (*Book)(nil)
 
-func (*Book) BeforeCreateTableQuery(ctx context.Context, query *bun.CreateTableQuery) error {
+func (*Book) BeforeCreateTable(ctx context.Context, query *bun.CreateTableQuery) error {
 	query.ForeignKey(`("author_id") REFERENCES "users" ("id") ON DELETE CASCADE`)
 	return nil
 }
@@ -48,12 +48,12 @@ if _, err := db.NewCreateTable().Model((*Book)(nil)).Exec(ctx); err != nil {
 }
 ```
 
-To create an index on the table, you can use `AfterCreateTableQuery` hook:
+To create an index on the table, you can use `bun.AfterCreateTableHook` hook:
 
 ```go
-var _ bun.AfterCreateTableQueryHook = (*Book)(nil)
+var _ bun.AfterCreateTableHook = (*Book)(nil)
 
-func (*Book) AfterCreateTableQuery(ctx context.Context, query *bun.CreateTableQuery) error {
+func (*Book) AfterCreateTable(ctx context.Context, query *bun.CreateTableQuery) error {
 	_, err := query.DB().NewCreateIndex().
 		Model((*Book)(nil)).
 		Index("category_id_idx").

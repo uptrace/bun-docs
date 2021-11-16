@@ -11,7 +11,11 @@ Bun comes with its own PostgreSQL driver called
 [pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver).
 
 ```go
-import "github.com/uptrace/bun/driver/pgdriver"
+import (
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/pgdialect"
+	"github.com/uptrace/bun/driver/pgdriver"
+)
 
 dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
 // dsn := "unix://user:pass@dbname/var/run/postgresql/.s.PGSQL.5432"

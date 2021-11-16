@@ -27,10 +27,6 @@ columns in production:
 db := bun.NewDB(sqldb, pgdialect.New(), bun.WithDiscardUnknownColumns())
 ```
 
-## pgdriver and TLS
-
-pgdriver does not use TLS by default, because the default PostgreSQL server does not have
-
 ## PostgreSQL
 
 See [PostgreSQL](/postgres/) section.

@@ -1,9 +1,13 @@
-# Soft deletes
+---
+title: Soft deletes
+---
+
+# Soft deletes for PostgreSQL, MySQL, and SQLite
 
 ## Introduction
 
-Soft deletes allow marking rows as deleted without actually deleting them from a database. You
-achieve that by using a flag column and modifying queries to check the flag value.
+Soft deletes allow marking rows as deleted without actually deleting them from a database. You can
+achieve that by using an auxiliary flag column and modifying queries to check the flag value.
 
 For example, to soft delete a row using `deleted_at timestamptz` column as a flag:
 
@@ -137,14 +141,14 @@ With some DBMS, you can exclude soft-deleted rows from an index:
 CREATE UNIQUE INDEX index_name ON table (column1) WHERE deleted_at IS NULL;
 ```
 
-Alternatively, you can add `deleted_at` column to the index using `coalesce` to convert `NULL` time,
-because `NULL` is not equal to any other value including itself:
+Alternatively, you can include `deleted_at` column to indexed columns using `coalesce` function to
+convert `NULL` time, because `NULL` is not equal to any other value including itself:
 
 ```sql
 CREATE UNIQUE INDEX index_name ON table (column1, coalesce(deleted_at, '1970-01-01 00:00:00'))
 ```
 
-If your DBMS does not allow to use expressions in index elements, you can configure Bun to not
+If your DBMS does not allow to use expressions in indexed columns, you can configure Bun to not
 append zero time as `NULL` using `allowzero` option:
 
 ```diff

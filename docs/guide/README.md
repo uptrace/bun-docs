@@ -21,9 +21,9 @@ Bun provides [fixtures](fixtures.md) to load initial data and [migrations](migra
 database schema. You can also use [Bun starter kit](starter-kit.md) to quickly bootstrap an app
 using those packages.
 
-## But why?
+## Why another database client?
 
-So you can write queries like this:
+So you can elegantly write complex queries:
 
 ```go
 regionalSales := db.NewSelect().
