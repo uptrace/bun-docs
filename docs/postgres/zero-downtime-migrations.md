@@ -7,6 +7,8 @@ title: Zero-downtime migrations
 Follow these simple rules to avoid common pitfalls and apply changes to your database without
 _unplanned_ downtime.
 
+[[toc]]
+
 ## Avoid long-running transactions
 
 Running a migration in a transaction means that changes made within a transaction are not visible
@@ -51,26 +53,26 @@ Bad:
 
 ```sql
 -- transaction 1
-UPDATE test WHERE id IN (1, 2)
+UPDATE test WHERE id IN (1, 2);
 
 -- transaction 2
-UPDATE test WHERE id IN (2, 1)
+UPDATE test WHERE id IN (2, 1);
 ```
 
 Good:
 
 ```sql
 -- transaction 1
-UPDATE test WHERE id IN (1, 2)
+UPDATE test WHERE id IN (1, 2);
 
 -- transaction 2
-UPDATE test WHERE id IN (1, 2)
+UPDATE test WHERE id IN (1, 2);
 ```
 
-The same rule applies when you are using `INSERT ON CONFLICT DO UPDATE`. In this case you may need
+The same rule applies when you are using `INSERT ON CONFLICT DO UPDATE`. In such case, you may need
 to sort rows before inserting them.
 
-## Don't add column with NOT NULL
+## Don't add columns with NOT NULL
 
 Queries like `ADD column NOT NULL` fail on tables that already have some rows. Because existing rows
 do not have values for the newly added column, PostgreSQL refuses to add the column.
@@ -101,3 +103,5 @@ ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 ## Related material
 
 - [Safe and unsafe operations for high volume PostgreSQL](https://leopard.in.ua/2016/09/20/safe-and-unsafe-operations-postgresql#.YT4FFPwzZH7)
+
+<UptraceBanner />

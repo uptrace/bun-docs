@@ -235,3 +235,5 @@ database.
 You can also check
 [pg-faceted-search](https://github.com/uptrace/bun/tree/master/example/pg-faceted-search) example
 that demonstrates how to implement faceted search using Go and Bun database client.
+
+<UptraceBanner />

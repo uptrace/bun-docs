@@ -81,4 +81,4 @@ See [Using UUID in PostgreSQL](uuid.md).
 
 ## What's next?
 
-See [Don't do this](https://wiki.postgresql.org/wiki/Don%27t_Do_This) for some tips.
+See [Don't do this](https://wiki.postgresql.org/wiki/Don%27t_Do_This) for more tips.

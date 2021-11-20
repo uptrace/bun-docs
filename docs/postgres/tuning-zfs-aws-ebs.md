@@ -1,39 +1,100 @@
 # Running PostgreSQL using ZFS and AWS EBS
 
-This guide explains how to run and tune PostgreSQL + ZFS and AWS elastic block storage (and cloud
-storage in general).
+This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see
+[Installing ZFS on Ubuntu](https://blog.uptrace.dev/posts/ubuntu-install-zfs.html).
 
 ## Overview
 
-The main reason to use PostgreSQL with ZFS (instead of ext4/xfs) is data compression. With
-reasonable configuration you can achieve 2-3x compression ratio using LZ4. That means that LZ4
-compresses 1 terabyte of data down to ~350 gigabytes. With ZSTD compression is even better.
+The main reason to use PostgreSQL with ZFS (instead of ext4/xfs) is data compression. Using LZ4, you
+can achieve 2-3x compression ratio which means that you need to write and read less data. ZSTD
+offers even better compression at the expense of slightly higher CPU usage.
 
 The second reason is Adaptive Replacement Cache (ARC). ARC is a page replacement algorithm with
 overall better characteristics than Linux page cache. Since it caches compressed blocks, you can
 also fit more data in the same RAM.
 
-You should start with the following configuration and tune it as you learn more:
+## Basic ZFS setup
 
-- `recordsize=128k` - same as default.
-- `compression=lz4` - enables lz4 compression (ZSTD with levels 1-6 is fine too).
-- `atime=off` - disables access time update.
-- `xattr=sa` - better extended attributes.
-- `logbias=latency` - same as default.
-- `redundant_metadata=most` - may improve random writes.
+First, you need to create a separate pool for PostgreSQL:
+
+```shell
+zpool create -o autoexpand=on pg /dev/nvme1n1
+```
+
+And 2 datasets for PostgreSQL data and a write-ahead log (WAL):
+
+```shell
+# Move PostgreSQL files to a temp location.
+mv /var/lib/postgresql/13/main/pg_wal /tmp/pg_wal
+mv /var/lib/postgresql /tmp/postgresql
+
+# Create datasets.
+zfs create pg/data -o mountpoint=/var/lib/postgresql
+zfs create pg/wal-13 -o mountpoint=/var/lib/postgresql/13/main/pg_wal
+
+# Move PostgreSQL files back.
+cp -r /tmp/postgresql/* /var/lib/postgresql
+cp -r /tmp/pg_wal/* /var/lib/postgresql/13/main/pg_wal
+
+# Fix permissions.
+chmod 0750 /var/lib/postgresql
+chmod 0750 /var/lib/postgresql/13/main/pg_wal
+```
+
+## ZFS config
+
+Consider starting with the following ZFS configuration and tune it as you learn more:
+
+```shell
+# same as default
+zfs set recordsize=128k pg
+
+# enable lz4 compression
+zfs set compression=lz4 pg
+# or zstd compression
+#zfs set compression=zstd-3 pg
+
+# disable access time updates
+zfs set atime=off pg
+
+# enable improved extended attributes
+zfs set xattr=sa pg
+
+# same as default
+zfs set logbias=latency pg
+
+# reduce amount of metadata (may improve random writes)
+zfs set redundant_metadata=most pg
+```
+
+## ZFS ARC size
+
+By default, ZFS uses 50% of RAM for Adaptive Replacement Cache (ARC). You can consider increasing
+ARC to 70-80% of RAM, but make sure to leave enough memory for PostgreSQL `shared_buffers`:
+
+```shell
+# set ARC cache to 1GB
+echo 1073741824 >> /sys/module/zfs/parameters/zfs_arc_max
+```
+
+To persist the ARC size change through Linux restarts, create `/etc/modprobe.d/zfs.conf`:
+
+```shell
+options zfs zfs_arc_max=1073741824
+```
 
 ## ZFS recordsize
 
-The `recordsize` is the size of the largest block of data that ZFS will read/write. ZFS compresses
+`recordsize` is the size of the largest block of data that ZFS will write and read. ZFS compresses
 each block individually and compression is better for larger blocks. Use the default
 `recordsize=128k` and decrease it to 32-64k if you need more TPS (transactions per second).
 
-- Larger `recordsize` means better compression. It also improves read/write performance if you
-  select/insert lots of data (tens of megabytes).
+- Larger `recordsize` means better compression which improves performance if your queries read/write
+  lots of data (tens of megabytes).
 - Smaller `recordsize` means more TPS.
 
-Setting `recordsize=8k` to match PostgreSQL block size reduces compression efficiency (which is one
-of the main reasons to use ZFS in the first place). While `recordsize=8k` improves the average
+Setting `recordsize=8k` to match PostgreSQL block size reduces compression efficiency which is one
+of the main reasons to use ZFS in the first place. While `recordsize=8k` improves the average
 transaction rate as reported by pgbench, good pgbench result is not an indicator of good production
 performance. Measure performance of _your queries_ before lowering `recordsize`.
 
@@ -53,10 +114,25 @@ storage to `EXTERNAL`. But it does not make much difference:
 - LZ4 is extremely fast.
 - Both LZ4 and ZSTD have special logic to skip incompressible (or already compressed) parts of data.
 
-## Alignment Shift (ashift)
+## Alignment Shift
 
-Use the default `ashift` value with Amazon Elastic Block Store and other cloud stores. But if you
-know the underlying hardware, it is worth it to configure `ashift` properly.
+Use the default `ashift` value with Amazon Elastic Block Store and other cloud storages, because EBS
+volume is not a single physical device but a logical volume that spans numerous distributed devices.
+
+But if you know the sector size of the drive, it is worth it to configure `ashift` properly:
+
+```shell
+zpool create -o ashift=12 -o autoexpand=on pg /dev/nvme1n1
+```
+
+| ashift | Sector size |
+| ------ | ----------- |
+| 9      | 512 bytes   |
+| 10     | 1 KB        |
+| 11     | 2 KB        |
+| 12     | 4 KB        |
+| 13     | 8 KB        |
+| 14     | 16 KB       |
 
 ## Disabling PostgreSQL full page writes
 
@@ -73,9 +149,11 @@ and WAL block size to 64k. This requires re-compiling PostgreSQL and re-initiali
 - Larger `blocksize` considerably improves performance of the queries that read a lot of data (tens
   of megabytes). This effect is not specific to ZFS and you can use larger block sizes with other
   filesystems as well.
-- Smaller `blocksize` means higher transactions per second.
+- Smaller `blocksize` means higher transaction rate per second.
 
-## logbias=latency
+## logbias
+
+Use `logbias=latency`.
 
 Quote from
 [@mercenary_sysadmin](https://www.reddit.com/r/zfs/comments/azt8sz/logbiasthroughput_without_a_slog/):
@@ -109,9 +187,12 @@ If you are going to use ZFS snapshots, create a separate dataset for PostgreSQL 
 snapshots of your main dataset are smaller. Don't forget to backup WAL files separately so you can
 use [Point-in-Time Recovery](https://www.postgresql.org/docs/current/continuous-archiving.html).
 
-But usually it is easier and cheaper to store backups on S3 (using
-[pgbackrest](https://pgbackrest.org/)) or use EBS snapshots.
+But usually it is easier and cheaper to store backups on S3 using
+[pgbackrest](https://pgbackrest.org/). Another popular option is EBS snapshots.
 
 ## Related material
 
+- [Installing ZFS on Ubuntu](https://blog.uptrace.dev/posts/ubuntu-install-zfs.html)
 - [PostgreSQL + ZFS: Best Practices and Standard Procedures](https://people.freebsd.org/~seanc/postgresql/scale15x-2017-postgresql_zfs_best_practices.pdf)
+
+<UptraceBanner />
