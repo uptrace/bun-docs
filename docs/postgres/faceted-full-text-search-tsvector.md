@@ -4,10 +4,18 @@ title: Faceted navigation and search
 
 # Building faceted search using PostgreSQL full text search
 
+<img src="/img/faceted-search.png" style="float: right" />
+
 Faceted search or faceted navigation allows users to narrow down search results by applying multiple
 filters generated from some attributes or tags. In this article we will implement faceted search
 using PostgreSQL [full text search](https://www.postgresql.org/docs/current/textsearch.html) and
 `ts_stat` function.
+
+GitHub search is a good example of faceted navigation (see the image on the right).
+
+---
+
+[[toc]]
 
 ## Creating a table
 
@@ -34,7 +42,7 @@ SELECT to_tsvector('english', 'The Fat Rats');
  'fat':2 'rat':3
 ```
 
-Usually you call it when when inserting rows:
+You can use `to_tsvector` when inserting rows in the table:
 
 ```sql
 INSERT INTO books (name, tsv)
@@ -49,7 +57,7 @@ RETURNING *;
   2 | foo bar    |       | 'bar':2 'foo':1
 ```
 
-Then you can search over books using a `tsvector` and a `tsquery`:
+Once you have some, you can search over books using a `tsvector` and a `tsquery`:
 
 ```sql
 SELECT * FROM books
@@ -60,11 +68,19 @@ WHERE tsv @@ websearch_to_tsquery('english', 'hello');
   1 | hello word |      | 'hello':1 'world':2
 ```
 
-That can be slow if your dataset is large, but luckily for us PostgreSQL supports inverted indexes
-on `tsvector` columns:
+That query can be slow if your dataset is large, but you can make it faster by adding an inverted
+index on `tsv` column:
 
 ```sql
 CREATE INDEX books_tsv_idx ON books USING GIN (tsv);
+```
+
+And check that PostgreSQL uses the index:
+
+```sql
+EXPLAIN ANALYZE
+SELECT * FROM books
+WHERE tsv @@ websearch_to_tsquery('english', 'hello');
 ```
 
 ## Creating facets from tags

@@ -3,6 +3,8 @@
 This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see
 [Installing ZFS on Ubuntu](https://blog.uptrace.dev/posts/ubuntu-install-zfs.html).
 
+[[toc]]
+
 ## Overview
 
 The main reason to use PostgreSQL with ZFS (instead of ext4/xfs) is data compression. Using LZ4, you
@@ -190,7 +192,7 @@ use [Point-in-Time Recovery](https://www.postgresql.org/docs/current/continuous-
 But usually it is easier and cheaper to store backups on S3 using
 [pgbackrest](https://pgbackrest.org/). Another popular option is EBS snapshots.
 
-## Related material
+## See also
 
 - [Installing ZFS on Ubuntu](https://blog.uptrace.dev/posts/ubuntu-install-zfs.html)
 - [PostgreSQL + ZFS: Best Practices and Standard Procedures](https://people.freebsd.org/~seanc/postgresql/scale15x-2017-postgresql_zfs_best_practices.pdf)
