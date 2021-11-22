@@ -44,6 +44,35 @@ LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
 WHERE id = 1
 ```
 
+You can query from parent the child and vice versa in an `has-one`/`belongs-to` relation:
+
+```go
+type Profile struct {
+	ID     int64 `bun:",pk"`
+	Lang   string
+	UserID int64
+	User *User `rel:"belongs-to"`
+}
+
+type User struct {
+	ID      int64 `bun:",pk"`
+	Name    string
+	Profile *Profile `bun:"rel:has-one"`
+}
+
+err := db.NewSelect().
+	Model(&user).
+	Where("id = 1").
+	Relation("Profile").
+	Scan(ctx)
+
+err := db.NewSelect().
+	Model(&profile).
+	Where("id = 1").
+	Relation("User").
+	Scan(ctx)
+```
+
 To select only book ID and the associated author id:
 
 ```go
