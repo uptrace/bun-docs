@@ -1,3 +1,7 @@
+---
+title: PostgreSQL and ZFS filesystem
+---
+
 # Running PostgreSQL using ZFS and AWS EBS
 
 This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see
@@ -8,11 +12,11 @@ This guide explains how to run PostgreSQL using ZFS filesystem. If you also need
 ## Overview
 
 The main reason to use PostgreSQL with ZFS (instead of ext4/xfs) is data compression. Using LZ4, you
-can achieve 2-3x compression ratio which means that you need to write and read less data. ZSTD
+can achieve 2-3x compression ratio which means that you need to write and read 2-3x less data. ZSTD
 offers even better compression at the expense of slightly higher CPU usage.
 
 The second reason is Adaptive Replacement Cache (ARC). ARC is a page replacement algorithm with
-overall better characteristics than Linux page cache. Since it caches compressed blocks, you can
+slightly better characteristics than Linux page cache. Since it caches compressed blocks, you can
 also fit more data in the same RAM.
 
 ## Basic ZFS setup
@@ -27,20 +31,20 @@ And 2 datasets for PostgreSQL data and a write-ahead log (WAL):
 
 ```shell
 # Move PostgreSQL files to a temp location.
-mv /var/lib/postgresql/13/main/pg_wal /tmp/pg_wal
+mv /var/lib/postgresql/14/main/pg_wal /tmp/pg_wal
 mv /var/lib/postgresql /tmp/postgresql
 
 # Create datasets.
 zfs create pg/data -o mountpoint=/var/lib/postgresql
-zfs create pg/wal-13 -o mountpoint=/var/lib/postgresql/13/main/pg_wal
+zfs create pg/wal-14 -o mountpoint=/var/lib/postgresql/14/main/pg_wal
 
 # Move PostgreSQL files back.
 cp -r /tmp/postgresql/* /var/lib/postgresql
-cp -r /tmp/pg_wal/* /var/lib/postgresql/13/main/pg_wal
+cp -r /tmp/pg_wal/* /var/lib/postgresql/14/main/pg_wal
 
 # Fix permissions.
 chmod 0750 /var/lib/postgresql
-chmod 0750 /var/lib/postgresql/13/main/pg_wal
+chmod 0750 /var/lib/postgresql/14/main/pg_wal
 ```
 
 ## ZFS config

@@ -98,7 +98,7 @@ WHERE book.id = _data.id
 ```
 
 You can also use [WithOrder](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery.WithOrder) to
-include model rank in values:
+include row rank in values:
 
 ```go
 users := []User{
@@ -116,8 +116,9 @@ err := db.NewSelect().
 
 ```sql
 WITH "data" ("id", "email", _order) AS (
-  VALUES (42::BIGINT, 'one@my.com'::VARCHAR, 0),
-  (43::BIGINT, 'two@my.com'::VARCHAR, 1)
+  VALUES
+    (42::BIGINT, 'one@my.com'::VARCHAR, 0),
+    (43::BIGINT, 'two@my.com'::VARCHAR, 1)
 )
 SELECT "user"."id", "user"."email"
 FROM "users" AS "user"

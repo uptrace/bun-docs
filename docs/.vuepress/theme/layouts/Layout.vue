@@ -62,16 +62,16 @@ export default {
           href: 'https://bun.uptrace.dev/postgres/tuning-zfs-aws-ebs.html',
         },
         {
-          text: 'PostgreSQL: faceted navigation and search',
-          href: '/postgres/faceted-full-text-search-tsvector.html',
-        },
-        {
           text: 'Running Bun in production using PostgreSQL',
           href: '/postgres/running-bun-in-production.html',
         },
         {
           text: 'BunRouter is an extremely fast and flexible HTTP router',
           href: 'https://bunrouter.uptrace.dev/',
+        },
+        {
+          text: 'Tuning PostgreSQL performance for production',
+          href: '/postgres/performance-tuning.md',
         },
       ]
 
