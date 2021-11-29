@@ -16,7 +16,9 @@ db.NewCreateTable().
     IfNotExists().
     Varchar(100). // turns VARCHAR into VARCHAR(100)
 
-    ForeignKey(`(fkey) REFERENCES table1 (pkey) ON DELETE CASCADE`)
+    ForeignKey(`(fkey) REFERENCES table1 (pkey) ON DELETE CASCADE`).
+    PartitionBy("HASH (id)").
+    TableSpace("fasttablespace").
 
     Exec(ctx)
 ```
@@ -26,7 +28,7 @@ To create a table:
 ```go
 _, err := db.NewCreateTable().
 	Model((*Book)(nil)).
-	ForeignKey(`("author_id") REFERENCES "users" ("id") ON DELETE CASCADE`)
+	ForeignKey(`("author_id") REFERENCES "users" ("id") ON DELETE CASCADE`).
 	Exec(ctx)
 if err != nil {
 	panic(err)

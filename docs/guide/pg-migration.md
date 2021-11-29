@@ -153,7 +153,7 @@ type Model struct {
 
 You have 2 options if you need `pg.Listener`:
 
-- Use [pgdriver.Listener](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Listener).
+- Use [pgdriver.Listener](/postgres/listen-notify.html).
 - Use [pgx](https://pkg.go.dev/github.com/jackc/pgx/v4#hdr-Listen_and_Notify).
 
 ## Porting migrations

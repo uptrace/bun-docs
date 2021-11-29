@@ -2,8 +2,8 @@ import type { NavbarConfig } from '@vuepress/theme-default'
 
 export const en: NavbarConfig = [
   {
-    text: 'Starter kit',
-    link: '/guide/starter-kit.html',
+    text: 'Guide',
+    link: '/guide/',
   },
   {
     text: 'PostgreSQL',

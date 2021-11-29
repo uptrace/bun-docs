@@ -1,14 +1,21 @@
-# Getting started
+---
+title: Getting started
+---
 
-## Quickstart
+# Getting started with database/sql and Bun
 
-First, you need to create a `sql.DB`. Here we are using the
-[sqliteshim](https://pkg.go.dev/github.com/uptrace/bun/driver/sqliteshim) driver which choses
-between [modernc.org/sqlite](https://modernc.org/sqlite/) and
-[mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
+## database/sql
+
+Bun works on top of [database/sql](https://pkg.go.dev/database/sql) so the first thing you need to
+do is to create a sql.DB. In this tutorial we will be using [SQLite](drivers.html#sqlite) but Bun
+also works with [PostgreSQL](drivers.html#postgresql) and [MySQL](drivers.html#mysql).
 
 ```go
-import "github.com/uptrace/bun/driver/sqliteshim"
+import (
+    "database/sql"
+
+    "github.com/uptrace/bun/driver/sqliteshim"
+)
 
 sqldb, err := sql.Open(sqliteshim.ShimName, "file::memory:?cache=shared")
 if err != nil {
@@ -16,8 +23,8 @@ if err != nil {
 }
 ```
 
-And then create a `bun.DB` on top of it using the corresponding SQLite [dialect](drivers.md) that
-comes with Bun:
+Having a `sql.DB`, you can create a `bun.DB` using the corresponding SQLite [dialect](drivers.html)
+that comes with Bun:
 
 ```go
 import (
@@ -28,120 +35,135 @@ import (
 db := bun.NewDB(sqldb, sqlitedialect.New())
 ```
 
-Now you are ready to issue queries:
+You can also install a [query hook](hooks.html#query-hooks) to see executed queries in console:
+
+```go
+import "github.com/uptrace/bun/extra/bundebug"
+
+db.AddQueryHook(bundebug.NewQueryHook(
+	bundebug.WithVerbose(true),
+	bundebug.FromEnv("BUNDEBUG"),
+))
+```
+
+Now you are ready to execute queries using database/sql API:
+
+```go
+res, err := db.ExecContext(ctx, "SELECT 1")
+
+var num int
+err := db.QueryRowContext(ctx, "SELECT 1").Scan(&num)
+```
+
+Or using Bun's query builder:
+
+```go
+res, err := db.NewSelect().ColumnExpr("1").Exec(ctx)
+
+var num int
+err := db.NewSelect().ColumnExpr("1").Scan(ctx, &num)
+```
+
+## Models
+
+Bun uses struct-based [models](models.html) to build [queries](queries.html) and scan results. A
+typical Bun model looks like this:
 
 ```go
 type User struct {
-	ID	 int64
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+	ID	 int64  `bun:",pk,autoincrement"`
 	Name string
 }
+```
 
+Having a model, you can [create](query-table-create.html) and drop tables:
+
+```go
+// Create users table.
+res, err := db.NewCreateTable().Model((*User)(nil)).Exec(ctx)
+
+// Drop users table.
+res, err := db.NewDropTable().Model((*User)(nil)).Exec(ctx)
+```
+
+[Insert](query-insert.html) rows:
+
+```go
+// Insert a single user.
+user := &User{Name: "admin"}
+res, err := db.NewInsert().Model(user).Exec(ctx)
+
+// Insert multiple users (bulk-insert).
+users := []User{user1, user2}
+res, err := db.NewInsert().Model(&users).Exec(ctx)
+```
+
+[Update](query-update.html) rows:
+
+```go
+user := &User{ID: 1, Name: "admin"}
+res, err := db.NewUpdate().Model(user).Column("name").WherePK().Exec(ctx)
+```
+
+[Delete](query-delete.html) rows:
+
+```go
+user := &User{ID: 1}
+res, err := db.NewDelete().Model(user).WherePK().Exec(ctx)
+```
+
+And [select](query-select.html) rows scanning the results:
+
+```go
+// Select a user by a primary key.
 user := new(User)
+err := db.NewSelect().Model(user).Where("id = ?", 1).Scan(ctx)
+
+// Select first 10 users.
+var users []User
+err := db.NewSelect().Model(&users).OrderExpr("id ASC").Limit(10).Scan(ctx)
+```
+
+## Table relations
+
+Bun also recognizes common [table relationships](relations.html), for example, you can define a
+[belongs-to](relations.html#belongs-to) relation:
+
+```go
+type Story struct {
+	ID       int64
+	Title    string
+	AuthorID int64
+	Author   *User `bun:"rel:belongs-to,join:author_id=id"`
+}
+```
+
+And Bun will join the story author for you:
+
+```go
+story := new(Story)
 err := db.NewSelect().
-	Model(user).
-	Where("name != ?", "").
-	OrderExpr("id ASC").
+	Model(story).
+	Relation("Author").
 	Limit(1).
 	Scan(ctx)
 ```
 
-## Basic example
-
-Before we start, let's create some tables and load initial data for our
-[basic example](/example/basic/). To provide initial data, we are going to use Bun
-[fixtures](https://bun.uptrace.dev/guide/fixtures.html):
-
-```go
-import "github.com/uptrace/bun/dbfixture"
-
-// Register models for the fixture.
-db.RegisterModel((*User)(nil), (*Story)(nil))
-
-// WithRecreateTables tells Bun to drop existing tables and create new ones.
-fixture := dbfixture.New(db, dbfixture.WithRecreateTables())
-
-// Load fixture.yml which contains data for User and Story models.
-if err := fixture.Load(ctx, os.DirFS("."), "fixture.yml"); err != nil {
-	panic(err)
-}
+```sql
+SELECT
+  "story"."id", "story"."title", "story"."author_id",
+  "author"."id" AS "author__id",
+  "author"."name" AS "author__name"
+FROM "stories" AS "story"
+LEFT JOIN "users" AS "author" ON ("author"."id" = "story"."author_id")
+LIMIT 1
 ```
 
-The `fixture.yml` file containing the data looks like this:
-
-```yaml
-- model: User
-  rows:
-    - _id: admin
-      name: admin
-      emails: ['admin1@admin', 'admin2@admin']
-    - _id: root
-      name: root
-      emails: ['root1@root', 'root2@root']
-
-- model: Story
-  rows:
-    - title: Cool story
-      author_id: '{{ $.User.admin.ID }}'
-```
-
-To select all users:
-
-```go
-users := make([]User, 0)
-if err := db.NewSelect().Model(&users).OrderExpr("id ASC").Scan(ctx); err != nil {
-	panic(err)
-}
-```
-
-To select a single user by id:
-
-```go
-user1 := new(User)
-if err := db.NewSelect().Model(user1).Where("id = ?", 1).Scan(ctx); err != nil {
-	panic(err)
-}
-```
-
-To select a story and the associated author in a single query:
-
-```go
-story := new(Story)
-if err := db.NewSelect().
-	Model(story).
-	Relation("Author").
-	Limit(1).
-	Scan(ctx); err != nil {
-	panic(err)
-}
-```
-
-To select a user into a map:
-
-```go
-m := make(map[string]interface{})
-if err := db.NewSelect().
-	Model((*User)(nil)).
-	Limit(1).
-	Scan(ctx, &m); err != nil {
-	panic(err)
-}
-```
-
-To select all users scanning each column into a separate slice:
-
-```go
-var ids []int64
-var names []string
-if err := db.NewSelect().
-	ColumnExpr("id, name").
-	Model((*User)(nil)).
-	OrderExpr("id ASC").
-	Scan(ctx, &ids, &names); err != nil {
-	panic(err)
-}
-```
+See [example](https://github.com/uptrace/bun/tree/master/example/basic) for details.
 
 ## What's next
 
-By now, you should have a basic understanding of Bun API. Next, learn how to
-[define models](models.md) and [write queries](queries.md).
+By now, you should have basic understanding of Bun API. Next, learn how to
+[define models](models.html) and [write queries](queries.html).

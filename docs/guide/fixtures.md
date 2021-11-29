@@ -1,18 +1,19 @@
 # Fixtures
 
-You can use fixtures to provide initial data for testing and development purposes. You write
-fixtures in YAML format and load them on demand from tests or migrations.
+You can use fixtures to load initial data into a database for testing or demonstration purposes. You
+can write fixtures in YAML format and load them on demand from tests or Go-based
+[migrations](migrations.md).
 
 ## Creating fixtures
 
-A fixture is a plain YAML file with the only exception being that you can use
+A fixture is a plain YAML file with the ability to use
 [text/template](https://golang.org/pkg/text/template/) expressions to generate values. Here is how a
 fixture for a User model might look like:
 
 ```yaml
 - model: User
   rows:
-      name: John Smith
+    - name: John Smith
       email: john@smith.com
       created_at: '{{ now }}'
     - name: Jonh Doe

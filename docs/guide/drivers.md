@@ -50,9 +50,9 @@ db := bun.NewDB(sqldb, pgdialect.New())
 
 See [PostgreSQL](/postgres/) section for more information about pgx and PostgreSQL.
 
-## MySQL5+ and MariaDB
+## MySQL
 
-To connect to a MySQL database, use MySQL [driver](https://github.com/go-sql-driver/mysql) and
+Bun supports MySQL 5+ and MariaDB using [MySQL driver](https://github.com/go-sql-driver/mysql) and
 `mysqldialect`:
 
 ```go
@@ -98,4 +98,35 @@ connections. Otherwise, the database is deleted when the connection is closed.
 ```go
 sqldb.SetMaxIdleConns(1000)
 sqldb.SetConnMaxLifetime(0)
+```
+
+## Writing DMBS specific code
+
+Bun comes with [feature](https://pkg.go.dev/github.com/uptrace/bun/dialect/feature) package that
+allows you to discover features supported by your DBMS:
+
+```go
+import "github.com/uptrace/bun/dialect/feature"
+
+if db.HasFeature(feature.InsertOnConflict) {
+    // DBMS supports `ON CONFLICT DO UPDATE` (PostgreSQL, SQLite)
+}
+
+if db.HasFeature(feature.InsertOnDuplicateKey) {
+    // DBMS supports `ON DUPLICATE KEY UPDATE` (MySQL, MariaDB)
+}
+```
+
+You can also directly check the database dialect name:
+
+```go
+import "github.com/uptrace/bun/dialect"
+
+switch db.Dialect().Name() {
+    case dialect.SQLite:
+    case dialect.PG:
+    case dialect.MySQL:
+    default:
+        panic("not reached")
+}
 ```

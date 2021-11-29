@@ -93,6 +93,24 @@ INSERT INTO `books` (`id`, `title`) VALUES (100, 'my title')
 ON DUPLICATE KEY UPDATE `title` = VALUES(`title`)
 ```
 
+To ignore duplicates, use `Ignore` with all databases:
+
+```go
+_, err := db.NewInsert().
+	Model(&book).
+	Ignore().
+	Exec(ctx)
+```
+
+```sql
+-- MySQL
+INSERT IGNORE INTO `books` (`id`, `title`) VALUES (100, 'my title');
+
+-- PostgreSQL
+INSERT INTO `books` (`id`, `title`) VALUES (100, 'my title')
+ON CONFLICT DO NOTHING;
+```
+
 ## Maps
 
 To insert a `map[string]interface{}`:
