@@ -7,8 +7,11 @@ can write fixtures in YAML format and load them on demand from tests or Go-based
 ## Creating fixtures
 
 A fixture is a plain YAML file with the ability to use
-[text/template](https://golang.org/pkg/text/template/) expressions to generate values. Here is how a
-fixture for a User model might look like:
+[text/template](https://golang.org/pkg/text/template/) expressions to generate values. Bun
+unmarshals YAML data into Go models using [yaml.v3](https://gopkg.in/yaml.v3) and then saves the
+model in a database.
+
+Here is how a fixture for a User model might look like:
 
 ```yaml
 - model: User
@@ -84,10 +87,28 @@ Later you can retrieve the loaded models using `Row` and `MustRow` methods:
 fmt.Println("Smith", fixture.MustRow("User.smith").(*User))
 ```
 
-You can also retrieve the rows without the `_id` field by their primary key:
+You can also retrieve rows without `_id` field by a primary key:
 
 ```go
 fmt.Println("Org with id=1", fixture.MustRow("Org.pk1").(*Org))
+```
+
+## Field names
+
+Bun uses SQL column names to find the matching struct field and then calls
+[yaml.v3](https://gopkg.in/yaml.v3) to unmarshal the data. So when unmarshaling into a struct field,
+you may need to use `yaml` tag to override the default YAML field name.
+
+```go{3,7-8}
+type User struct {
+    ID     int64      `bun:",pk,autoincrement"`
+    Params UserParams `bun:"type:jsonb"`
+}
+
+type UserParams struct {
+    Param1 string `yaml:"param1"`
+    Param2 string `yaml:"param2"`
+}
 ```
 
 ## Source code

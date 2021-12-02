@@ -1,6 +1,19 @@
 import { defineClientAppEnhance } from '@vuepress/client'
 
+import { ElIcon, ElForm, ElFormItem, ElInput, ElButton } from 'element-plus'
+import 'element-plus/es/components/icon/style/css.mjs'
+import 'element-plus/es/components/form/style/css.mjs'
+import 'element-plus/es/components/form-item/style/css.mjs'
+import 'element-plus/es/components/input/style/css.mjs'
+import 'element-plus/es/components/button/style/css.mjs'
+
 export default defineClientAppEnhance(({ app, router }) => {
+  app.use(ElIcon)
+  app.use(ElForm)
+  app.use(ElFormItem)
+  app.use(ElInput)
+  app.use(ElButton)
+
   router.beforeResolve((to, from, next) => {
     const redirectMap = {
       '/treemux/json-rest-api.html': 'https://blog.uptrace.dev/posts/go-json-rest-api.html',

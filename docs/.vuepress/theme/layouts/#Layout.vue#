@@ -123,20 +123,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.spacer {
-  flex-grow: 1 !important;
-}
-
-.d-none {
-  display: none !important;
-}
-
-@media (min-width: 800px) {
-  .d-sm-block {
-    display: block !important;
-  }
-}
-
 .system-bar {
   display: flex;
   align-items: center;

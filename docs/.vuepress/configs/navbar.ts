@@ -10,10 +10,6 @@ export const en: NavbarConfig = [
     link: '/postgres/',
   },
   {
-    text: 'Newsletter',
-    link: 'https://blog.uptrace.dev/pages/newsletter.html',
-  },
-  {
     text: 'Reference',
     link: 'https://pkg.go.dev/github.com/uptrace/bun',
   },

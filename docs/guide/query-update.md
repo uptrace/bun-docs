@@ -183,7 +183,7 @@ res, err := db.NewUpdate().
 
 If you have a slice of models to update, use `Bulk` method:
 
-```
+```go
 res, err := db.NewUpdate().
 	Model(&models).
 	Column("col1").
