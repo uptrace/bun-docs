@@ -13,15 +13,18 @@ CPU. To not get `FATAL too many connections` error, use a connection pool in fro
 for example, [PgBouncer](https://pgbouncer.org/) is a good option.
 
 ```shell
-max_connections = <4-8 * number_of_cpu_cores>
+max_connections = <4-8 * number_of_cpus>
 ```
+
+On SSD, set `max_connections` to the number of concurrent I/O requests the disk(s) can handle \*
+`number_of_cpus`.
 
 ## shared_buffers
 
 `shared_buffers` controls how much memory PostgreSQL reserves for writing data to a disk. PostgreSQL
 picks a free page of RAM in shared buffers, writes the data into it, marks the page as dirty, and
 lets another process asynchronously write dirty pages to the disk in background. PostgreSQL also
-uses shared buffers as a cache if the data we are reading can be found there. For proper
+uses shared buffers as a cache if the data you are reading can be found there. For proper
 explanation, see
 [this](https://www.2ndquadrant.com/wp-content/uploads/2019/05/Inside-the-PostgreSQL-Shared-Buffer-Cache.pdf).
 
@@ -37,14 +40,15 @@ shared_buffers = <20-40% of RAM>
 ## work_mem
 
 `work_mem` specifies the max amount of memory each PostgreSQL query can use before falling back to
-temporary disk files.
-
-If your queries often use temp files, consider increasing `work_mem` value and lowering the max
-number of concurrent queries via [max_connections](#max-connections).
+temporary disk files. Every query may request the value defined by `work_mem` multiple times so be
+cautious with large values.
 
 ```shell
 work_mem = <1-5% of RAM>
 ```
+
+If your queries often use temp files, consider increasing `work_mem` value and lowering the max
+number of concurrent queries via [max_connections](#max-connections).
 
 ## maintenance_work_mem
 
@@ -137,7 +141,7 @@ lock_timeout = 5000
 
 ## Logging
 
-Good logging can tell you when queries are too slow or there any other problems:
+Good logging can tell you when queries are too slow or there are any other problems:
 
 ```shell
 # Log queries slower than 500ms.
@@ -152,7 +156,9 @@ log_lock_waits = on
 
 ## Huge pages
 
-Don't use huge pages. The maintenance burden is not worth it.
+If your servers have 128+ GB of RAM, consider using huge pages to reduce the number of memory pages
+and to minimize the [overhead](https://blogs.oracle.com/linux/post/minimizing-struct-page-overhead)
+introduced by managing large amount of pages.
 
 ## See also
 
