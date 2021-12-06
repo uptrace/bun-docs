@@ -2,7 +2,7 @@
 title: Tuning PostgreSQL performance
 ---
 
-# Tuning PostgreSQL performance
+# Tuning PostgreSQL settings for performance
 
 [[toc]]
 
@@ -20,7 +20,7 @@ max_connections = <4-8 * number_of_cpu_cores>
 
 `shared_buffers` controls how much memory PostgreSQL reserves for writing data to a disk. PostgreSQL
 picks a free page of RAM in shared buffers, writes the data into it, marks the page as dirty, and
-lets another process to asynchronously write dirty pages to the disk in background. PostgreSQL also
+lets another process asynchronously write dirty pages to the disk in background. PostgreSQL also
 uses shared buffers as a cache if the data we are reading can be found there. For proper
 explanation, see
 [this](https://www.2ndquadrant.com/wp-content/uploads/2019/05/Inside-the-PostgreSQL-Shared-Buffer-Cache.pdf).
@@ -31,15 +31,16 @@ Lowering shared buffers value too much may hurt write performance.
 :::
 
 ```shell
-# ext4/xfs
 shared_buffers = <20-40% of RAM>
 ```
 
 ## work_mem
 
 `work_mem` specifies the max amount of memory each PostgreSQL query can use before falling back to
-temporary disk files. Consider using a relatively high value here, but lowering the max number of
-concurrent queries via `max_connections`.
+temporary disk files.
+
+If your queries often use temp files, consider increasing `work_mem` value and lowering the max
+number of concurrent queries via [max_connections](#max-connections).
 
 ```shell
 work_mem = <1-5% of RAM>
@@ -56,17 +57,17 @@ maintenance_work_mem = <10-20% of RAM>
 
 ## effective_cache_size
 
-`effective_cache_size` gives PostgreSQL a hint how much data it can expect to find in the system
-cache or ZFS ARC.
+`effective_cache_size` gives PostgreSQL a hint about how much data it can expect to find in the
+system cache or ZFS ARC.
 
-```
+```shell
 effective_cache_size = <70-80% of RAM>
 ```
 
 ## Autovacuum
 
-Autovacuum is a background process responsible for erasing dead tuples (deleted rows) and updating
-database statistics used by PostgreSQL planner to optimize queries.
+Autovacuum is a background process responsible for removing dead tuples (deleted rows) and updating
+database statistics used by PostgreSQL query planner to optimize queries.
 
 Default autovacuum settings are rather conservative and can be increased to let autovacuum run more
 often and use more resources:
@@ -79,8 +80,9 @@ vacuum_cost_limit = 500
 # Use smaller nap time if you have many tables.
 autovacuum_naptime = 10s
 
-# Ran autovacuum when 5% of rows are inserted/updated.
+# Ran autovacuum when 5% of rows are inserted/updated/deleted.
 autovacuum_vacuum_scale_factor = 0.05
+autovacuum_vacuum_insert_scale_factor = 0.05
 ```
 
 You can also run less autovacuum workers but give each of them more memory:
@@ -119,6 +121,33 @@ random_page_cost = 1.1
 # Number of simultaneous requests that can be handled efficiently by the disk subsystem.
 # SSDs can handle more concurrent requests.
 effective_io_concurrency = 200
+```
+
+## Timeouts
+
+You can tell PostgreSQL to cancel slow queries using the following settings:
+
+```shell
+# Cancel queries slower than 5 seconds.
+statement_timeout = 5000
+
+# Max time to wait for a lock.
+lock_timeout = 5000
+```
+
+## Logging
+
+Good logging can tell you when queries are too slow or there any other problems:
+
+```shell
+# Log queries slower than 500ms.
+log_min_duration_statement = 500
+
+# Log queries that use temp files.
+log_temp_files = 0
+
+# Log queries that wait for locks.
+log_lock_waits = on
 ```
 
 ## Huge pages

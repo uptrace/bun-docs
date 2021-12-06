@@ -108,7 +108,7 @@ func main() {
 	db := bun.NewDB(sqlite, sqlitedialect.New())
 
 	// Print all queries to stdout.
-	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose()))
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
 
 	var rnd int64
 
@@ -150,7 +150,7 @@ func main() {
 	db := bun.NewDB(pgdb, pgdialect.New())
 
 	// Print all queries to stdout.
-	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose()))
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
 
 	var rnd float64
 
@@ -194,7 +194,7 @@ func main() {
 	db := bun.NewDB(sqldb, mysqldialect.New())
 
 	// Print all queries to stdout.
-	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose()))
+	db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
 
 	var rnd float64
 

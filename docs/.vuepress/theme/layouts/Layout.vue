@@ -19,9 +19,6 @@
       </div>
     </div>
     <Layout>
-      <template #sidebar-bottom>
-        <div class="text-center">Hello</div>
-      </template>
       <template #page-bottom>
         <div
           class="theme-default-content d-flex align-center justify-space-between"
@@ -123,20 +120,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.spacer {
-  flex-grow: 1 !important;
-}
-
-.d-none {
-  display: none !important;
-}
-
-@media (min-width: 800px) {
-  .d-sm-block {
-    display: block !important;
-  }
-}
-
 .system-bar {
   display: flex;
   align-items: center;

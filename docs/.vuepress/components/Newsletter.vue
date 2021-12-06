@@ -1,7 +1,14 @@
 <template>
   <div style="padding-bottom: 8px">Get insights and updates in your inbox:</div>
 
-  <el-form ref="formRef" :model="form.data" :rules="form.rules" inline>
+  <el-form
+    v-if="!form.done"
+    :key="mounted"
+    ref="formRef"
+    :model="form.data"
+    :rules="form.rules"
+    inline
+  >
     <el-form-item prop="email" style="width: 220px">
       <el-input
         v-model="form.data.email"
@@ -12,29 +19,32 @@
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button v-if="!form.done" type="primary" :loading="form.loading" @click="form.submit">
-        Subscribe
-      </el-button>
-      <el-button v-else type="success" :loading="form.loading" @click="form.submit">
-        <el-icon class="el-icon--left"><Check /></el-icon>
-        Subscribed
-      </el-button>
+      <el-button type="primary" :loading="form.loading" @click="form.submit"> Subscribe </el-button>
     </el-form-item>
   </el-form>
+  <el-tag v-else type="success" effect="dark">
+    <el-icon class="el-icon--left"><Check /></el-icon>
+    Subscribed
+  </el-tag>
 </template>
 
 <script lang="ts">
 import axios from 'axios'
 import { Check } from '@element-plus/icons'
-import { ref, reactive, proxyRefs, Ref } from 'vue'
+import { ref, reactive, onMounted, proxyRefs, Ref } from 'vue'
 
 export default {
   components: { Check },
 
   setup() {
+    const mounted = ref(false)
     const formRef = ref()
 
-    return { formRef, form: useForm(formRef) }
+    onMounted(() => {
+      mounted.value = true
+    })
+
+    return { mounted, formRef, form: useForm(formRef) }
   },
 }
 
