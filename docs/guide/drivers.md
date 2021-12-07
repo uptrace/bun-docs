@@ -29,7 +29,7 @@ See [PostgreSQL](/postgres/) section for more information about pgdriver and Pos
 ### pgx
 
 Alternatively, you can use [pgx](https://github.com/jackc/pgx) with `pgdialect`. You can disable
-prepared statements in `pgx`, because Bun does not benefit from using them:
+prepared statements in `pgx` because Bun does not benefit from using them:
 
 ```go
 import (

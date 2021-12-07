@@ -132,7 +132,7 @@ err := db.NewSelect().
 
 ## Unique indexes
 
-Using soft deletes with unique indexes can cause conflicts on insert queries, because soft-deleted
+Using soft deletes with unique indexes can cause conflicts on insert queries because soft-deleted
 rows are included in unique indexes just like normal rows.
 
 With some DBMS, you can exclude soft-deleted rows from an index:
@@ -142,7 +142,7 @@ CREATE UNIQUE INDEX index_name ON table (column1) WHERE deleted_at IS NULL;
 ```
 
 Alternatively, you can include `deleted_at` column to indexed columns using `coalesce` function to
-convert `NULL` time, because `NULL` is not equal to any other value including itself:
+convert `NULL` time because `NULL` is not equal to any other value including itself:
 
 ```sql
 CREATE UNIQUE INDEX index_name ON table (column1, coalesce(deleted_at, '1970-01-01 00:00:00'))

@@ -94,7 +94,7 @@ With Bun you can use your previous experience working with SQL DBMS and Go to wr
 idiomatic code. Bun's goal is to help you write SQL, not replace or hide it.
 
 With [Ent](https://entgo.io/) your previous experience does not mean as much and can be even
-misleading, because Ent provides a new/different way to write Go apps and you don't have much choice
+misleading because Ent provides a new/different way to write Go apps and you don't have much choice
 but to follow it.
 
 ### go-pg
