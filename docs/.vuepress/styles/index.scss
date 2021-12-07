@@ -16,3 +16,33 @@
     max-width: 960px;
   }
 }
+
+.spacer {
+  flex-grow: 1 !important;
+}
+
+.d-none {
+  display: none !important;
+}
+
+@media (min-width: 800px) {
+  .d-sm-block {
+    display: block !important;
+  }
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.align-center {
+  align-items: center !important;
+}
+
+.justify-space-between {
+  justify-content: space-between !important;
+}

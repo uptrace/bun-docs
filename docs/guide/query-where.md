@@ -1,8 +1,10 @@
 # Where
 
+[[toc]]
+
 ## Basics
 
-You can use arbitrary unsafe expressions in `WHERE` clauses:
+You can use arbitrary unsafe expressions in `Where`:
 
 ```go
 q = q.Where("column LIKE 'hello%'")
@@ -82,8 +84,9 @@ err := db.NewSelect().
 
 ```sql
 WITH "data" ("id", "email", _order) AS (
-  VALUES (42::BIGINT, 'one@my.com'::VARCHAR, 0),
-  (43::BIGINT, 'two@my.com'::VARCHAR, 1)
+  VALUES
+    (42::BIGINT, 'one@my.com'::VARCHAR, 0),
+    (43::BIGINT, 'two@my.com'::VARCHAR, 1)
 )
 SELECT "user"."id", "user"."email"
 FROM "users" AS "user"

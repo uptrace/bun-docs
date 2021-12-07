@@ -21,20 +21,29 @@ To use positional placeholders:
 db.ColumnExpr("?0, ?1, ?0", 'foo', 'bar')
 ```
 
-## Identifiers and safe queries
+## bun.Ident
 
-To quote SQL identifiers (for example, a column or a table name), use `bun.Ident`:
+To quote SQL identifiers, for example, a column or a table name, use `bun.Ident`:
 
 ```go
-// "foo" = 'bar'
 q.ColumnExpr("? = ?", bun.Ident("foo"), "bar")
 ```
+
+```sql
+"foo" = 'bar' -- PostgreSQL
+`foo` = 'bar' -- MySQL
+```
+
+## bun.Safe
 
 To disable quotation altogether, use `bun.Safe`:
 
 ```go
-// FROM (generate_series(0, 10)) AS foo
 q.TableExpr("(?) AS foo", bun.Safe("generate_series(0, 10)"))
+```
+
+```sql
+FROM (generate_series(0, 10)) AS foo
 ```
 
 ## IN

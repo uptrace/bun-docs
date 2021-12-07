@@ -3,6 +3,16 @@
 For each table you need to define a corresponding Go struct (model). Bun maps the exported struct
 fields to the table columns and ignores the unexported fields.
 
+```go
+type User struct {
+	bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID    int64  `bun:"id,pk,autoincrement"`
+    Name  string `bun:"name,notnull"`
+    email string // unexported fields are ignored
+}
+```
+
 ## Struct tags
 
 Bun uses sensible defaults to generate names and deduct types, but you can use the following struct
@@ -10,26 +20,26 @@ tags to override the defaults.
 
 | Tag                                        | Comment                                                                                  |
 | ------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| bun.BaseModel \`bun:"table_name"\`         | Overrides default table name.                                                            |
-| bun.BaseModel \`bun:"alias:table_alias"\`  | Overrides default table alias name.                                                      |
-| bun.BaseModel \`bun:"select:view_name"\`   | Overrides table name for SELECT queries.                                                 |
-| bun:"-"                                    | Ignores the field.                                                                       |
-| bun:"column_name"                          | Overrides default column name.                                                           |
+| bun.BaseModel \`bun:"table:table_name"\`   | Override default table name.                                                             |
+| bun.BaseModel \`bun:"alias:table_alias"\`  | Override default table alias.                                                            |
+| bun.BaseModel \`bun:"select:view_name"\`   | Override table name for SELECT queries.                                                  |
+| bun:"-"                                    | Ignore the field.                                                                        |
+| bun:"column_name"                          | Override default column name.                                                            |
 | bun:"alt:alt_name"                         | Alternative column name. Useful during migrations.                                       |
-| bun:",pk"                                  | Marks column as a primary key. Multiple primary keys are supported.                      |
+| bun:",pk"                                  | Mark column as a primary key. Multiple primary keys are supported.                       |
 | bun:",nopk"                                | Not a primary key. Useful for columns like `id` and `uuid` if they are not primary keys. |
-| bun:"type:uuid"                            | Overrides default SQL type.                                                              |
-| bun:"default:gen_random_uuid()"            | SQL default value for the column.                                                        |
-| bun:",notnull"                             | Adds `NOT NULL` SQL constraint.                                                          |
-| bun:",unique"                              | Makes `CreateTable` to add an unique constraint.                                         |
+| bun:"type:uuid"                            | Override default SQL type.                                                               |
+| bun:"default:gen_random_uuid()"            | Tell `CreateTable` to set `DEFAULT` expression.                                          |
+| bun:",notnull"                             | Tell `CreateTable` to add `NOT NULL` constraint.                                         |
+| bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                          |
 | bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
-| bun:",nullzero"                            | Marshals Go zero values as SQL `NULL`.                                                   |
-| bun:",allowzero"                           | Can be used on primary keys to undo the effect of `nullzero`.                            |
+| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL`.                                                    |
+| bun:",allowzero"                           | Use on primary keys to undo the effect of `nullzero`.                                    |
 | bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                   |
-| bun:",array"                               | Treats the column as a PostgreSQL array.                                                 |
-| bun:",json_use_number"                     | Uses `json.Decoder.UseNumber` to decode JSON.                                            |
-| bun:",msgpack"                             | Encodes/decodes data using MessagePack.                                                  |
-| DeletedAt time.Time \`bun:",soft_delete"\` | Enables soft deletes on the model.                                                       |
+| bun:",array"                               | Use PostgreSQL array.                                                                    |
+| bun:",json_use_number"                     | Use `json.Decoder.UseNumber` to decode JSON.                                             |
+| bun:",msgpack"                             | Encode/decode data using MessagePack.                                                    |
+| DeletedAt time.Time \`bun:",soft_delete"\` | Enable soft deletes on the model.                                                        |
 
 ## Table names
 
@@ -41,7 +51,7 @@ To override the generated name and the alias:
 
 ```go
 type User struct {
-	bun.BaseModel `bun:"myusers,alias:u"`
+	bun.BaseModel `bun:"table:myusers,alias:u"`
 }
 ```
 
@@ -97,7 +107,7 @@ type User struct {
 }
 ```
 
-## Modeling NULL values
+## NULLs
 
 To represent SQL `NULL`, you can use pointers or `sql.Null*` types:
 
@@ -117,11 +127,11 @@ For example:
 
 ## Go zero values and NULL
 
-To marshal a zero Go value as `NULL`, add `nullzero` tag option:
+To marshal a zero Go value as `NULL`, use `nullzero` tag:
 
 ```go
 type User struct {
-    Name string `bun:",nullzero"`
+	Name string `bun:",nullzero"`
 }
 ```
 
@@ -129,18 +139,27 @@ Sometimes it can be useful to allow zero values on primary keys:
 
 ```go
 type User struct {
-    ID int64 `bun:",allowzero"`
+	ID int64 `bun:",allowzero"`
 }
 ```
 
-## NULL and DEFAULT
+## DEFAULT
 
-To specify a default SQL value, use the combination of `notnull` and `default` tags:
+To specify a default SQL expression, use the combination of `nullzero`, `notnull`, and `default`
+tags:
 
 ```go
 type User struct {
-    Name string `bun:",nullzero,notnull,default:'unknown'"`
+	Name string `bun:",nullzero,notnull,default:'unknown'"`
 }
+
+err := db.NewCreateTable().Model((*User)(nil)).Exec(ctx)
+```
+
+```sql
+CREATE TABLE users (
+  name text NOT NULL DEFAULT 'unknown'
+);
 ```
 
 ## Automatic timestamps

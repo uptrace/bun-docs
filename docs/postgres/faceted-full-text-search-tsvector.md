@@ -57,7 +57,7 @@ RETURNING *;
   2 | foo bar    |       | 'bar':2 'foo':1
 ```
 
-Once you have some, you can search over books using a `tsvector` and a `tsquery`:
+Once you have some data, you can search over books using a `tsvector` and a `tsquery`:
 
 ```sql
 SELECT * FROM books
@@ -178,9 +178,8 @@ ORDER BY attr, value, count DESC;
  pace  | medium      |     4
 ```
 
-But it is rather slow and inefficient, because we need to select `tags` column to build the facet.
-Can we do better? Yes, using `ts_stat` function to get the required data directly from the `tsv`
-column.
+But it is rather slow and inefficient because we need to select all `tags` to build the facet. Can
+we do better? Yes, using `ts_stat` function to get the required data directly from the `tsv` column.
 
 ## Retrieving document stats
 

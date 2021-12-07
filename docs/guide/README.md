@@ -11,6 +11,13 @@ into common Go types: structs, maps, slices, and scalars.
 Bun wraps `sql.DB` to provide query [builder](queries.md) and [hooks](hooks.md). The original
 `sql.DB` is available as `db.DB` and can be used without any restrictions.
 
+```go
+type DB struct {
+	*sql.DB
+    ...
+}
+```
+
 Bun comes with [dialects](drivers.md) for each supported database. Bun uses dialects to discover
 available features when building queries and scanning query results. For example, to connect to a
 PostgreSQL server, you should use PostgreSQL driver (for example,
@@ -87,7 +94,7 @@ With Bun you can use your previous experience working with SQL DBMS and Go to wr
 idiomatic code. Bun's goal is to help you write SQL, not replace or hide it.
 
 With [Ent](https://entgo.io/) your previous experience does not mean as much and can be even
-misleading, because Ent provides a new/different way to write Go apps and you don't have much choice
+misleading because Ent provides a new/different way to write Go apps and you don't have much choice
 but to follow it.
 
 ### go-pg

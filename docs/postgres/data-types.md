@@ -51,7 +51,7 @@ tag option:
 
 ```go
 type Model struct {
-	Data map[string]interface{} `bun:"type:json"`
+	Data map[string]interface{} `bun:"type:jsonb"`
 }
 ```
 
@@ -79,6 +79,6 @@ See [Working with PostgreSQL arrays](arrays.md).
 
 See [Using UUID in PostgreSQL](uuid.md).
 
-## What's next?
+## See also
 
 See [Don't do this](https://wiki.postgresql.org/wiki/Don%27t_Do_This) for more tips.

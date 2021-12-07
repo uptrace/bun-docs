@@ -51,6 +51,15 @@ export default defineUserConfig<DefaultThemeOptions>({
   },
 
   evergreen: isProd,
+  bundlerConfig: {
+    configureWebpack: (config) => {
+      config.module.rules.push({
+        test: /\.mjs$/i,
+        resolve: { byDependency: { esm: { fullySpecified: false } } },
+      })
+      return {}
+    },
+  },
 
   markdown: {
     code: {

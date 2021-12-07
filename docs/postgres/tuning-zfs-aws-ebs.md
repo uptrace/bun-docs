@@ -122,7 +122,7 @@ storage to `EXTERNAL`. But it does not make much difference:
 
 ## Alignment Shift
 
-Use the default `ashift` value with Amazon Elastic Block Store and other cloud storages, because EBS
+Use the default `ashift` value with Amazon Elastic Block Store and other cloud storages because EBS
 volume is not a single physical device but a logical volume that spans numerous distributed devices.
 
 But if you know the sector size of the drive, it is worth it to configure `ashift` properly:

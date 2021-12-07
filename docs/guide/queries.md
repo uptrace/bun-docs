@@ -9,9 +9,9 @@ re-construct resulting queries using Bun's query builder.
 The main features are:
 
 - Splitting long queries into logically separated blocks.
-- Replacing [placeholders](placeholders.md) with properly escaped values (using `bun.Ident` and
-  `bun.Safe`).
-- Generating the list of columns and some [joins](relations.md) from Go models.
+- Replacing [placeholders](placeholders.html) with properly escaped values (using
+  [bun.Ident](placeholders.html#bun-ident) and [bun.Safe](placeholders.html#bun-safe)).
+- Generating the list of columns and some [joins](relations.html) from Go models.
 
 For example, the following Go code:
 

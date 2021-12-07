@@ -18,13 +18,31 @@
         <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
       </div>
     </div>
-    <Layout></Layout>
+    <Layout>
+      <template #page-bottom>
+        <div
+          class="theme-default-content d-flex align-center justify-space-between"
+          style="padding-top: 40px; padding-bottom: 0"
+        >
+          <div style="margin-right: 30px">
+            <a href="https://uptrace.dev/" target="_blank" title="Distributed tracing and metrics">
+              <img src="/uptrace/logo-large.svg" style="width: 175px; margin-bottom: 22px" />
+            </a>
+          </div>
+          <div>
+            <Newsletter />
+          </div>
+        </div>
+      </template>
+    </Layout>
   </div>
 </template>
 
 <script lang="ts">
 import { ref, onMounted } from 'vue'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
+
+import Newsletter from '../../components/Newsletter.vue'
 
 interface Link {
   text: string
@@ -34,6 +52,7 @@ interface Link {
 export default {
   components: {
     Layout,
+    Newsletter,
   },
 
   setup() {
@@ -101,20 +120,6 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-.spacer {
-  flex-grow: 1 !important;
-}
-
-.d-none {
-  display: none !important;
-}
-
-@media (min-width: 800px) {
-  .d-sm-block {
-    display: block !important;
-  }
-}
-
 .system-bar {
   display: flex;
   align-items: center;
@@ -153,5 +158,9 @@ a {
 .emoji {
   font-size: 1.1rem;
   padding-right: 6px;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>

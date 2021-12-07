@@ -1,5 +1,7 @@
 # Update
 
+[[toc]]
+
 ## API
 
 For the full list of supported methods, see
@@ -76,9 +78,10 @@ res, err := db.NewUpdate().
 ```
 
 ```sql
-WITH _data (id, title, text) AS (VALUES
-  (1, 'title1', 'text1'),
-  (2, 'title2', 'text2')
+WITH _data (id, title, text) AS (
+  VALUES
+    (1, 'title1', 'text1'),
+    (2, 'title2', 'text2')
 )
 UPDATE books AS book
 SET title = _data.title, text = _data.text
@@ -86,7 +89,7 @@ FROM _data
 WHERE book.id = _data.id
 ```
 
-Alternatively, you can use `Bulk` helper which does the same for you:
+Alternatively, you can use `Bulk` helper which creates a CTE for you:
 
 ```go
 res, err := db.NewUpdate().
@@ -141,4 +144,49 @@ res, err := db.NewUpdate().
 UPDATE users
 SET name = "John Doe"
 WHERE id = 1
+```
+
+## FQN
+
+Multi-table updates differ in PostgreSQL and MySQL:
+
+```sql
+-- PostgreSQL
+UPDATE dest FROM src SET col1 = src.col1 WHERE dest.id = src.id
+
+-- MySQL
+UPDATE dest, src SET dest.col1 = src.col1 WHERE dest.id = src.id
+```
+
+Bun helps you write queries for both databases by providing `UpdateFQN` helper:
+
+```go
+res, err := db.NewUpdate().
+	Table("dest", "src").
+	Set("? = src.col1", db.UpdateFQN("dest", "col1")).
+	Where("dest.id = src.id").
+	Exec(ctx)
+```
+
+If you have a `nil` model, use shorter `FQN` helper:
+
+```go
+res, err := db.NewUpdate().
+	Model((*DestModel)(nil)).
+	Table("src").
+	Apply(func (q *UpdateQuery) *UpdateQuery {
+		return q.Set("? = src.col1", q.FQN("col1"))
+	}).
+	Where("dest.id = src.id").
+	Exec(ctx)
+```
+
+If you have a slice of models to update, use `Bulk` method:
+
+```go
+res, err := db.NewUpdate().
+	Model(&models).
+	Column("col1").
+	Bulk().
+	Exec(ctx)
 ```

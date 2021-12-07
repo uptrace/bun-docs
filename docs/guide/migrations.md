@@ -15,8 +15,8 @@ that information to rollback migrations.
 ## Go-based migrations
 
 A Go-based migration is a regular Go function that can execute arbitrary code, for example, start
-transactions. You should register functions from the corrensponding migration files, because Bun
-uses stacktraces to discover migration names.
+transactions. You should register functions from the corrensponding migration files because Bun uses
+stacktraces to discover migration names.
 
 Each migration also has a second function that is run to revert the changes. You can use a `nil`
 function to make no changes.

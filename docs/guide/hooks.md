@@ -1,4 +1,4 @@
-# Hooks
+# Model and query hooks
 
 ## Introduction
 
@@ -11,12 +11,13 @@ for example, `var _ bun.QueryHook = (*MyHook)(nil)`.
 
 ## Disclaimer
 
-It may sound like a good idea to use hooks for validation or caching, because this way you can't
+It may sound like a good idea to use hooks for validation or caching because this way you can't
 forget to sanitize data or check permissions. It gives false sense of safety.
 
 Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and
-error-prone. Where possible prefer writing simple code like
-[this](https://github.com/uptrace/bun/tree/master/example/tx-composition):
+error-prone. Instead, prefer writing simple code like
+[this](https://github.com/uptrace/bun/tree/master/example/tx-composition) even if that means
+repeating yourself:
 
 ```go
 func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
