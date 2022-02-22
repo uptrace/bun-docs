@@ -1,5 +1,9 @@
 <template>
-  <div style="padding-bottom: 8px">Get insights and updates in your inbox:</div>
+  <div style="padding-bottom: 8px">
+    Get
+    <a href="/img/newsletter.png" target="_blank" title="Example issue">insights and updates</a> in
+    your inbox:
+  </div>
 
   <el-form
     v-if="!form.done"
@@ -82,8 +86,10 @@ function useForm(form: Ref) {
     loading.value = true
 
     axios
-      .post('https://api.uptrace.dev/api/v1/go-newsletter/subscription', {
+      .post('https://api2.uptrace.dev/api/v1/newsletter/subscription', {
+        topic: 'go',
         email: data.email,
+        source: 'bun.uptrace.dev',
       })
       .then(() => {
         done.value = true
@@ -108,3 +114,5 @@ function useForm(form: Ref) {
   })
 }
 </script>
+
+<style lang="scss" scoped></style>

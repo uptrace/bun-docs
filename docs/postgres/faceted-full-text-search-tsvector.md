@@ -42,7 +42,7 @@ SELECT to_tsvector('english', 'The Fat Rats');
  'fat':2 'rat':3
 ```
 
-You can use `to_tsvector` when inserting rows in the table:
+You can use `to_tsvector` when inserting rows to the table:
 
 ```sql
 INSERT INTO books (name, tsv)

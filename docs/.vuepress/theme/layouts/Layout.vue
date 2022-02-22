@@ -13,9 +13,9 @@
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://opentelemetry.uptrace.dev/" target="_blank">Tracing & Metrics</a>
+        <a href="https://github.com/uptrace/uptrace" target="_blank">Tracing & Metrics</a>
         <a href="https://bunrouter.uptrace.dev/" target="_blank">HTTP router</a>
-        <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
+        <a href="https://clickhouse.uptrace.dev/" target="_blank">ClickHouse client</a>
       </div>
     </div>
     <Layout>

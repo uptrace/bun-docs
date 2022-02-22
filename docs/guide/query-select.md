@@ -7,52 +7,54 @@ For the full list of supported methods, see
 
 ```go
 db.NewSelect().
-    With("cte_name", subquery).
+	With("cte_name", subquery).
 
-    Model(&strct).
-    Model(&slice).
+	Model(&strct).
+	Model(&slice).
 
-    Column("col1", "col2"). // quotes column names
-    ColumnExpr("col1, col2"). // arbitrary unsafe expression
-    ColumnExpr("count(*)").
-    ColumnExpr("count(?)", bun.Ident("id")).
-    ColumnExpr("(?) AS alias", subquery).
-    ExcludeColumn("col1"). // all columns except col1
-    ExcludeColumn("*"). // exclude all columns
+	Column("col1", "col2"). // quotes column names
+	ColumnExpr("col1, col2"). // arbitrary unsafe expression
+	ColumnExpr("count(*)").
+	ColumnExpr("count(?)", bun.Ident("id")).
+	ColumnExpr("(?) AS alias", subquery).
+	ExcludeColumn("col1"). // all columns except col1
+	ExcludeColumn("*"). // exclude all columns
 
-    Table("table1", "table2"). // quotes table names
-    TableExpr("table1 AS t1"). // arbitrary unsafe expression
-    TableExpr("(?) AS alias", subquery).
-    ModelTableExpr("table1 AS t1"). // overrides model table name
+	Table("table1", "table2"). // quotes table names
+	TableExpr("table1 AS t1"). // arbitrary unsafe expression
+	TableExpr("(?) AS alias", subquery).
+	ModelTableExpr("table1 AS t1"). // overrides model table name
 
-    Join("JOIN table2 AS t2 ON t2.id = t1.id").
-    Join("LEFT JOIN table2 AS t2").JoinOn("t2.id = t1.id").
+	Join("JOIN table2 AS t2 ON t2.id = t1.id").
+	Join("LEFT JOIN table2 AS t2").JoinOn("t2.id = t1.id").
 
-    WherePK(). // where using primary keys
-    Where("id = ?", 123).
-    Where("name LIKE ?", "my%").
-    Where("? = 123", bun.Ident("id")).
-    Where("id IN (?)", bun.In([]int64{1, 2, 3})).
-    Where("id IN (?)", subquery).
-    Where("FALSE").WhereOr("TRUE").
-    WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
-        return q.WhereOr("id = 1").
-            WhereOr("id = 2")
-    }).
+	WherePK(). // where using primary keys
+	Where("id = ?", 123).
+	Where("name LIKE ?", "my%").
+	Where("? = 123", bun.Ident("id")).
+	Where("id IN (?)", bun.In([]int64{1, 2, 3})).
+	Where("id IN (?)", subquery).
+	Where("FALSE").WhereOr("TRUE").
+	WhereGroup(" AND ", func(q *bun.SelectQuery) *bun.SelectQuery {
+		return q.WhereOr("id = 1").
+			WhereOr("id = 2")
+	}).
 
-    Group("col1", "col2"). // quotes column names
-    GroupExpr("lower(col1)"). // arbitrary unsafe expression
+	Group("col1", "col2"). // quotes column names
+	GroupExpr("lower(col1)"). // arbitrary unsafe expression
 
-    Order("col1 ASC", "col2 DESC"). // quotes column names
-    OrderExpr("col1 ASC NULLS FIRST"). // arbitrary unsafe expression
+	Order("col1 ASC", "col2 DESC"). // quotes column names
+	OrderExpr("col1 ASC NULLS FIRST"). // arbitrary unsafe expression
 
-    Limit(100).
-    Offset(100).
+    Having("column_name > ?", 123).
 
-    For("UPDATE").
-    For("SHARE").
+	Limit(100).
+	Offset(100).
 
-    Scan(ctx)
+	For("UPDATE").
+	For("SHARE").
+
+	Scan(ctx)
 ```
 
 ## Count rows

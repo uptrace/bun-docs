@@ -1,5 +1,9 @@
 # Create and Drop Table
 
+[[toc]]
+
+## ResetModel
+
 Bun provides a helper method to quickly drop and create tables:
 
 ```go
@@ -50,6 +54,8 @@ if err != nil {
 	panic(err)
 }
 ```
+
+### Hooks
 
 You can also modify query from the `bun.BeforeCreateTableHook` hook.
 

@@ -1,5 +1,9 @@
 # Defining models
 
+[[toc]]
+
+## Mapping tables to structs
+
 For each table you need to define a corresponding Go struct (model). Bun maps the exported struct
 fields to the table columns and ignores the unexported fields.
 
@@ -33,7 +37,7 @@ tags to override the defaults.
 | bun:",notnull"                             | Tell `CreateTable` to add `NOT NULL` constraint.                                         |
 | bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                          |
 | bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
-| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL`.                                                    |
+| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL` or `DEFAULT` (when supported).                      |
 | bun:",allowzero"                           | Use on primary keys to undo the effect of `nullzero`.                                    |
 | bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                   |
 | bun:",array"                               | Use PostgreSQL array.                                                                    |
@@ -58,7 +62,7 @@ type User struct {
 To specify a different table name for `SELECT` queries:
 
 ```go
-type Genre struct {
+type User struct {
 	bun.BaseModel `bun:"select:users_view,alias:u"`
 }
 ```
@@ -96,8 +100,8 @@ Don't use case-sensitive names because such names are folded to lower case, for 
 
 ## Column types
 
-Bun generates column types from struct field types. For example, Go type `string` is translated to
-SQL type `varchar`.
+Bun generates column types from the struct field types. For example, Go type `string` is translated
+to SQL type `varchar`.
 
 To override the generated column type:
 
@@ -196,4 +200,47 @@ func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
 	}
 	return nil
 }
+```
+
+## Embedding
+
+Bun allows to embed a model in another model using a prefix, for example:
+
+```go
+type Role struct {
+	Name     string
+	Users    Permissions `bun:"embed:users_"`
+	Profiles Permissions `bun:"embed:profiles_"`
+	Roles    Permissions `bun:"embed:roles_"`
+}
+
+type Permissions struct {
+	View   bool
+	Create bool
+	Update bool
+	Delete bool
+}
+```
+
+The code above generates the following table:
+
+```sql
+CREATE TABLE roles (
+    name TEXT,
+
+    users_view BOOLEAN,
+    users_create BOOLEAN,
+    users_update BOOLEAN,
+    users_delete BOOLEAN,
+
+    profiles_view BOOLEAN,
+    profiles_create BOOLEAN,
+    profiles_update BOOLEAN,
+    profiles_delete BOOLEAN,
+
+    roles_view BOOLEAN,
+    roles_create BOOLEAN,
+    roles_update BOOLEAN,
+    roles_delete BOOLEAN
+);
 ```

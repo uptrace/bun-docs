@@ -2,16 +2,16 @@
 
 ## Design
 
-Bun's goal is to help you write good SQL, not to hide it behind awkward constructs. It is a good
-idea to start writing and testing queries using CLI for your database (for example, psql), and then
-re-construct resulting queries using Bun's query builder.
+Bun's goal is to help you write idiomatic SQL, not to hide it behind awkward constructs. It is a
+good idea to start writing and testing queries using CLI for your database (for example, psql), and
+then re-construct resulting queries using Bun's query builder.
 
 The main features are:
 
 - Splitting long queries into logically separated blocks.
 - Replacing [placeholders](placeholders.html) with properly escaped values (using
   [bun.Ident](placeholders.html#bun-ident) and [bun.Safe](placeholders.html#bun-safe)).
-- Generating the list of columns and some [joins](relations.html) from Go models.
+- Generating s list of columns and some [joins](relations.html) from struct-based models.
 
 For example, the following Go code:
 
@@ -49,7 +49,7 @@ Once you have a query, you can execute it with `Exec`:
 result, err := db.NewInsert().Model(&user).Exec(ctx)
 ```
 
-Or use `Scan` which does the same but omits the result (only available for selects):
+Or use `Scan` which does the same but omits the `sql.Result` (only available for selects):
 
 ```go
 err := db.NewSelect().Model(&user).Where("id = 1").Scan(ctx)

@@ -48,11 +48,11 @@ db.NewInsert().
 
 ## Bulk-insert
 
-To bulk-insert books, use a slice:
+To bulk-insert models, use a slice:
 
 ```go
 books := []Book{book1, book2}
-res, err := db.NewInsert().Model(&books).Exec()
+res, err := db.NewInsert().Model(&books).Exec(ctx)
 if err != nil {
     panic(err)
 }

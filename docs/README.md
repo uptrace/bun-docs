@@ -17,8 +17,8 @@ features:
     details: Bun uses database/sql and extends it in a compatible and idiomatic way.
   - title: Database-agnostic
     details: Out-of-the box works with PostgreSQL, MySQL 5.7+, and SQLite.
-  - title: Built-in migrations
-    details: Keep your database updated with Go and SQL-based migrations.
+  - title: Migrations
+    details: Keep your database schema updated with Go and SQL-based migrations.
   - title: Fixtures
     details: Provide initial data for your application with YAML fixtures.
   - title: Starter kit
