@@ -25,7 +25,10 @@ db.NewUpdate().
 	ModelTableExpr("table1 AS t1"). // overrides model table name
 
 	Value("col1", "expr1", arg1, arg2). // overrides column value
+
+    // Generates `SET col1 = 'value1'`
 	Set("col1 = ?", "value1").
+    SetColumn("col1", "?", "value1").
 
 	WherePK(). // where using primary keys
 	Where("id = ?", 123).
@@ -158,25 +161,12 @@ UPDATE dest FROM src SET col1 = src.col1 WHERE dest.id = src.id
 UPDATE dest, src SET dest.col1 = src.col1 WHERE dest.id = src.id
 ```
 
-Bun helps you write queries for both databases by providing `UpdateFQN` helper:
+Bun helps you write queries for both databases by providing `SetColumn` method:
 
 ```go
 res, err := db.NewUpdate().
 	Table("dest", "src").
-	Set("? = src.col1", db.UpdateFQN("dest", "col1")).
-	Where("dest.id = src.id").
-	Exec(ctx)
-```
-
-If you have a `nil` model, use shorter `FQN` helper:
-
-```go
-res, err := db.NewUpdate().
-	Model((*DestModel)(nil)).
-	Table("src").
-	Apply(func (q *UpdateQuery) *UpdateQuery {
-		return q.Set("? = src.col1", q.FQN("col1"))
-	}).
+	SetColumn("col1", "src.col1").
 	Where("dest.id = src.id").
 	Exec(ctx)
 ```

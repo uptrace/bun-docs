@@ -21,16 +21,18 @@
     <Layout>
       <template #page-bottom>
         <div
-          class="theme-default-content d-flex align-center justify-space-between"
+          class="theme-default-content d-flex justify-space-between"
           style="padding-top: 40px; padding-bottom: 0"
         >
-          <div style="margin-right: 30px">
+          <div>
             <a href="https://uptrace.dev/" target="_blank" title="Distributed tracing and metrics">
-              <img src="/uptrace/logo-large.svg" style="width: 175px; margin-bottom: 22px" />
+              <img src="/uptrace/logo-text.svg" style="width: 200px" />
             </a>
           </div>
           <div>
-            <Newsletter />
+            <ClientOnly>
+              <Newsletter />
+            </ClientOnly>
           </div>
         </div>
       </template>

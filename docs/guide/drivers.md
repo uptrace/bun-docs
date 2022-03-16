@@ -5,50 +5,7 @@ comes with bun.
 
 ## PostgreSQL
 
-### pgdriver
-
-Bun comes with its own PostgreSQL driver called
-[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver).
-
-```go
-import (
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/uptrace/bun/driver/pgdriver"
-)
-
-dsn := "postgres://postgres:@localhost:5432/test?sslmode=disable"
-// dsn := "unix://user:pass@dbname/var/run/postgresql/.s.PGSQL.5432"
-sqldb := sql.OpenDB(pgdriver.NewConnector(pgdriver.WithDSN(dsn)))
-
-db := bun.NewDB(sqldb, pgdialect.New())
-```
-
-See [PostgreSQL](/postgres/) section for more information about pgdriver and PostgreSQL.
-
-### pgx
-
-Alternatively, you can use [pgx](https://github.com/jackc/pgx) with `pgdialect`. You can disable
-prepared statements in `pgx` because Bun does not benefit from using them:
-
-```go
-import (
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/jackc/pgx/v4/stdlib"
-)
-
-config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode=disable")
-if err != nil {
-	panic(err)
-}
-config.PreferSimpleProtocol = true
-
-sqldb := stdlib.OpenDB(*config)
-db := bun.NewDB(sqldb, pgdialect.New())
-```
-
-See [PostgreSQL](/postgres/) section for more information about pgx and PostgreSQL.
+See [PostgreSQL](/postgres/) section for information about using Bun with PostgreSQL.
 
 ## MySQL
 
@@ -68,6 +25,26 @@ if err != nil {
 }
 
 db := bun.NewDB(sqldb, mysqldialect.New())
+```
+
+## MSSQL
+
+Bun supports SQL Server v2019.CU4 starting from v1.1.x. To connect to a SQL Server, use
+[go-mssqldb](github.com/denisenkom/go-mssqldb) driver and `mssqldialect`:
+
+```go
+import (
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/mssqldialect"
+    _ "github.com/denisenkom/go-mssqldb"
+)
+
+sqldb, err := sql.Open("sqlserver", "sqlserver://sa:passWORD1@localhost:1433?database=test")
+if err != nil {
+	panic(err)
+}
+
+db := bun.NewDB(sqldb, mssqldialect.New())
 ```
 
 ## SQLite
@@ -126,6 +103,7 @@ switch db.Dialect().Name() {
     case dialect.SQLite:
     case dialect.PG:
     case dialect.MySQL:
+    case dialect.MSSQL:
     default:
         panic("not reached")
 }

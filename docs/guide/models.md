@@ -22,28 +22,27 @@ type User struct {
 Bun uses sensible defaults to generate names and deduct types, but you can use the following struct
 tags to override the defaults.
 
-| Tag                                        | Comment                                                                                  |
-| ------------------------------------------ | ---------------------------------------------------------------------------------------- |
-| bun.BaseModel \`bun:"table:table_name"\`   | Override default table name.                                                             |
-| bun.BaseModel \`bun:"alias:table_alias"\`  | Override default table alias.                                                            |
-| bun.BaseModel \`bun:"select:view_name"\`   | Override table name for SELECT queries.                                                  |
-| bun:"-"                                    | Ignore the field.                                                                        |
-| bun:"column_name"                          | Override default column name.                                                            |
-| bun:"alt:alt_name"                         | Alternative column name. Useful during migrations.                                       |
-| bun:",pk"                                  | Mark column as a primary key. Multiple primary keys are supported.                       |
-| bun:",nopk"                                | Not a primary key. Useful for columns like `id` and `uuid` if they are not primary keys. |
-| bun:"type:uuid"                            | Override default SQL type.                                                               |
-| bun:"default:gen_random_uuid()"            | Tell `CreateTable` to set `DEFAULT` expression.                                          |
-| bun:",notnull"                             | Tell `CreateTable` to add `NOT NULL` constraint.                                         |
-| bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                          |
-| bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                |
-| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL` or `DEFAULT` (when supported).                      |
-| bun:",allowzero"                           | Use on primary keys to undo the effect of `nullzero`.                                    |
-| bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                   |
-| bun:",array"                               | Use PostgreSQL array.                                                                    |
-| bun:",json_use_number"                     | Use `json.Decoder.UseNumber` to decode JSON.                                             |
-| bun:",msgpack"                             | Encode/decode data using MessagePack.                                                    |
-| DeletedAt time.Time \`bun:",soft_delete"\` | Enable soft deletes on the model.                                                        |
+| Tag                                        | Comment                                                                                                               |
+| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
+| bun.BaseModel \`bun:"table:table_name"\`   | Override default table name.                                                                                          |
+| bun.BaseModel \`bun:"alias:table_alias"\`  | Override default table alias.                                                                                         |
+| bun.BaseModel \`bun:"select:view_name"\`   | Override table name for SELECT queries.                                                                               |
+| bun:"-"                                    | Ignore the field.                                                                                                     |
+| bun:"column_name"                          | Override default column name.                                                                                         |
+| bun:"alt:alt_name"                         | Alternative column name. Useful during migrations.                                                                    |
+| bun:",pk"                                  | Mark column as a primary key and apply `notnull` option. Multiple/composite primary keys are supported.               |
+| bun:",autoincrement"                       | Mark column as a serial in PostgreSQL, autoincrement in MySQL, and identity in MSSQL. Also applies `nullzero` option. |
+| bun:"type:uuid"                            | Override default SQL type.                                                                                            |
+| bun:"default:gen_random_uuid()"            | Tell `CreateTable` to set `DEFAULT` expression.                                                                       |
+| bun:",notnull"                             | Tell `CreateTable` to add `NOT NULL` constraint.                                                                      |
+| bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                                                       |
+| bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                                             |
+| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL` or `DEFAULT` (when supported).                                                   |
+| bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                                                |
+| bun:",array"                               | Use PostgreSQL array.                                                                                                 |
+| bun:",json_use_number"                     | Use `json.Decoder.UseNumber` to decode JSON.                                                                          |
+| bun:",msgpack"                             | Encode/decode data using MessagePack.                                                                                 |
+| DeletedAt time.Time \`bun:",soft_delete"\` | Enable soft deletes on the model.                                                                                     |
 
 ## Table names
 
@@ -136,14 +135,6 @@ To marshal a zero Go value as `NULL`, use `nullzero` tag:
 ```go
 type User struct {
 	Name string `bun:",nullzero"`
-}
-```
-
-Sometimes it can be useful to allow zero values on primary keys:
-
-```go
-type User struct {
-	ID int64 `bun:",allowzero"`
 }
 ```
 

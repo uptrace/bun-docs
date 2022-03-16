@@ -2,6 +2,8 @@
 title: Tuning PostgreSQL performance
 ---
 
+<UptraceCta />
+
 # Tuning PostgreSQL settings for performance
 
 [[toc]]
@@ -163,5 +165,3 @@ introduced by managing large amount of pages.
 ## See also
 
 - [Running PostgreSQL using ZFS and AWS EBS](/postgres/tuning-zfs-aws-ebs.html)
-
-<UptraceBanner />

@@ -6,11 +6,12 @@ title: Getting started
 
 [[toc]]
 
-## database/sql
+## Connecting to a database
 
 Bun works on top of [database/sql](https://pkg.go.dev/database/sql) so the first thing you need to
 do is to create a `sql.DB`. In this tutorial we will be using [SQLite](drivers.html#sqlite) but Bun
-also works with [PostgreSQL](drivers.html#postgresql) and [MySQL](drivers.html#mysql).
+also works with [PostgreSQL](/postgres/), [MySQL](drivers.html#mysql), and
+[MSSQL](drivers.html#mssql).
 
 ```go
 import (
@@ -37,7 +38,7 @@ import (
 db := bun.NewDB(sqldb, sqlitedialect.New())
 ```
 
-To see executed queries in console, install a [query hook](hooks.html#query-hooks):
+To see executed queries in stdout, install a [query hook](hooks.html#query-hooks):
 
 ```go
 import "github.com/uptrace/bun/extra/bundebug"
@@ -66,9 +67,9 @@ var num int
 err := db.NewSelect().ColumnExpr("1").Scan(ctx, &num)
 ```
 
-## Models
+## Defining models
 
-Bun uses struct-based [models](models.html) to build [queries](queries.html) and scan results. A
+Bun uses struct-based [models](models.html) to construct [queries](queries.html) and scan results. A
 typical Bun model looks like this:
 
 ```go

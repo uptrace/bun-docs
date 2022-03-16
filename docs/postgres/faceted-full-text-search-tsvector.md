@@ -2,6 +2,8 @@
 title: Faceted navigation and search
 ---
 
+<UptraceCta />
+
 # Building faceted search using PostgreSQL full text search
 
 <img src="/img/faceted-search.png" style="float: right" />
@@ -250,5 +252,3 @@ database.
 You can also check
 [pg-faceted-search](https://github.com/uptrace/bun/tree/master/example/pg-faceted-search) example
 that demonstrates how to implement faceted search using Go and Bun database client.
-
-<UptraceBanner />

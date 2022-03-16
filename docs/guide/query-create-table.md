@@ -2,26 +2,10 @@
 
 [[toc]]
 
-## ResetModel
-
-Bun provides a helper method to quickly drop and create tables:
-
-```go
-err := db.ResetModel(ctx, (*Model1)(nil), (*Model2)(nil))
-```
-
-```sql
-DROP TABLE IF EXISTS model1 CASCADE;
-CREATE TABLE model1 (...);
-
-DROP TABLE IF EXISTS model2 CASCADE;
-CREATE TABLE model2 (...);
-```
-
 ## Create Table
 
 For the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
+[CreateTableQuery](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
 
 ```go
 db.NewCreateTable().
@@ -36,6 +20,7 @@ db.NewCreateTable().
 	IfNotExists().
 	Varchar(100). // turns VARCHAR into VARCHAR(100)
 
+	WithForeignKeys().
 	ForeignKey(`(fkey) REFERENCES table1 (pkey) ON DELETE CASCADE`).
 	PartitionBy("HASH (id)").
 	TableSpace("fasttablespace").
@@ -53,6 +38,22 @@ _, err := db.NewCreateTable().
 if err != nil {
 	panic(err)
 }
+```
+
+## ResetModel
+
+Bun provides `ResetModel` method to quickly drop and create tables:
+
+```go
+err := db.ResetModel(ctx, (*Model1)(nil), (*Model2)(nil))
+```
+
+```sql
+DROP TABLE IF EXISTS model1 CASCADE;
+CREATE TABLE model1 (...);
+
+DROP TABLE IF EXISTS model2 CASCADE;
+CREATE TABLE model2 (...);
 ```
 
 ### Hooks

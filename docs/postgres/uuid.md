@@ -1,3 +1,5 @@
+<UptraceCta />
+
 # Using UUID in PostgreSQL
 
 A universally unique identifier (UUID) is a 128-bit number that is generated in a way that makes it

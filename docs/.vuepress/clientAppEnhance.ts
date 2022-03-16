@@ -5,6 +5,7 @@ import {
   ElTag,
 
   //
+  ElCard,
   ElForm,
   ElFormItem,
   ElInput,
@@ -14,6 +15,7 @@ import {
 import 'element-plus/es/components/icon/style/css.mjs'
 import 'element-plus/es/components/tag/style/css.mjs'
 
+import 'element-plus/es/components/card/style/css.mjs'
 import 'element-plus/es/components/form/style/css.mjs'
 import 'element-plus/es/components/form-item/style/css.mjs'
 import 'element-plus/es/components/input/style/css.mjs'
@@ -23,6 +25,7 @@ export default defineClientAppEnhance(({ app, router }) => {
   app.use(ElIcon)
   app.use(ElTag)
 
+  app.use(ElCard)
   app.use(ElForm)
   app.use(ElFormItem)
   app.use(ElInput)

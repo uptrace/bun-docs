@@ -2,6 +2,8 @@
 title: Zero-downtime migrations
 ---
 
+<UptraceCta />
+
 # Zero-downtime PostgreSQL migrations
 
 Follow these simple rules to avoid common pitfalls and apply changes to your database without
@@ -103,5 +105,3 @@ ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 ## See also
 
 - [Safe and unsafe operations for high volume PostgreSQL](https://leopard.in.ua/2016/09/20/safe-and-unsafe-operations-postgresql#.YT4FFPwzZH7)
-
-<UptraceBanner />

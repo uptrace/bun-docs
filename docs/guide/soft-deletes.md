@@ -32,7 +32,7 @@ To enable soft deletes on a model, add `DeletedAt` field with `soft_delete` tag:
 type User struct {
 	ID int64
 	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	DeletedAt time.Time `bun:",soft_delete"`
+	DeletedAt time.Time `bun:",soft_delete,nullzero"`
 }
 ```
 
@@ -148,14 +148,14 @@ convert `NULL` time because `NULL` is not equal to any other value including its
 CREATE UNIQUE INDEX index_name ON table (column1, coalesce(deleted_at, '1970-01-01 00:00:00'))
 ```
 
-If your DBMS does not allow to use expressions in indexed columns, you can configure Bun to not
-append zero time as `NULL` using `allowzero` option:
+If your DBMS does not allow to use expressions in indexed columns, you can configure Bun to append
+zero time as `1970-01-01 00:00:00+00:00` by removing nullzero option:
 
 ```diff
 type User struct {
 	ID int64
 	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
--	 DeletedAt time.Time `bun:",soft_delete"`
-+	 DeletedAt time.Time `bun:",soft_delete,allowzero"`
+-	 DeletedAt time.Time `bun:",soft_delete,nullzero"`
++	 DeletedAt time.Time `bun:",soft_delete"`
 }
 ```

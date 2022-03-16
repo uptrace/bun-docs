@@ -112,7 +112,7 @@ LEFT JOIN "users" AS "author" ON "author"."id" = "book"."author_id"
 WHERE id = 1
 ```
 
-To use `INNER JOIN` instead of `LEFT JOIN`:
+To simulate `INNER JOIN` instead of `LEFT JOIN`:
 
 ```go
 err := db.NewSelect().
@@ -163,7 +163,7 @@ type User struct {
 	ID        int64 `bun:",pk"`
 	Name      string
 	ProfileID int64
-	Profile   *Profile `bun:"rel:belongs-to,join=profile_id=id"`
+	Profile   *Profile `bun:"rel:belongs-to,join:profile_id=id"`
 }
 ```
 

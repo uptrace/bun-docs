@@ -1,9 +1,5 @@
 <template>
-  <div style="padding-bottom: 8px">
-    Get
-    <a href="/img/newsletter.png" target="_blank" title="Example issue">insights and updates</a> in
-    your inbox:
-  </div>
+  <div style="padding-bottom: 8px">Get insights and updates in your inbox:</div>
 
   <el-form
     v-if="!form.done"
@@ -12,6 +8,7 @@
     :model="form.data"
     :rules="form.rules"
     inline
+    @submit.prevent.native="form.submit"
   >
     <el-form-item prop="email" style="width: 220px">
       <el-input
@@ -23,7 +20,7 @@
       </el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" :loading="form.loading" @click="form.submit"> Subscribe </el-button>
+      <el-button type="primary" native-type="submit" :loading="form.loading"> Subscribe </el-button>
     </el-form-item>
   </el-form>
   <el-tag v-else type="success" effect="dark">
@@ -86,7 +83,7 @@ function useForm(form: Ref) {
     loading.value = true
 
     axios
-      .post('https://api2.uptrace.dev/api/v1/newsletter/subscription', {
+      .post('https://api2.uptrace.dev/api/v1/newsletter/subscriptions', {
         topic: 'go',
         email: data.email,
         source: 'bun.uptrace.dev',
@@ -114,5 +111,3 @@ function useForm(form: Ref) {
   })
 }
 </script>
-
-<style lang="scss" scoped></style>
