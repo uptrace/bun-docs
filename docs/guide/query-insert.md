@@ -1,9 +1,11 @@
 # Insert
 
+[[toc]]
+
 ## API
 
 For the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
+[InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
 
 ```go
 db.NewInsert().
@@ -44,6 +46,17 @@ db.NewInsert().
     Returning("NULL"). // don't return anything
 
     Exec(ctx)
+```
+
+## Insert
+
+To insert data, define a [model](models.html) and use
+[InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery):
+
+```go
+book := &Book{Title: "hello"}
+
+res, err := db.NewInsert().Model(book).Exec(ctx)
 ```
 
 ## Bulk-insert

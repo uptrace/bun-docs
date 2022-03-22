@@ -1,9 +1,11 @@
 # Delete
 
+[[toc]]
+
 ## API
 
 For the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery).
+[DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery).
 
 ```go
 db.NewDelete().
@@ -34,6 +36,15 @@ db.NewDelete().
     Returning("NULL"). // don't return anything
 
     Exec(ctx)
+```
+
+## Delete
+
+To delete a row, define a [model](models.html) and use
+[DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery):
+
+```go
+res, err := db.NewDelete().Where("id = ?", 123).Exec(ctx)
 ```
 
 ## Bulk-delete

@@ -2,9 +2,9 @@
   <el-card :key="mounted" class="box-card">
     <div class="cta">
       <div>
-        <a href="https://uptrace.dev/open-source" target="_blank">Uptrace</a> is an open source and
-        blazingly fast <strong>distributed tracing</strong> backend powered by OpenTelemetry and
-        ClickHouse.
+        Still using Jaeger?
+        <a href="https://get.uptrace.dev/" target="_blank">Uptrace</a> is an OpenTelemetry tracing
+        backend that monitors performance, errors, and logs.
       </div>
       <div>
         <a href="https://github.com/uptrace/uptrace" target="_blank">

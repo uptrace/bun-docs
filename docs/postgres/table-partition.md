@@ -175,11 +175,11 @@ You can even create separate models for partitions:
 ```go
 type MeasureHot struct {
 	bun.BaseModel `bun:"measures_hot"`
-	Measure `bun:",inherit"`
+	Measure
 }
 
 type MeasureCold struct {
 	bun.BaseModel `bun:"measures_cold"`
-	Measure `bun:",inherit"`
+	Measure
 }
 ```

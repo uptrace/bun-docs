@@ -1,9 +1,11 @@
 # Select
 
+[[toc]]
+
 ## API
 
 For the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
+[SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
 
 ```go
 db.NewSelect().
@@ -55,6 +57,16 @@ db.NewSelect().
 	For("SHARE").
 
 	Scan(ctx)
+```
+
+## Select
+
+To select into a struct, define a [model](models.html) and use
+[SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery):
+
+```go
+book := new(Book)
+err := db.NewSelect().Model(book).Where("id = ?", 123).Scan(ctx)
 ```
 
 ## Count rows

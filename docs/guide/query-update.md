@@ -49,18 +49,41 @@ db.NewUpdate().
 	Exec(ctx)
 ```
 
+## Update
+
+To update a row, define a [model](models.html) and use
+[UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery):
+
+```go
+book := &Book{ID: 123, Title: "hello"}
+
+res, err := db.NewUpdate().Model(book).WherePK().Exec(ctx)
+```
+
 To update a single column:
 
 ```go
+book.Title = "hello"
+
 res, err := db.NewUpdate().
-	Model(&book).
+	Model(book).
 	Column("title").
-	Where("id = ?", 1).
+	Where("id = ?", 123).
 	Exec(ctx)
 ```
 
 ```sql
 UPDATE books SET title = 'my title' WHERE id = 1
+```
+
+Alternatively:
+
+```go
+res, err := db.NewUpdate().
+    Model(book).
+    Set("title = ?", "hello").
+    Where("id = ?", 123).
+    Exec(ctx)
 ```
 
 ## Bulk-update

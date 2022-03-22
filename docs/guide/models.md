@@ -38,7 +38,7 @@ tags to override the defaults.
 | bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                                                       |
 | bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                                             |
 | bun:",nullzero"                            | Marshal Go zero values as SQL `NULL` or `DEFAULT` (when supported).                                                   |
-| bun:",scanonly"                            | Only use this field to scan query results, not for inserts or updates.                                                |
+| bun:",scanonly"                            | Only use this field to scan query results and ignore in SELECT/INSERT/UPDATE/DELETE.                                  |
 | bun:",array"                               | Use PostgreSQL array.                                                                                                 |
 | bun:",json_use_number"                     | Use `json.Decoder.UseNumber` to decode JSON.                                                                          |
 | bun:",msgpack"                             | Encode/decode data using MessagePack.                                                                                 |
@@ -193,7 +193,21 @@ func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
 }
 ```
 
-## Embedding
+## Extending models
+
+You can add/remove fields to/from an existing model by using `extend` tag option. The new model will
+inherit the table name and the alias from the original model.
+
+```go
+type UserWithCount struct {
+	User `bun:",extend"`
+
+	Name		string `bun:"-"` // remove this field
+	AvatarCount int				 // add a new field
+}
+```
+
+## Embedding structs
 
 Bun allows to embed a model in another model using a prefix, for example:
 
