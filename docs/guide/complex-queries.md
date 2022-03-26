@@ -12,10 +12,7 @@ the recommendations presented in this article.
 
 The first and the main recommendation is to split the whole process into isolated steps:
 
-1. Parsing request params.
-2. Params validation (optional).
-3. Query generation using Bun query builder.
-4. Query execution and post-processing.
+[[toc]]
 
 ## Parsing request params
 

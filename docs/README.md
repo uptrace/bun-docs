@@ -1,6 +1,6 @@
 ---
 home: true
-title: Simple and performant DB client for PostgreSQL, MySQL, and SQLite
+title: Lightweight Go ORM for PostgreSQL, MySQL, MSSQL, and SQLite
 
 actions:
   - text: Get Started
@@ -11,7 +11,7 @@ actions:
     type: secondary
 
 features:
-  - title: SQL First
+  - title: SQL-first
     details: Bun's goal is to help you write SQL, not to hide it behind awkward constructs.
   - title: '*sql.DB compatible'
     details: Bun uses database/sql and extends it in a compatible and idiomatic way.
@@ -23,8 +23,6 @@ features:
     details: Provide initial data for your application with YAML fixtures.
   - title: Starter kit
     details: Modern app skeleton puts everything together and helps you get started.
-
-footer: Copyright © 2021 Vladimir Mihailenco
 ---
 
 ## Why another database client?

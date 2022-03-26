@@ -1,8 +1,12 @@
-# Create and Drop Table
+---
+title: Create Table
+---
+
+# Create Table PostgreSQL/MySQL
 
 [[toc]]
 
-## Create Table
+## API
 
 For the full list of supported methods, see
 [CreateTableQuery](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
@@ -27,6 +31,8 @@ db.NewCreateTable().
 
 	Exec(ctx)
 ```
+
+## Example
 
 To create a table:
 
@@ -56,7 +62,7 @@ DROP TABLE IF EXISTS model2 CASCADE;
 CREATE TABLE model2 (...);
 ```
 
-### Hooks
+## Hooks
 
 You can also modify query from the `bun.BeforeCreateTableHook` hook.
 
@@ -89,34 +95,3 @@ func (*Book) AfterCreateTable(ctx context.Context, query *bun.CreateTableQuery) 
 ```
 
 See [example](https://github.com/uptrace/bun/tree/master/example/create-table-index) for details.
-
-## Drop Table
-
-For the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#DropTableQuery).
-
-```go
-db.NewDropTable().
-
-	Model(&strct).
-
-	Table("table1"). // quotes table names
-	TableExpr("table1"). // arbitrary unsafe expression
-	ModelTableExpr("table1"). // overrides model table name
-
-	IfExists().
-
-	Cascade().
-	Restrict().
-
-	Exec(ctx)
-```
-
-To drop a table:
-
-```go
-_, err := db.NewDropTable().Model((*Book)(nil)).Exec(ctx)
-if err != nil {
-	panic(err)
-}
-```

@@ -8,8 +8,8 @@ const isProd = process.env.NODE_ENV === 'production'
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'en-US',
-  title: 'Bun',
-  description: 'Simple and performant DB client for PostgreSQL, MySQL, and SQLite',
+  title: 'Bun SQL client',
+  description: 'Lightweight Go ORM for PostgreSQL, MySQL, MSSQL, and SQLite',
 
   head: [
     [

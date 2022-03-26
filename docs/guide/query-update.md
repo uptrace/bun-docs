@@ -1,4 +1,8 @@
-# Update
+---
+title: Update
+---
+
+# Update PostgreSQL/MySQL
 
 [[toc]]
 
@@ -49,7 +53,7 @@ db.NewUpdate().
 	Exec(ctx)
 ```
 
-## Update
+## Example
 
 To update a row, define a [model](models.html) and use
 [UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery):

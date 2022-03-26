@@ -97,7 +97,7 @@ type User struct {
 
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
 - Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
-  used wrong names for these relations.
+  used wrong names for those relations.
 - Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``. This
   helps with linters that mark the field as unused.
 - To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not
@@ -108,7 +108,7 @@ type User struct {
 - Replace `pg.Safe` with `bun.Safe`.
 - Replace `pg.Ident` with `bun.Ident`.
 - Replace `pg.Array` with `pgdialect.Array`.
-- Replace `pg:",discard_unknown_columns"` with `db.WithDiscardUnknownColumns` option.
+- Replace `pg:",discard_unknown_columns"` with `db.WithDiscardUnknownColumns()` option.
 - Replace `q.OnConflict("DO NOTHING")` with `q.On("CONFLICT DO NOTHING")`.
 - Replace `q.OnConflict("(column) DO UPDATE")` with `q.On("CONFLICT (column) DO UPDATE")`.
 - Replace `ForEach` with `sql.Rows` and `db.ScanRow`.
@@ -174,7 +174,7 @@ go run cmd/bun/main.go -env=dev db init
 And probably mark existing migrations as completed:
 
 ```go
-go run cmd/bun/main.go -env=dev db mark_completed
+go run cmd/bun/main.go -env=dev db mark_applied
 ```
 
 You can check the status of migrations with:

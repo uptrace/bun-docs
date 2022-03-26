@@ -1,4 +1,8 @@
-# Insert
+---
+title: Insert
+---
+
+# Insert PostgreSQL/MySQL
 
 [[toc]]
 
@@ -48,7 +52,7 @@ db.NewInsert().
     Exec(ctx)
 ```
 
-## Insert
+## Example
 
 To insert data, define a [model](models.html) and use
 [InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery):

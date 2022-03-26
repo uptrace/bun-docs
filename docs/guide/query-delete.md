@@ -1,4 +1,8 @@
-# Delete
+---
+title: Delete
+---
+
+# Delete rows PostgreSQL/MySQL
 
 [[toc]]
 
@@ -38,7 +42,7 @@ db.NewDelete().
     Exec(ctx)
 ```
 
-## Delete
+## Example
 
 To delete a row, define a [model](models.html) and use
 [DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery):

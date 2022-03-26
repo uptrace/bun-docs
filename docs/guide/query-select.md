@@ -1,4 +1,8 @@
-# Select
+---
+title: Select
+---
+
+# Select PostgreSQL/MySQL
 
 [[toc]]
 
@@ -59,7 +63,7 @@ db.NewSelect().
 	Scan(ctx)
 ```
 
-## Select
+## Example
 
 To select into a struct, define a [model](models.html) and use
 [SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery):
