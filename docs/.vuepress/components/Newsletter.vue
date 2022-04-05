@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-bottom: 8px">Get insights and updates in your inbox:</div>
+  <div style="padding-bottom: 8px; font-weight: 500">Get insights and updates in your inbox:</div>
 
   <el-form
     v-if="!form.done"

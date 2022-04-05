@@ -1,6 +1,6 @@
 ---
 home: true
-title: Lightweight Go ORM for PostgreSQL, MySQL, MSSQL, and SQLite
+title: Lightweight Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite
 
 actions:
   - text: Get Started
@@ -16,7 +16,7 @@ features:
   - title: '*sql.DB compatible'
     details: Bun uses database/sql and extends it in a compatible and idiomatic way.
   - title: Database-agnostic
-    details: Out-of-the box works with PostgreSQL, MySQL 5.7+, and SQLite.
+    details: Out-of-the box works with PostgreSQL, MySQL 5.7+, MSSQL, and SQLite.
   - title: Migrations
     details: Keep your database schema updated with Go and SQL-based migrations.
   - title: Fixtures
@@ -25,7 +25,7 @@ features:
     details: Modern app skeleton puts everything together and helps you get started.
 ---
 
-## Why another database client?
+## Why another Golang ORM?
 
 So you can elegantly write complex queries:
 

@@ -37,6 +37,7 @@ export default defineClientAppEnhance(({ app, router }) => {
       '/postgres/zfs-aws-ebs.html': '/postgres/tuning-zfs-aws-ebs.html',
       '/postgres/installing-zfs-ubuntu.html':
         'https://blog.uptrace.dev/posts/ubuntu-install-zfs.html',
+      '/postgres/running-bun-in-production.html': '/guide/running-bun-in-production.html',
     }
 
     let path = to.path

@@ -2,9 +2,9 @@
   <el-card :key="mounted" class="box-card">
     <div class="cta">
       <div>
-        Still using Jaeger?
-        <a href="https://get.uptrace.dev/" target="_blank">Uptrace</a> is an OpenTelemetry tracing
-        backend that monitors performance, errors, and logs.
+        Still using Jaeger/Sentry? Uptrace is an open source
+        <a href="https://get.uptrace.dev/" target="_blank">distributed tracing tool</a> that uses
+        OpenTelemetry to monitor performance, errors, and logs.
       </div>
       <div>
         <a href="https://github.com/uptrace/uptrace" target="_blank">

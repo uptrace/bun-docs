@@ -178,7 +178,7 @@ var ids []int64
 res, err := db.NewDelete().Model((*User)(nil)).Returning("id").Exec(ctx, &ids)
 ```
 
-## Table relations
+## Table relationships
 
 Bun also recognizes common [table relationships](relations.html), for example, you can define a
 [belongs-to](relations.html#belongs-to) relation:

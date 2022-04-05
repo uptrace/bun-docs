@@ -13,9 +13,10 @@
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://get.uptrace.dev/" target="_blank">Distributed tracing</a>
-        <a href="https://bunrouter.uptrace.dev/" target="_blank">HTTP router</a>
-        <a href="https://clickhouse.uptrace.dev/" target="_blank">ClickHouse client</a>
+        <a href="https://get.uptrace.dev/" target="_blank">Tracing tool</a>
+        <a href="https://bunrouter.uptrace.dev/" target="_blank">Golang HTTP router</a>
+        <a href="https://clickhouse.uptrace.dev/" target="_blank">Golang ClickHouse</a>
+        <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
       </div>
     </div>
     <Layout>
@@ -25,7 +26,7 @@
           style="padding-top: 40px; padding-bottom: 0"
         >
           <div>
-            <a href="https://uptrace.dev/" target="_blank" title="Distributed tracing and metrics">
+            <a href="https://uptrace.dev/" target="_blank" title="Distributed tracing tool">
               <img src="/uptrace/logo-text.svg" style="width: 200px" />
             </a>
           </div>
@@ -65,7 +66,7 @@ export default {
 
       setInterval(() => {
         link.value = randLink(link.value.href)
-      }, 30000)
+      }, 10000)
     })
 
     function randLink(currHref = '') {
@@ -79,20 +80,20 @@ export default {
           href: 'https://blog.uptrace.dev/pages/newsletter.html',
         },
         {
-          text: 'Running PostgreSQL on ZFS and AWS',
-          href: 'https://bun.uptrace.dev/postgres/tuning-zfs-aws-ebs.html',
-        },
-        {
-          text: 'Running Bun in production using PostgreSQL',
-          href: '/postgres/running-bun-in-production.html',
-        },
-        {
           text: 'BunRouter is an extremely fast and flexible HTTP router',
           href: 'https://bunrouter.uptrace.dev/',
         },
         {
           text: 'Tuning PostgreSQL performance for production',
           href: '/postgres/performance-tuning.md',
+        },
+        {
+          text: 'Getting started with Gin, GORM, OpenTelemetry, and Uptrace',
+          href: 'https://get.uptrace.dev/opentelemetry/gin-gorm.html',
+        },
+        {
+          text: '@uptracedev: we tweet about Go, OpenTelemetry, ClickHouse, and more',
+          href: 'https://twitter.com/uptracedev',
         },
       ]
 
@@ -144,7 +145,7 @@ export default {
 
 .links ::v-deep(a) {
   display: inline-block;
-  padding-left: 32px;
+  padding-left: 26px;
 }
 
 a {

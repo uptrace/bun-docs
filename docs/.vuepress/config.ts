@@ -8,8 +8,8 @@ const isProd = process.env.NODE_ENV === 'production'
 
 export default defineUserConfig<DefaultThemeOptions>({
   lang: 'en-US',
-  title: 'Bun SQL client',
-  description: 'Lightweight Go ORM for PostgreSQL, MySQL, MSSQL, and SQLite',
+  title: 'Golang ORM',
+  description: 'Lightweight Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite',
 
   head: [
     [
@@ -51,6 +51,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   },
 
   evergreen: isProd,
+  bundler: '@vuepress/bundler-webpack',
   bundlerConfig: {
     configureWebpack: (config) => {
       config.module.rules.push({
@@ -83,7 +84,6 @@ export default defineUserConfig<DefaultThemeOptions>({
   },
 
   plugins: [
-    ['@vuepress/plugin-debug'],
     ['@vuepress/plugin-google-analytics', { id: 'G-LQ6F39WC48' }],
     [
       '@vuepress/plugin-register-components',

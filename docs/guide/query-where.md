@@ -20,6 +20,32 @@ To safely build dynamic WHERE clauses, use [placeholders](placeholders.md) and `
 q = q.Where("? LIKE ?", bun.Ident("mycolumn"), "hello%")
 ```
 
+## QueryBuilder
+
+Bun provides [QueryBuilder](https://pkg.go.dev/github.com/uptrace/bun#QueryBuilder) interface which
+supports common methods required to build queries, for example:
+
+```go
+func addWhere(q bun.QueryBuilder) QueryBuilder {
+    return q.Where("id = ?", 123)
+}
+
+qb := db.NewSelect().QueryBuilder()
+addWhere(qb)
+
+qb := db.NewUpdate().QueryBuilder()
+addWhere(qb)
+
+qb := db.NewDelete().QueryBuilder()
+addWhere(qb)
+
+// Alternatively.
+
+db.NewSelect().ApplyQueryBuilder(addWhere)
+db.NewUpdate().ApplyQueryBuilder(addWhere)
+db.NewDelete().ApplyQueryBuilder(addWhere)
+```
+
 ## WHERE IN
 
 If you already have a list of ids, use `bun.In`:
