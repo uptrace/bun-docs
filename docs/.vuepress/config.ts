@@ -67,21 +67,6 @@ export default defineUserConfig<DefaultThemeOptions>({
       lineNumbers: false,
     },
   },
-  extendsMarkdown: (md) => {
-    md.use(require('markdown-it-include'), {
-      getRootDir: (options, state, startLine, endLine) => {
-        let relPath = state.env.filePathRelative
-        if (!relPath) {
-          return path.resolve(__dirname, '..')
-        }
-
-        const i = relPath.lastIndexOf('/')
-        relPath = i >= 0 ? relPath.slice(0, i) : ''
-
-        return path.resolve(__dirname, '..', relPath)
-      },
-    })
-  },
 
   plugins: [
     ['@vuepress/plugin-google-analytics', { id: 'G-LQ6F39WC48' }],
@@ -93,6 +78,7 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     ['@vuepress/plugin-search'],
     ['vuepress-plugin-sitemap2', { hostname: 'https://bun.uptrace.dev' }],
+    require('./uptrace-plugin'),
   ],
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),
 })
