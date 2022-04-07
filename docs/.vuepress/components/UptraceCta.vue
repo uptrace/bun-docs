@@ -3,8 +3,10 @@
     <div class="cta">
       <div>
         Still using Jaeger/Sentry? Uptrace is an open source
-        <a href="https://get.uptrace.dev/" target="_blank">distributed tracing tool</a> that uses
-        OpenTelemetry to monitor performance, errors, and logs.
+        <a href="https://get.uptrace.dev/compare/distributed-tracing-tools.html" target="_blank"
+          >distributed tracing tool</a
+        >
+        that uses OpenTelemetry to monitor performance, errors, and logs.
       </div>
       <div>
         <a href="https://github.com/uptrace/uptrace" target="_blank">

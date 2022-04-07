@@ -2,7 +2,7 @@
 title: Introduction
 ---
 
-# PostgreSQL and pgdriver
+# Golang PostgreSQL ORM
 
 ## pgdriver
 
