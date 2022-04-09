@@ -1,8 +1,8 @@
 ---
-title: Declarative Table Partitioning
+title: PostgreSQL Table Partitioning
 ---
 
-# PostgreSQL Table Partitioning
+<CoverImage title="PostgreSQL Table Partitioning" />
 
 This tutorial explains how to use PostgreSQL
 [Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE)

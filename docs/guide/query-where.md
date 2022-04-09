@@ -1,8 +1,4 @@
----
-title: Where
----
-
-# Where PostgreSQL/MySQL
+# Where [PostgreSQL MySQL]
 
 [[toc]]
 

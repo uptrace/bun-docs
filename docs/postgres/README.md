@@ -1,13 +1,17 @@
 ---
-title: Introduction
+title: PostgreSQL driver Golang
 ---
 
-# Golang PostgreSQL ORM
+<CoverImage title="Supported PostgreSQL drivers" />
 
-## pgdriver
+[[toc]]
+
+## Supported drivers
+
+### pgdriver
 
 Bun comes with its own PostgreSQL driver called
-[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver) that allows connection to a
+[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver) that allows connecting to a
 PostgreSQL database using a DSN (connection string):
 
 ```go
@@ -69,7 +73,7 @@ pgconn := pgdriver.NewConnector(
 )
 ```
 
-### pgdriver.Error
+#### pgdriver.Error
 
 pgdriver exposes [Error](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Error) type to
 work with PostgreSQL errors:
@@ -89,12 +93,12 @@ if err != nil {
 }
 ```
 
-### Debugging
+#### Debugging
 
-If you suspect an issue with pgdriver, try to replace it with [pgx](/guide/drivers.md#pgx) and check
-if the problem goes away.
+If you suspect an issue with pgdriver, try to replace it with [pgx](#pgx) and check if the problem
+goes away.
 
-## pgx
+### pgx
 
 As an alternative to pgdriver, you can also use [pgx](https://github.com/jackc/pgx) with
 `pgdialect`. With pgx, you can disable implicit prepared statements, because Bun does not benefit

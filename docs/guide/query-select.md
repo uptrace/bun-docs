@@ -1,8 +1,4 @@
----
-title: Select
----
-
-# Select PostgreSQL/MySQL
+# Select [PostgreSQL MySQL]
 
 [[toc]]
 

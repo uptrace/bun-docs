@@ -1,4 +1,8 @@
-# SQL placeholders
+---
+title: SQL Placeholders
+---
+
+<CoverImage title="SQL Placeholders" />
 
 ## Introduction
 

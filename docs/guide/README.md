@@ -1,4 +1,4 @@
-# Introduction
+# What is Bun?
 
 Bun is a SQL-first database client for Go. SQL-first means that most SQL queries can be
 automatically compiled to Bun expressions and Bun expressions look and feel like SQL queries.

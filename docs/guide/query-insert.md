@@ -1,8 +1,4 @@
----
-title: Insert
----
-
-# Insert PostgreSQL/MySQL
+# Insert [PostgreSQL MySQL]
 
 [[toc]]
 

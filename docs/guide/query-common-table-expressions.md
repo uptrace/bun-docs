@@ -1,8 +1,4 @@
----
-title: Common table expressions
----
-
-# Common table expressions PostgreSQL/MySQL
+# Common table expressions [PostgreSQL MySQL]
 
 ## With
 

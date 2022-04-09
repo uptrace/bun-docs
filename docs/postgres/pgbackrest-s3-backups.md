@@ -1,8 +1,8 @@
 ---
-title: 'pgBackRest: S3 backups'
+title: 'pgBackRest: S3 backups [full guide]'
 ---
 
-# pgBackRest: PostgreSQL S3 backups
+<CoverImage title="pgBackRest: PostgreSQL S3 backups" />
 
 This tutorial explains how to backup PostgreSQL database using [pgBackRest](https://pgbackrest.org/)
 and S3.

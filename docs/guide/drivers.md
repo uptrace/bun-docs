@@ -1,4 +1,8 @@
-# Drivers and dialects
+---
+title: Drivers and dialects
+---
+
+<CoverImage title="Drivers and dialects" />
 
 To connect to a database, you need a `database/sql` driver and a corrensponding SQL dialect that
 comes with bun.

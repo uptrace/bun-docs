@@ -1,8 +1,4 @@
----
-title: Running Bun in production
----
-
-# Running Bun in production using PostgreSQL
+# Running Bun in production
 
 ## database/sql
 

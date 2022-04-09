@@ -1,4 +1,8 @@
-# Defining models
+---
+title: Defining models
+---
+
+<CoverImage title="Defining models" />
 
 [[toc]]
 

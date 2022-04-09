@@ -1,10 +1,10 @@
 ---
-title: Faceted navigation and search
+title: PostgreSQL Faceted navigation and search
 ---
 
 <UptraceCta />
 
-# Building faceted search using PostgreSQL full text search
+<CoverImage title="Faceted search using PostgreSQL full text search" />
 
 <img src="/img/faceted-search.png" style="float: right" />
 

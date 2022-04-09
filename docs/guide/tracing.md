@@ -1,5 +1,7 @@
 # Performance and errors monitoring
 
+[[toc]]
+
 ## OpenTelemetry
 
 Bun relies on OpenTelemetry to monitor database performance and errors using
@@ -48,11 +50,13 @@ You can find a runnable example at
 
 ## Prometheus
 
-You can send OpenTelemetry metrics to Prometheus using the corresponding
-[exporter](https://opentelemetry.uptrace.dev/guide/prometheus.html). Alternatively, you can also use
-[j2gg0s/otsql](https://github.com/j2gg0s/otsql) that directly works with Prometheus.
+You can send OpenTelemetry metrics to Prometheus using
+[OpenTelemetry Prometheus exporter](https://opentelemetry.uptrace.dev/guide/opentelemetry-prometheus.html).
+Alternatively, you can also use [j2gg0s/otsql](https://github.com/j2gg0s/otsql) that directly works
+with Prometheus.
 
 ## See also
 
 - [Open Source distributed tracing tools](https://get.uptrace.dev/compare/distributed-tracing-tools.html)
+- [DataDog competitors and alternatives](https://get.uptrace.dev/compare/datadog-competitors.html)
 - [OpenTelemetry guide for Gin, GORM, and Zap](https://get.uptrace.dev/opentelemetry/gin-gorm.html)

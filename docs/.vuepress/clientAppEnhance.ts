@@ -1,4 +1,4 @@
-import { defineClientAppEnhance } from '@vuepress/client'
+import { defineClientAppEnhance, resolvers } from '@vuepress/client'
 
 import {
   ElIcon,
@@ -30,6 +30,8 @@ export default defineClientAppEnhance(({ app, router }) => {
   app.use(ElFormItem)
   app.use(ElInput)
   app.use(ElButton)
+
+  resolvers.resolvePageHeadTitle = (page, siteLocale) => page.title
 
   router.beforeResolve((to, from, next) => {
     const redirectMap = {

@@ -1,8 +1,4 @@
----
-title: Soft deletes
----
-
-# Soft deletes for PostgreSQL, MySQL, and SQLite
+# Soft deletes [PostgreSQL MySQL]
 
 ## Introduction
 

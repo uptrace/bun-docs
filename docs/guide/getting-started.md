@@ -1,8 +1,8 @@
 ---
-title: Getting started
+title: Getting started with database/sql and Golang ORM
 ---
 
-# Getting started with database/sql and Bun
+<CoverImage title="Getting started with database/sql and Bun" />
 
 [[toc]]
 

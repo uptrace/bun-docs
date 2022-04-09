@@ -1,8 +1,4 @@
----
-title: Drop Table
----
-
-# Drop Table PostgreSQL/MySQL
+# Drop Table [PostgreSQL MySQL]
 
 [[toc]]
 

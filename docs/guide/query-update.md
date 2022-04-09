@@ -1,8 +1,4 @@
----
-title: Update
----
-
-# Update PostgreSQL/MySQL
+# Update [PostgreSQL MySQL]
 
 [[toc]]
 

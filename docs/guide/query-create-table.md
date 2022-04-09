@@ -1,8 +1,4 @@
----
-title: Create Table
----
-
-# Create Table PostgreSQL/MySQL
+# Create Table [PostgreSQL MySQL]
 
 [[toc]]
 

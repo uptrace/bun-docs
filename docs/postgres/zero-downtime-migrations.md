@@ -1,10 +1,10 @@
 ---
-title: Zero-downtime migrations
+title: Zero-downtime PostgreSQL migrations [5 practical tips]
 ---
 
 <UptraceCta />
 
-# Zero-downtime PostgreSQL migrations
+<CoverImage title="Zero-downtime PostgreSQL migrations" />
 
 Follow these simple rules to avoid common pitfalls and apply changes to your database without
 _unplanned_ downtime.

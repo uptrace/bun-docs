@@ -1,8 +1,4 @@
----
-title: Truncate Table
----
-
-# Truncate table PostgreSQL/MySQL
+# Truncate table [PostgreSQL MySQL]
 
 [[toc]]
 

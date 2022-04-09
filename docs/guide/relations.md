@@ -1,4 +1,4 @@
-# Table relationships
+# ORM: Table relationships
 
 ## Introduction
 

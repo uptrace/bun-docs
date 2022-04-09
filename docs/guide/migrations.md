@@ -1,4 +1,4 @@
-# Migrations
+# Migrations [PostgreSQL MySQL]
 
 You can write migrations to change database schema or data. A migration can be a regular Go function
 or a text file with SQL commands.

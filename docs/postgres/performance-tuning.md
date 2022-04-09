@@ -1,10 +1,10 @@
 ---
-title: Tuning PostgreSQL performance
+title: Tuning PostgreSQL performance [most important settings]
 ---
 
 <UptraceCta />
 
-# Tuning PostgreSQL settings for performance
+<CoverImage title="Tuning PostgreSQL settings for performance" />
 
 [[toc]]
 

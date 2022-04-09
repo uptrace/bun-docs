@@ -1,8 +1,4 @@
----
-title: Delete
----
-
-# Delete rows PostgreSQL/MySQL
+# Delete rows [PostgreSQL MySQL]
 
 [[toc]]
 

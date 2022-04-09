@@ -1,4 +1,8 @@
-# Writing queries
+---
+title: 'Bun: Writing Queries'
+---
+
+<CoverImage title="Writing Queries" />
 
 ## Design
 
