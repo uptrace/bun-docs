@@ -1,5 +1,5 @@
 ---
-title: Defining models
+title: 'Bun: Defining models'
 ---
 
 <CoverImage title="Defining models" />
@@ -253,3 +253,8 @@ CREATE TABLE roles (
     roles_delete BOOLEAN
 );
 ```
+
+## See also
+
+- [Supported PostgreSQL data types](/postgres/postgres-data-types.html)
+- [PostgreSQL: generating UUIDs](/postgres/postgres-uuid-generate.html)

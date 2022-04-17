@@ -1,10 +1,10 @@
 ---
 home: true
-title: Lightweight Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite
+title: Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite
 
 actions:
   - text: Get Started
-    link: /guide/getting-started.html
+    link: /guide/golang-orm.html
     type: primary
   - text: Introduction
     link: /guide/

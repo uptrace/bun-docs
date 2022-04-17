@@ -37,7 +37,7 @@ bundebug.NewQueryHook(
 
 ## Logrus hook
 
-You can also use [logrusbun](github.com/oiime/logrusbun) to log executed queries using
+You can also use [logrusbun](https://github.com/oiime/logrusbun) to log executed queries using
 [Logrus](https://github.com/sirupsen/logrus)
 
 ```shell

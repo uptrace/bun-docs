@@ -36,6 +36,7 @@ export default defineUserConfig<DefaultThemeOptions>({
   themeConfig: {
     logo: '/hero/logo.png',
     darkMode: false,
+    contributors: false,
 
     locales: {
       '/': {
@@ -43,10 +44,6 @@ export default defineUserConfig<DefaultThemeOptions>({
         sidebar: sidebar.en,
         editLinkText: 'Edit this page on GitHub',
       },
-    },
-
-    themePlugins: {
-      git: false,
     },
   },
 
@@ -78,6 +75,35 @@ export default defineUserConfig<DefaultThemeOptions>({
     ],
     ['@vuepress/plugin-search'],
     ['vuepress-plugin-sitemap2', { hostname: 'https://bun.uptrace.dev' }],
+    [
+      'vuepress-plugin-seo2',
+      {
+        hostname: 'https://bun.uptrace.dev',
+        canonical(page) {
+          return 'https://bun.uptrace.dev' + page.path
+        },
+      },
+    ],
+    [
+      'vuepress-plugin-redirect2',
+      {
+        hostname: 'https://bun.uptrace.dev',
+        config: {
+          '/guide/getting-started.html': '/guide/golang-orm.html',
+          '/guide/tracing.html': '/guide/performance-monitoring.html',
+          '/guide/sql-performance-monitoring.html': '/guide/performance-monitoring.html',
+          '/postgres/uuid.html': '/postgres/postgres-uuid-generate.html',
+          '/postgres/data-types.html': '/postgres/postgres-data-types.html',
+          '/postgres/arrays.html': '/postgres/postgres-arrays.html',
+
+          '/treemux/json-rest-api.html': 'https://blog.uptrace.dev/posts/go-json-rest-api.html',
+          '/postgres/zfs-aws-ebs.html': '/postgres/tuning-zfs-aws-ebs.html',
+          '/postgres/installing-zfs-ubuntu.html':
+            'https://blog.uptrace.dev/posts/ubuntu-install-zfs.html',
+          '/postgres/running-bun-in-production.html': '/guide/running-bun-in-production.html',
+        },
+      },
+    ],
     require('./uptrace-plugin'),
   ],
   clientAppEnhanceFiles: path.resolve(__dirname, './clientAppEnhance.ts'),

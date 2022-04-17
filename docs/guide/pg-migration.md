@@ -22,8 +22,8 @@ migrate a 80-100k lines go-pg app to Bun within a single day.
 
 - `*pg.Query` is split into smaller structs, for example,
   [bun.SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery),
-  [bun.InsertQuery](<(https://pkg.go.dev/github.com/uptrace/bun#InsertQuery)>),
-  [bun.UpdateQuery](<(https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery)>),
+  [bun.InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery),
+  [bun.UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery),
   [bun.DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery) and so on. This is one of
   the reasons Bun inserts/updates data faster than go-pg.
 

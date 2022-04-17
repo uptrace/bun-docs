@@ -3,7 +3,7 @@ import type { NavbarConfig } from '@vuepress/theme-default'
 export const en: NavbarConfig = [
   {
     text: 'Getting started',
-    link: '/guide/getting-started.html',
+    link: '/guide/golang-orm.html',
   },
   {
     text: 'PostgreSQL',

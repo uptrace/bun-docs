@@ -1,5 +1,5 @@
 ---
-title: Drivers and dialects
+title: 'Bun: Drivers and dialects'
 ---
 
 <CoverImage title="Drivers and dialects" />
@@ -34,7 +34,7 @@ db := bun.NewDB(sqldb, mysqldialect.New())
 ## MSSQL
 
 Bun supports SQL Server v2019.CU4 starting from v1.1.x. To connect to a SQL Server, use
-[go-mssqldb](github.com/denisenkom/go-mssqldb) driver and `mssqldialect`:
+[go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver and `mssqldialect`:
 
 ```go
 import (

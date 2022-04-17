@@ -6,15 +6,7 @@ const uptracePlugin: Plugin = {
   extendsMarkdown(md) {
     md.use(require('markdown-it-include'), {
       getRootDir: (options, state, startLine, endLine) => {
-        let relPath = state.env.filePathRelative
-        if (!relPath) {
-          return path.resolve(__dirname, '..')
-        }
-
-        const i = relPath.lastIndexOf('/')
-        relPath = i >= 0 ? relPath.slice(0, i) : ''
-
-        return path.resolve(__dirname, '..', relPath)
+        return path.resolve(__dirname, '..', '..', 'include')
       },
     })
 
@@ -35,7 +27,7 @@ const uptracePlugin: Plugin = {
 
       const hrefAttr = token.attrs![hrefIndex]
       const hrefLink = hrefAttr[1]
-      if (hrefLink.includes('uptrace')) {
+      if (hrefLink.includes('uptrace.dev')) {
         return self.renderToken(tokens, idx, options)
       }
 

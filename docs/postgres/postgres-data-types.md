@@ -1,5 +1,7 @@
 # PostgreSQL data types
 
+[[toc]]
+
 ## timestamptz vs timestamp
 
 **TLDR** You should prefer using `timestamptz` over `timestamp`. None of the types store the
@@ -77,7 +79,7 @@ See [Working with PostgreSQL arrays](arrays.md).
 
 ## UUID
 
-See [Using UUID in PostgreSQL](uuid.md).
+See [Generating UUIDs in PostgreSQL](postgres-uuid-generate.md).
 
 ## See also
 

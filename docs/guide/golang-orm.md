@@ -1,8 +1,8 @@
 ---
-title: Getting started with database/sql and Golang ORM
+title: Golang ORM for database/sql [fastest in 2022]
 ---
 
-<CoverImage title="Getting started with database/sql and Bun" />
+<CoverImage title="Golang database/sql ORM" />
 
 [[toc]]
 
@@ -81,7 +81,7 @@ type User struct {
 }
 ```
 
-Having a model, you can [create](query-table-create.html) and drop tables:
+Having a model, you can [create](query-create-table.html) and drop tables:
 
 ```go
 // Create users table.

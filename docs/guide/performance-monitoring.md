@@ -1,4 +1,8 @@
-# Performance and errors monitoring
+---
+title: SQL Performance and Errors Monitoring
+---
+
+<CoverImage title="Golang ORM Performance and Errors Monitoring" />
 
 [[toc]]
 
