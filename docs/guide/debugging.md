@@ -12,6 +12,8 @@ go get github.com/uptrace/bun/extra/bundebug
 Then add the provided query hook which by default only prints failed queries:
 
 ```go
+import "github.com/uptrace/bun/extra/bundebug"
+
 db := bun.NewDB(sqldb, dialect)
 db.AddQueryHook(bundebug.NewQueryHook())
 ```

@@ -1,6 +1,6 @@
 ---
 home: true
-title: Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite
+title: SQL-first Golang ORM for PostgreSQL, MySQL, MSSQL, and SQLite
 
 actions:
   - text: Get Started
