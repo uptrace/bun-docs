@@ -6,7 +6,7 @@ title: SQL Performance and Errors Monitoring
 
 [[toc]]
 
-## OpenTelemetry
+## What is OpenTelemetry?
 
 Bun relies on OpenTelemetry to monitor database performance and errors using
 [distributed tracing](https://opentelemetry.uptrace.dev/guide/distributed-tracing.html) and
@@ -15,6 +15,8 @@ Bun relies on OpenTelemetry to monitor database performance and errors using
 [OpenTelemetry](https://opentelemetry.uptrace.dev/) is a vendor-neutral API for distributed traces
 and metrics. It specifies how to collect and send telemetry data to backend platforms. It means that
 you can instrument your application once and then add or change vendors (backends) as required.
+
+## OpenTelemetry instrumentaton
 
 Bun comes with an OpenTelemetry instrumentation called
 [bunotel](https://github.com/uptrace/bun/tree/master/extra/bunotel) that is distributed as a
@@ -42,7 +44,17 @@ ctx := req.Context()
 err := db.NewSelect().Scan(ctx)
 ```
 
-As expected, Bun creates
+## Uptrace
+
+[Uptrace](https://uptrace.dev/) is an open source
+[DataDog alternative](https://get.uptrace.dev/compare/datadog-competitors.html) that helps
+developers pinpoint failures and find performance bottlenecks. Uptrace can process billions of spans
+on a single server and allows to monitor your software at 10x lower cost.
+
+You can [install Uptrace](https://get.uptrace.dev/guide/opentelemetry-tracing-tool.html) by
+downloading a DEB/RPM package or a pre-compiled binary.
+
+As expected, otelbun creates
 [spans](https://opentelemetry.uptrace.dev/guide/distributed-tracing.html#spans) for processed
 queries and records any errors as they occur. Here is how the collected information is displayed at
 [Uptrace](https://uptrace.dev/explore/1/groups/?system=db%3Apostgresql&utm_source=bun&utm_campaign=bun-tracing):

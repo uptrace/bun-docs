@@ -86,4 +86,4 @@ You can easily extend Bun with custom types to fully utilize your DBMS capabilit
 See also:
 
 - [Model and query hooks](/guide/hooks.html)
-- [PostgreSQL data types](/postgres/data-types.md)
+- [PostgreSQL data types](/postgres/postgres-data-types.md)
