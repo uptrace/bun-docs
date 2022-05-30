@@ -22,7 +22,7 @@ Bun provides [QueryBuilder](https://pkg.go.dev/github.com/uptrace/bun#QueryBuild
 supports common methods required to build queries, for example:
 
 ```go
-func addWhere(q bun.QueryBuilder) QueryBuilder {
+func addWhere(q bun.QueryBuilder) bun.QueryBuilder {
     return q.Where("id = ?", 123)
 }
 
