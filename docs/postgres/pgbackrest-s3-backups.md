@@ -117,6 +117,12 @@ To restore the cluster from the last backup:
 sudo -u postgres pgbackrest --stanza=demo --delta restore
 ```
 
+To view all available backups:
+
+```shell
+sudo -u postgres pgbackrest --stanza=demo info
+```
+
 ## Conclusion
 
 pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance

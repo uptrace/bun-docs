@@ -116,7 +116,7 @@ To select a book and manually join the book author:
 ```go
 book := new(Book)
 err := db.NewSelect().
-    Model(&book).
+    Model(book).
     ColumnExpr("book.*").
     ColumnExpr("a.id AS author__id, a.name AS author__name").
     Join("JOIN authors AS a ON a.id = book.author_id").
