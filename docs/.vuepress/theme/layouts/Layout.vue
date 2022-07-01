@@ -113,12 +113,42 @@ export default {
 </script>
 
 <style lang="scss">
+@import '@vuepress/theme-default/lib/client/styles/_variables';
+
 :root {
   --header-height: 6rem;
 }
 
 .navbar {
   top: 2.4rem;
+}
+
+.home,
+.page {
+  padding-top: var(--header-height);
+}
+
+.sidebar {
+  top: var(--header-height);
+}
+
+@media (max-width: $MQMobile) {
+  .sidebar {
+    top: 0;
+    padding-top: var(--header-height);
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  .theme-default-content:not(.custom) > div > & {
+    margin-top: calc(0.5rem - var(--header-height));
+    padding-top: calc(1rem + var(--header-height));
+  }
 }
 </style>
 

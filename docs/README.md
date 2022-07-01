@@ -1,6 +1,6 @@
 ---
 home: true
-title: SQL-first Golang ORM
+title: SQL-first Golang ORM [get things done in 2022]
 
 actions:
   - text: Get Started

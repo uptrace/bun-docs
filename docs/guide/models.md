@@ -2,6 +2,8 @@
 title: 'Bun: Defining models'
 ---
 
+<UptraceCta />
+
 <CoverImage title="Defining models" />
 
 [[toc]]
@@ -68,6 +70,25 @@ To specify a different table name for `SELECT` queries:
 type User struct {
 	bun.BaseModel `bun:"select:users_view,alias:u"`
 }
+```
+
+### ModelTableExpr
+
+Using the `ModelTableExpr` method, you can override the struct table name, but not the alias.
+`ModelTableExpr` should always use the same table alias, for example:
+
+```go
+type User struct {
+	bun.BaseModel `bun:"table:myusers,alias:u"`
+}
+
+// Good.
+db.NewSelect().Model(&User{}).ModelTableExpr("all_users AS u")
+db.NewSelect().Model(&User{}).ModelTableExpr("deleted_users AS u")
+
+// Bad.
+db.NewSelect().Model(&User{}).ModelTableExpr("all_users AS user")
+db.NewSelect().Model(&User{}).ModelTableExpr("deleted_users AS deleted")
 ```
 
 ## Column names

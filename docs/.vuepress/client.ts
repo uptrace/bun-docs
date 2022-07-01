@@ -1,4 +1,4 @@
-import { defineClientAppEnhance, resolvers } from '@vuepress/client'
+import { defineClientConfig, resolvers } from '@vuepress/client'
 
 import {
   ElIcon,
@@ -21,15 +21,17 @@ import 'element-plus/es/components/form-item/style/css.mjs'
 import 'element-plus/es/components/input/style/css.mjs'
 import 'element-plus/es/components/button/style/css.mjs'
 
-export default defineClientAppEnhance(({ app }) => {
-  app.use(ElIcon)
-  app.use(ElTag)
+export default defineClientConfig({
+  enhance({ app, router, siteData }) {
+    app.use(ElIcon)
+    app.use(ElTag)
 
-  app.use(ElCard)
-  app.use(ElForm)
-  app.use(ElFormItem)
-  app.use(ElInput)
-  app.use(ElButton)
+    app.use(ElCard)
+    app.use(ElForm)
+    app.use(ElFormItem)
+    app.use(ElInput)
+    app.use(ElButton)
 
-  resolvers.resolvePageHeadTitle = (page, siteLocale) => page.title
+    resolvers.resolvePageHeadTitle = (page, siteLocale) => page.title
+  },
 })

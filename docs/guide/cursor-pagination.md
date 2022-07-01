@@ -2,7 +2,9 @@
 title: Cursor pagination
 ---
 
-# Efficient database pagination using cursors
+<UptraceCta />
+
+<CoverImage title="Efficient database pagination using cursors" />
 
 ## Introduction
 

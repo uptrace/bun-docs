@@ -2,6 +2,8 @@
 title: Golang ORM for database/sql [fastest in 2022]
 ---
 
+<UptraceCta />
+
 <CoverImage title="Golang database/sql ORM" />
 
 [[toc]]
@@ -226,7 +228,7 @@ if err != nil {
     panic(err)
 }
 
-err := bundb.NewInsert().
+res, err := bundb.NewInsert().
     Conn(tx). // run the query using the existing transaction
     Model(&model).
     Exec(ctx)

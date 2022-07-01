@@ -1,4 +1,10 @@
-# Soft deletes [PostgreSQL MySQL]
+---
+title: Soft deletes [PostgreSQL MySQL]
+---
+
+<UptraceCta />
+
+<CoverImage title="Soft deletes in PostgreSQL and MySQL" />
 
 ## Introduction
 
