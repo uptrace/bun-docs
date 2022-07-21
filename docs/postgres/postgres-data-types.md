@@ -75,7 +75,7 @@ type Model struct {
 
 ## Arrays
 
-See [Working with PostgreSQL arrays](arrays.md).
+See [Working with PostgreSQL arrays](postgres-arrays.md).
 
 ## UUID
 
