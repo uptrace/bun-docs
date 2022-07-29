@@ -47,6 +47,10 @@ export default defineUserConfig<DefaultThemeOptions>({
 
     navbar: navbar.en,
     sidebar: sidebar.en,
+
+    docsRepo: 'go-bun/bun-docs',
+    docsBranch: 'master',
+    docsDir: 'docs',
   }),
   alias: {
     '@public': path.resolve(__dirname, './public'),
