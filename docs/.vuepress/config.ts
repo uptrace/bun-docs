@@ -56,7 +56,10 @@ export default defineUserConfig<DefaultThemeOptions>({
     '@public': path.resolve(__dirname, './public'),
   },
 
-  evergreen: isProd,
+  evergreen: !isProd,
+  shouldPreload: false,
+  shouldPrefetch: false,
+
   bundler: webpackBundler({
     configureWebpack: (config) => {
       config.module.rules.push({

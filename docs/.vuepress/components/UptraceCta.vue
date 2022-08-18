@@ -3,11 +3,8 @@
     <div class="cta">
       <div>
         Still using <strong>Jaeger/Sentry</strong>?
-        <a href="https://get.uptrace.dev/">Uptrace</a> is a
-        <a href="https://get.uptrace.dev/compare/distributed-tracing-tools.html" target="_blank"
-          >distributed tracing tool</a
-        >
-        that monitors performance, errors, and logs using <strong>OpenTelemetry</strong>.
+        <a href="https://uptrace.dev/get/">Uptrace</a> allows you to quickly identify and solve
+        issues in your applications using <strong>tracing and metrics</strong>.
       </div>
       <div style="width: 10px"></div>
       <div>

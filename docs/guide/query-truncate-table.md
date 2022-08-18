@@ -1,4 +1,8 @@
-# Truncate table [PostgreSQL MySQL]
+---
+title: Truncate table [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Truncate Table PostgreSQL MySQL" />
 
 [[toc]]
 

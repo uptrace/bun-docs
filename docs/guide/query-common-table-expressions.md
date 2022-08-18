@@ -1,6 +1,12 @@
-# Common table expressions [PostgreSQL MySQL]
+---
+title: Golang Common Table Expressions [PostgreSQL MySQL]
+---
 
-## With
+<CoverImage title="Golang Common Table Expressions PostgreSQL MySQL" />
+
+[[toc]]
+
+## WITH
 
 Most Bun queries support CTEs via `With` method:
 
@@ -96,6 +102,8 @@ SET title = _data.title, text = _data.text
 FROM _data
 WHERE book.id = _data.id
 ```
+
+## WithOrder
 
 You can also use [WithOrder](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery.WithOrder) to
 include row rank in values:

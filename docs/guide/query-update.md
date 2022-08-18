@@ -1,4 +1,8 @@
-# Update [PostgreSQL MySQL]
+---
+title: Golang Update [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Update PostgreSQL MySQL" />
 
 [[toc]]
 

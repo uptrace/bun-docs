@@ -1,4 +1,8 @@
-# Select [PostgreSQL MySQL]
+---
+title: Golang Select [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Select PostgreSQL MySQL" />
 
 [[toc]]
 
@@ -161,4 +165,26 @@ SELECT * FROM (
   SELECT "book"."id", "book"."title", "book"."text"
   FROM "books" AS "book" WHERE (author_id = 1)
 ) AS book
+```
+
+## Raw queries
+
+Bun also allows you to execute and scan arbitrary raw queries:
+
+```go
+type User struct {
+	ID int64
+	Name string
+}
+
+users := make([]User, 0)
+
+err := db.NewRawQuery(
+	"SELECT id, name FROM ? LIMIT ?",
+	bun.Ident("users"), 100,
+).Scan(ctx, &users)
+```
+
+```sql
+SELECT id, name FROM "users" LIMIT 100
 ```

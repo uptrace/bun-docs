@@ -1,4 +1,8 @@
-# Create Table [PostgreSQL MySQL]
+---
+title: Golang Create Table [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Create Table PostgreSQL MySQL" />
 
 [[toc]]
 

@@ -69,6 +69,48 @@ var num int
 err := db.NewSelect().ColumnExpr("1").Scan(ctx, &num)
 ```
 
+## Using Bun with existing code
+
+Learning all Bun capabilities may take some time, but you can start using it right away by executing
+manually crafted queries and allowing Bun to scan results for you:
+
+```go
+type User struct {
+	ID int64
+	Name string
+}
+
+users := make([]User, 0)
+
+err := bundb.NewRawQuery(
+	"SELECT id, name FROM ? LIMIT ?",
+	bun.Ident("users"), 100,
+).Scan(ctx, &users)
+```
+
+```sql
+SELECT id, name FROM "users" LIMIT 100
+```
+
+If you already have code that uses `*sql.Tx` or `*sql.Conn`, you can still use Bun query builder
+without rewriting the existing code:
+
+```go
+tx, err := sqldb.Begin()
+if err != nil {
+	panic(err)
+}
+
+if _, err := tx.Exec("...existing query..."); err != nil {
+	panic(err)
+}
+
+res, err := bundb.NewInsert().
+	Conn(tx). // run the query using the existing transaction
+	Model(&model).
+	Exec(ctx)
+```
+
 ## Defining models
 
 Bun uses struct-based [models](models.html) to construct [queries](queries.html) and scan results. A
@@ -216,23 +258,6 @@ LIMIT 1
 ```
 
 See [example](https://github.com/uptrace/bun/tree/master/example/basic) for details.
-
-## Using Bun with existing code
-
-If you already have code that uses `*sql.Tx` or `*sql.Conn`, you can still use Bun query builder
-without rewriting the existing code:
-
-```go
-tx, err := sqldb.Begin()
-if err != nil {
-    panic(err)
-}
-
-res, err := bundb.NewInsert().
-    Conn(tx). // run the query using the existing transaction
-    Model(&model).
-    Exec(ctx)
-```
 
 ## What's next
 

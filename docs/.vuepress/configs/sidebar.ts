@@ -20,7 +20,7 @@ export const en: SidebarConfig = {
         { text: 'SQL placeholders', link: '/guide/placeholders.html' },
         { text: 'SELECT', link: '/guide/query-select.html' },
         { text: 'WHERE', link: '/guide/query-where.html' },
-        { text: 'Common table expressions', link: '/guide/query-common-table-expressions.html' },
+        { text: 'CTE and VALUES', link: '/guide/query-common-table-expressions.html' },
         { text: 'INSERT', link: '/guide/query-insert.html' },
         { text: 'UPDATE', link: '/guide/query-update.html' },
         { text: 'DELETE', link: '/guide/query-delete.html' },

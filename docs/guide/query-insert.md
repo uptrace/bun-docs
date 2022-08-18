@@ -1,4 +1,8 @@
-# Insert [PostgreSQL MySQL]
+---
+title: Golang Insert [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Insert PostgreSQL MySQL" />
 
 [[toc]]
 

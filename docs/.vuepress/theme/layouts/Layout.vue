@@ -13,10 +13,10 @@
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://get.uptrace.dev/" target="_blank">Tracing tool</a>
+        <a href="https://uptrace.dev/get/" target="_blank">Tracing tool</a>
         <a href="https://bunrouter.uptrace.dev/" target="_blank">Golang HTTP router</a>
         <a href="https://clickhouse.uptrace.dev/" target="_blank">Golang ClickHouse</a>
-        <a href="https://blog.uptrace.dev/" target="_blank">Blog</a>
+        <a href="https://uptrace.dev/blog/" target="_blank">Blog</a>
       </div>
     </div>
     <Layout>
@@ -73,11 +73,7 @@ export default {
       const links = [
         {
           text: 'Monitoring cache stats using OpenTelemetry Metrics',
-          href: 'https://blog.uptrace.dev/posts/opentelemetry-metrics-cache-stats.html',
-        },
-        {
-          text: 'Get latest updates right to your email',
-          href: 'https://blog.uptrace.dev/pages/newsletter.html',
+          href: 'https://uptrace.dev/opentelemetry/opentelemetry-metrics-cache-stats.html',
         },
         {
           text: 'BunRouter is an extremely fast and flexible HTTP router',
@@ -85,11 +81,11 @@ export default {
         },
         {
           text: 'Tuning PostgreSQL performance for production',
-          href: '/postgres/performance-tuning.md',
+          href: '/postgres/performance-tuning.html',
         },
         {
           text: 'Getting started with Gin, GORM, OpenTelemetry, and Uptrace',
-          href: 'https://get.uptrace.dev/opentelemetry/gin-gorm.html',
+          href: 'https://uptrace.dev/get/opentelemetry-gin-gorm.html',
         },
         {
           text: '@uptracedev: we tweet about Go, OpenTelemetry, ClickHouse, and more',

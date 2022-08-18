@@ -1,4 +1,8 @@
-# Delete rows [PostgreSQL MySQL]
+---
+title: Golang Delete rows [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Delete Rows PostgreSQL MySQL" />
 
 [[toc]]
 

@@ -1,4 +1,8 @@
-# Drop Table [PostgreSQL MySQL]
+---
+title: Golang Drop Table [PostgreSQL MySQL]
+---
+
+<CoverImage title="Golang Drop Table PostgreSQL MySQL" />
 
 [[toc]]
 
