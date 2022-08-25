@@ -91,7 +91,7 @@ res, err := db.NewUpdate().
 To bulk-update books, you can use a [CTE](query-common-table-expressions.md):
 
 ```go
-values := db.NewValues([]*Book{book1, book2})
+values := db.NewValues(&[]*Book{book1, book2})
 
 res, err := db.NewUpdate().
 	With("_data", values).
