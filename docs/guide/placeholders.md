@@ -90,8 +90,8 @@ Bun also supports global placeholders:
 
 ```go
 // db1 and db2 share the same *sql.DB, but have different named args.
-db1 := db.WithNamedArg("SCHEMA", "foo")
-db2 := db.WithNamedArg("SCHEMA", "bar")
+db1 := db.WithNamedArg("SCHEMA", bun.Ident("foo"))
+db2 := db.WithNamedArg("SCHEMA", bun.Ident("bar"))
 
 // FROM foo.table
 db1.NewSelect().TableExpr("?SCHEMA.table")
