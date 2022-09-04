@@ -83,7 +83,7 @@ Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#Values
 building CTEs:
 
 ```go
-values := db.NewValues([]*Book{book1, book2})
+values := db.NewValues(&[]*Book{book1, book2})
 
 res, err := db.NewUpdate().
     With("_data", values).
