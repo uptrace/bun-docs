@@ -1,5 +1,3 @@
-<UptraceCta />
-
 # Migrating from go-pg
 
 Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) that works with PostgreSQL, MySQL, and
@@ -182,3 +180,7 @@ You can check the status of migrations with:
 ```go
 go run cmd/bun/main.go -env=dev db status
 ```
+
+## Monitoring performance
+
+!!!include(uptrace.md)!!!

@@ -2,8 +2,6 @@
 title: 'Bun: Defining models'
 ---
 
-<UptraceCta />
-
 <CoverImage title="Defining models" />
 
 [[toc]]
@@ -277,5 +275,4 @@ CREATE TABLE roles (
 
 ## See also
 
-- [Supported PostgreSQL data types](/postgres/postgres-data-types.html)
-- [PostgreSQL: generating UUIDs](/postgres/postgres-uuid-generate.html)
+!!!include(see-also.md)!!!

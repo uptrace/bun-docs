@@ -98,11 +98,16 @@ export default defineUserConfig<DefaultThemeOptions>({
         '/postgres/uuid.html': '/postgres/postgres-uuid-generate.html',
         '/postgres/data-types.html': '/postgres/postgres-data-types.html',
         '/postgres/arrays.html': '/postgres/postgres-arrays.html',
+        '/guide/migrating.html': '/guide/pg-migration.html',
+        '/transactions/index.html': '/guide/transactions.html',
+        '/queries/index.html': '/guide/queries.html',
+        '/uuid/index.html': '/postgres/postgres-uuid-generate.html',
+        '/tracing/': '/guide/performance-monitoring.html',
 
-        '/treemux/json-rest-api.html': 'https://blog.uptrace.dev/posts/go-json-rest-api.html',
+        '/treemux/json-rest-api.html': 'https://uptrace.dev/blog/posts/go-json-rest-api.html',
         '/postgres/zfs-aws-ebs.html': '/postgres/tuning-zfs-aws-ebs.html',
         '/postgres/installing-zfs-ubuntu.html':
-          'https://blog.uptrace.dev/posts/ubuntu-install-zfs.html',
+          'https://uptrace.dev/blog/posts/ubuntu-install-zfs.html',
         '/postgres/running-bun-in-production.html': '/guide/running-bun-in-production.html',
       },
     }),

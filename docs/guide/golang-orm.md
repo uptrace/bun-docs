@@ -2,11 +2,17 @@
 title: Golang ORM for database/sql [fastest in 2022]
 ---
 
-<UptraceCta />
-
 <CoverImage title="Golang database/sql ORM" />
 
 [[toc]]
+
+## Installation
+
+To install Bun:
+
+```shell
+go get github.com/uptrace/bun@latest
+```
 
 ## Connecting to a database
 

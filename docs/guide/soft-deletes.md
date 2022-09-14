@@ -2,9 +2,9 @@
 title: Soft deletes [PostgreSQL MySQL]
 ---
 
-<UptraceCta />
-
 <CoverImage title="Soft deletes in PostgreSQL and MySQL" />
+
+[[toc]]
 
 ## Introduction
 
@@ -161,3 +161,7 @@ type User struct {
 +	 DeletedAt time.Time `bun:",soft_delete"`
 }
 ```
+
+## Monitoring performance
+
+!!!include(uptrace.md)!!!
