@@ -119,6 +119,15 @@ res, err := db.NewInsert().Model(&model).On("CONFLICT DO NOTHING").Exec(ctx)
 res, err := db.NewInsert().Model(&model).On("CONFLICT DO UPDATE").Exec(ctx)
 ```
 
+- Replace `q.UpdateNotZero()` with `q.OmitZero()` on an update query:
+
+```go
+// go-pg API:
+res, err := db.Model(&model).WherePK().UpdateNotZero()
+// bun API:
+res, err := db.NewUpdate().Model(&model).WherePK().OmitZero().Exec(ctx)
+```
+
 - Bun uses a database/sql pool, so use [sql.DBStats](https://pkg.go.dev/database/sql#DBStats)
   instead of `pg.PoolStats.`
 - `WrapWith` is removed. Use `With` instead:

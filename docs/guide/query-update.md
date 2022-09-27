@@ -34,6 +34,8 @@ db.NewUpdate().
 	Set("col1 = ?", "value1").
     SetColumn("col1", "?", "value1").
 
+	OmitZero() // don't update struct fields having zero values
+
 	WherePK(). // where using primary keys
 	Where("id = ?", 123).
 	Where("name LIKE ?", "my%").
