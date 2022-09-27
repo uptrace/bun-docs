@@ -179,7 +179,7 @@ type User struct {
 
 users := make([]User, 0)
 
-err := db.NewRawQuery(
+err := db.NewRaw(
 	"SELECT id, name FROM ? LIMIT ?",
 	bun.Ident("users"), 100,
 ).Scan(ctx, &users)
