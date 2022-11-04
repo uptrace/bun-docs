@@ -46,6 +46,16 @@ db.NewUpdate().ApplyQueryBuilder(addWhere)
 db.NewDelete().ApplyQueryBuilder(addWhere)
 ```
 
+Both the `QueryBuilder` and `ApplyQueryBuilder` functions return a struct of QueryBuilder interface type. 
+Once your query is built you need to retrieve the original Query struct in order to be able to call `Scan` or `Exec` functions. 
+To do that you have to Unwrap() your query builder struct and then cast it to desired type like so:
+
+```
+qb := db.NewSelect().QueryBuilder().Where("id = ?", 123)
+
+selectQuery = qb.Unwrap().(*bun.SelectQuery)
+```
+
 ## WHERE IN
 
 If you already have a list of ids, use `bun.In`:
