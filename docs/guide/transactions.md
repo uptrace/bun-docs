@@ -86,7 +86,7 @@ func InsertUser(ctx context.Context, db bun.IDB, user *User) error {
 
 ## PostgreSQL advisory locks
 
-You can ackquire a PostgreSQL advisory lock using the following code:
+You can acquire a PostgreSQL advisory lock using the following code:
 
 ```go
 err := db.RunInTx(ctx, nil, func(ctx context.Context, tx bun.Tx) error {
