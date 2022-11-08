@@ -78,14 +78,14 @@ err := db.NewSelect().Model(&users).WhereAllWithDeleted().Scan(ctx)
 SELECT * FROM users
 ```
 
-Finally, to actually delete soft-deleted rows from a database:
+Finally, to actually delete rows from a database, whether previously soft deleted or not:
 
 ```go
 db.NewDelete().Model(user).Where("id = ?", 123).ForceDelete().Exec(ctx)
 ```
 
 ```sql
-DELETE FROM users WHERE id = 123 AND deleted_at IS NOT NULL
+DELETE FROM users WHERE id = 123
 ```
 
 ## Using table views

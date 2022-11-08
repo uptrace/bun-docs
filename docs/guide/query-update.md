@@ -19,7 +19,7 @@ db.NewUpdate().
 	Model(&slice).
 	Model(&map). // only map[string]interface{}
 
-	Column("col1", "col2"). // list of columns to insert
+	Column("col1", "col2"). // list of columns to update
 	ExcludeColumn("col1"). // all columns except col1
 	ExcludeColumn("*"). // exclude all columns
 
@@ -33,6 +33,8 @@ db.NewUpdate().
     // Generates `SET col1 = 'value1'`
 	Set("col1 = ?", "value1").
     SetColumn("col1", "?", "value1").
+
+	OmitZero() // don't update struct fields having zero values
 
 	WherePK(). // where using primary keys
 	Where("id = ?", 123).
@@ -77,7 +79,7 @@ res, err := db.NewUpdate().
 ```
 
 ```sql
-UPDATE books SET title = 'my title' WHERE id = 1
+UPDATE books SET title = 'my title' WHERE id = 123
 ```
 
 Alternatively:
