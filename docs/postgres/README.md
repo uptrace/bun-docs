@@ -138,3 +138,14 @@ If you store large amounts of data (> 100 gigabytes), consider using ZFS filesys
 
 - [Installing ZFS on Ubuntu](https://uptrace.dev/blog/posts/ubuntu-install-zfs.html)
 - [Running PostgreSQL on ZFS and AWS](tuning-zfs-aws-ebs.md)
+
+## Backups
+
+To backup PostgreSQL database, consider using [PgBackRest with S3](pgbackrest-s3-backups.md).
+
+## See also
+
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
+- [OpenTelemetry GORM](https://uptrace.dev/opentelemetry/instrumentations/go-gorm.html)
+- [OpenTelemetry database/sql](https://uptrace.dev/opentelemetry/instrumentations/go-database-sql.html)
+- [OpenTelemetry SQLAlchemy](https://uptrace.dev/opentelemetry/instrumentations/python-sqlalchemy.html)

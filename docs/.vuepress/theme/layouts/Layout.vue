@@ -13,7 +13,7 @@
       <div class="spacer"></div>
 
       <div class="links">
-        <a href="https://uptrace.dev/get/" target="_blank">Tracing tool</a>
+        <a href="https://uptrace.dev/get/open-source-apm.html" target="_blank">Open-source APM</a>
         <a href="https://bunrouter.uptrace.dev/" target="_blank">Golang HTTP router</a>
         <a href="https://clickhouse.uptrace.dev/" target="_blank">Golang ClickHouse</a>
         <a href="https://uptrace.dev/blog/" target="_blank">Blog</a>

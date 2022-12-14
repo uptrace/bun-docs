@@ -8,7 +8,7 @@ title: Golang Update [PostgreSQL MySQL]
 
 ## API
 
-For the full list of supported methods, see
+To see the full list of supported methods, see
 [API reference](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery).
 
 ```go
@@ -57,7 +57,7 @@ db.NewUpdate().
 
 ## Example
 
-To update a row, define a [model](models.html) and use
+To update a row, define a [model](models.md) and use
 [UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery):
 
 ```go

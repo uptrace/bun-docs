@@ -160,6 +160,6 @@ If your servers have 128+ GB of RAM, consider using huge pages to reduce the num
 and to minimize the [overhead](https://blogs.oracle.com/linux/post/minimizing-struct-page-overhead)
 introduced by managing large amount of pages.
 
-## See also
+## Monitoring performance
 
-!!!include(see-also.md)!!!
+!!!include(uptrace.md)!!!

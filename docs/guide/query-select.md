@@ -1,5 +1,5 @@
 ---
-title: Golang Select [PostgreSQL MySQL]
+title: Golang Select Query [PostgreSQL MySQL]
 ---
 
 <CoverImage title="Golang Select PostgreSQL MySQL" />
@@ -8,7 +8,7 @@ title: Golang Select [PostgreSQL MySQL]
 
 ## API
 
-For the full list of supported methods, see
+To see the full list of supported methods, see
 [SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
 
 ```go
@@ -65,7 +65,7 @@ db.NewSelect().
 
 ## Example
 
-To select into a struct, define a [model](models.html) and use
+To select into a struct, define a [model](models.md) and use
 [SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery):
 
 ```go

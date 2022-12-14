@@ -95,6 +95,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         '/guide/getting-started.html': '/guide/golang-orm.html',
         '/guide/tracing.html': '/guide/performance-monitoring.html',
         '/guide/sql-performance-monitoring.html': '/guide/performance-monitoring.html',
+        '/tracing/index.html': '/guide/performance-monitoring.html',
         '/postgres/uuid.html': '/postgres/postgres-uuid-generate.html',
         '/postgres/data-types.html': '/postgres/postgres-data-types.html',
         '/postgres/arrays.html': '/postgres/postgres-arrays.html',
@@ -102,7 +103,6 @@ export default defineUserConfig<DefaultThemeOptions>({
         '/transactions/index.html': '/guide/transactions.html',
         '/queries/index.html': '/guide/queries.html',
         '/uuid/index.html': '/postgres/postgres-uuid-generate.html',
-        '/tracing/': '/guide/performance-monitoring.html',
 
         '/treemux/json-rest-api.html': 'https://uptrace.dev/blog/posts/go-json-rest-api.html',
         '/postgres/zfs-aws-ebs.html': '/postgres/tuning-zfs-aws-ebs.html',

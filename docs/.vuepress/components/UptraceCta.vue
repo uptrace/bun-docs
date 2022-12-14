@@ -2,9 +2,10 @@
   <el-card :key="mounted" class="box-card">
     <div class="cta">
       <div>
-        Still using <strong>Jaeger/Sentry</strong>?
-        <a href="https://uptrace.dev/get/">Uptrace</a> allows you to quickly identify and solve
-        issues in your applications using <strong>tracing and metrics</strong>.
+        Still using <strong>Jaeger/Sentry</strong>? Uptrace is an
+        <a href="https://uptrace.dev/get/open-source-apm.html" target="_blank">open source APM</a>
+        for OpenTelemetry that you can use to monitor applications and set up alerts to receive
+        notifications via email, Slack, Telegram, and more.
       </div>
       <div style="width: 10px"></div>
       <div>

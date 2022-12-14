@@ -8,7 +8,7 @@ title: Golang Delete rows [PostgreSQL MySQL]
 
 ## API
 
-For the full list of supported methods, see
+To see the full list of supported methods, see
 [DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery).
 
 ```go
@@ -44,7 +44,7 @@ db.NewDelete().
 
 ## Example
 
-To delete a row, define a [model](models.html) and use
+To delete a row, define a [model](models.md) and use
 [DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery):
 
 ```go

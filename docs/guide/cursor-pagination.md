@@ -1,5 +1,5 @@
 ---
-title: Cursor pagination
+title: Cursor pagination [PostgreSQL MySQL]
 ---
 
 <UptraceCta />
@@ -116,3 +116,7 @@ if err != nil {
 ```
 
 See [example](https://github.com/uptrace/bun/tree/master/example/cursor-pagination) for details.
+
+## Monitoring performance
+
+!!!include(uptrace.md)!!!

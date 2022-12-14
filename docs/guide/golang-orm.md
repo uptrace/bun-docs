@@ -119,7 +119,7 @@ res, err := bundb.NewInsert().
 
 ## Defining models
 
-Bun uses struct-based [models](models.html) to construct [queries](queries.html) and scan results. A
+Bun uses struct-based [models](models.md) to construct [queries](queries.md) and scan results. A
 typical Bun model looks like this:
 
 ```go
@@ -131,7 +131,7 @@ type User struct {
 }
 ```
 
-Having a model, you can [create](query-create-table.html) and drop tables:
+Having a model, you can [create](query-create-table.md) and drop tables:
 
 ```go
 // Create users table.
@@ -268,4 +268,4 @@ See [example](https://github.com/uptrace/bun/tree/master/example/basic) for deta
 ## What's next
 
 By now, you should have basic understanding of Bun API. Next, learn how to
-[define models](models.html) and [write queries](queries.html).
+[define models](models.md) and [write queries](queries.md).

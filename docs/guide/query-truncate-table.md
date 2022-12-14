@@ -8,7 +8,7 @@ title: Truncate table [PostgreSQL MySQL]
 
 ## API
 
-For the full list of supported methods, see
+To see the full list of supported methods, see
 [TruncateTableQuery](https://pkg.go.dev/github.com/uptrace/bun#TruncateTableQuery).
 
 ```go

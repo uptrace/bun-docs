@@ -2,6 +2,8 @@
 title: Soft deletes [PostgreSQL MySQL]
 ---
 
+<UptraceCta />
+
 <CoverImage title="Soft deletes in PostgreSQL and MySQL" />
 
 [[toc]]
@@ -112,7 +114,7 @@ WHERE deleted_at IS NULL
 
 PostgreSQL views support inserts and deletes without any gotchas so you can use them in models:
 
-```sql
+```go
 type User struct {
 	bun.BaseModel `bun:"users"`
 

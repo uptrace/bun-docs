@@ -112,3 +112,8 @@ switch db.Dialect().Name() {
         panic("not reached")
 }
 ```
+
+## Useful links
+
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
+- [OpenTelemetry MySQL monitoring](https://uptrace.dev/opentelemetry/mysql-monitoring.html)

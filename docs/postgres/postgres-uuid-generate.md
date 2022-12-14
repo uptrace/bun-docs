@@ -95,3 +95,7 @@ type Story struct {
 	AuthorUUID uuid.UUID `bun:"type:uuid"`
 }
 ```
+
+## Monitoring performance
+
+!!!include(uptrace.md)!!!

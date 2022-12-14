@@ -128,3 +128,7 @@ sudo -u postgres pgbackrest --stanza=demo info
 pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance
 between backup size and restoration time, you can create a full backup weekly and a
 differential/incremental backup daily.
+
+## See also
+
+!!!include(uptrace.md)!!!

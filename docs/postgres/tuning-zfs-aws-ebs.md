@@ -113,7 +113,7 @@ data. But making `shared_buffers` too small will negatively affect write speed. 
 `shared_buffers` as long as your write speed does not suffer too much and leave the rest of the RAM
 for ARC.
 
-## Disabling TOAST compression
+## TOAST compression
 
 To not compress data twice, you can disable PostgreSQL
 [TOAST](https://www.postgresql.org/docs/current/storage-toast.html) compression by setting column
@@ -142,7 +142,7 @@ zpool create -o ashift=12 -o autoexpand=on pg /dev/nvme1n1
 | 13     | 8 KB        |
 | 14     | 16 KB       |
 
-## Disabling PostgreSQL full page writes
+## PostgreSQL full page writes
 
 Because ZFS always writes full blocks, you can disable full page writes in PostgreSQL via
 `full_page_writes = off` setting.
@@ -202,3 +202,4 @@ But usually it is easier and cheaper to store backups on S3 using
 
 - [Installing ZFS on Ubuntu](https://uptrace.dev/blog/posts/ubuntu-install-zfs.html)
 - [PostgreSQL + ZFS: Best Practices and Standard Procedures](https://people.freebsd.org/~seanc/postgresql/scale15x-2017-postgresql_zfs_best_practices.pdf)
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
