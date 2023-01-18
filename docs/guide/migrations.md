@@ -75,12 +75,12 @@ See [bun-starter-kit](starter-kit.md) and
 ## SQL-based migrations
 
 A SQL-based migration is a file with `.up.sql` extension that contains one or more SQL commands. You
-can use `--migration:split` line as a separator to create migrations with multiple statements.
+can use `--bun:split` line as a separator to create migrations with multiple statements.
 
 ```sql
 SELECT 1
 
---migration:split
+--bun:split
 
 SELECT 2
 ```
