@@ -1,5 +1,5 @@
 To [monitor Bun performance](/guide/performance-monitoring.html), you can use OpenTelemetry
-instrumentation with Uptrace backend.
+instrumentation that comes with Bun and Uptrace.
 
 Uptrace is an open source
 [DataDog competitor](https://uptrace.dev/get/compare/datadog-competitors.html) that supports

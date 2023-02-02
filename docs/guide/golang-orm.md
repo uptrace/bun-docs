@@ -1,5 +1,6 @@
 ---
-title: Golang ORM for database/sql [fastest in 2022]
+title: Golang ORM for database/sql
+keywords: [golang orm, go orm, orm golang, orm go, golang database sql]
 ---
 
 <CoverImage title="Golang database/sql ORM" />

@@ -1,6 +1,6 @@
 ---
 home: true
-title: SQL-first Golang ORM [get things done in 2022]
+title: Bun: SQL client for Go [get things done in 2023]
 
 actions:
   - text: Get Started
