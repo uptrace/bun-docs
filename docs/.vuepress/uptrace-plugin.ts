@@ -1,10 +1,12 @@
+import markdownInclude from 'markdown-it-include'
+
 import type { Plugin } from '@vuepress/core'
 import { path } from '@vuepress/utils'
 
 const uptracePlugin: Plugin = {
   name: 'plugin-uptrace',
   extendsMarkdown(md) {
-    md.use(require('markdown-it-include'), {
+    md.use(markdownInclude, {
       getRootDir: (options, state, startLine, endLine) => {
         return path.resolve(__dirname, '..', '..', 'include')
       },

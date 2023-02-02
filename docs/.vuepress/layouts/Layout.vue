@@ -45,7 +45,7 @@
 import { ref, onMounted } from 'vue'
 import Layout from '@vuepress/theme-default/lib/client/layouts/Layout.vue'
 
-import Newsletter from '../../components/Newsletter.vue'
+import Newsletter from '@/components/Newsletter.vue'
 
 interface Link {
   text: string
