@@ -47,9 +47,9 @@ err := db.NewSelect().Scan(ctx)
 ## Uptrace
 
 Uptrace is an [open-source APM](https://uptrace.dev/get/open-source-apm.html) and a popular
-[DataDog competitor](https://uptrace.dev/get/compare/datadog-competitors.html) that supports
-distributed tracing, metrics, and logs. You can use it to monitor applications and set up automatic
-alerts to receive notifications via email, Slack, Telegram, and more.
+[DataDog competitor](https://uptrace.dev/blog/datadog-competitors.html) that supports distributed
+tracing, metrics, and logs. You can use it to monitor applications and set up automatic alerts to
+receive notifications via email, Slack, Telegram, and more.
 
 You can [install Uptrace](https://uptrace.dev/get/install.html) by downloading a DEB/RPM package or
 a pre-compiled binary.

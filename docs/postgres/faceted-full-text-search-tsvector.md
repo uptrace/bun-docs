@@ -252,3 +252,8 @@ database.
 You can also check
 [pg-faceted-search](https://github.com/uptrace/bun/tree/master/example/pg-faceted-search) example
 that demonstrates how to implement faceted search using Go and Bun database client.
+
+## See also
+
+- [OpenTelemetry Redis monitoring](https://uptrace.dev/opentelemetry/redis-monitoring.html)
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)

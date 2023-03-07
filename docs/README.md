@@ -1,6 +1,7 @@
 ---
 home: true
-title: 'Bun: SQL client for Go [get things done in 2023]'
+title: 'Bun: SQL client for Golang'
+heroImage: /bun/home.png
 
 actions:
   - text: Get Started

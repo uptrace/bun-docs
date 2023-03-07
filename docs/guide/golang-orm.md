@@ -3,7 +3,9 @@ title: Golang ORM for database/sql
 keywords: [golang orm, go orm, orm golang, orm go, golang database sql]
 ---
 
-<CoverImage title="Golang database/sql ORM" />
+# Golang database/sql ORM
+
+![Golang ORM](/bun/cover.png)
 
 [[toc]]
 

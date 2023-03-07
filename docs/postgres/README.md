@@ -136,7 +136,7 @@ it doesn't replace a server-side pool provided by PgBouncer.
 If you store large amounts of data (> 100 gigabytes), consider using ZFS filesystem which enables
 2-3x data compression and efficient ARC cache. See:
 
-- [Installing ZFS on Ubuntu](https://uptrace.dev/blog/posts/ubuntu-install-zfs.html)
+- [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs.html)
 - [Running PostgreSQL on ZFS and AWS](tuning-zfs-aws-ebs.md)
 
 ## Backups
