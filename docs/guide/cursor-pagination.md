@@ -1,10 +1,27 @@
 ---
 title: Cursor pagination [PostgreSQL MySQL]
+description:
+  Cursor pagination is a useful technique for improving the performance and usability of web
+  applications that display large sets of data.
+keywords:
+  - postgres cursor pagination
+  - mysql cursor pagination
+  - cursor pagination vs offset pagination
+  - cursor pagination
 ---
 
 <UptraceCta />
 
-<CoverImage title="Efficient database pagination using cursors" />
+# Cursor pagination for PostgreSQL/MySQL
+
+Cursor pagination is a useful technique for improving the performance and usability of web
+applications that display large sets of data.
+
+With cursor pagination, the server sends a page of data to the client along with a cursor, which
+identifies the position of the last item in the page. The client can use this cursor to request the
+next page of data, passing the cursor as a parameter to the server.
+
+![Cursor pagination](/cursor-pagination/cover.png)
 
 ## Introduction
 
@@ -40,6 +57,20 @@ Use it only when you must.
 Because the cursor must unambiguously identify the row, you can only use cursor-based pagination on
 primary keys or columns with an unique constraint. That also ensures that the query uses an index
 and can quickly skip already paginated rows.
+
+## Cursor pagination vs Offset pagination
+
+Compared to traditional page-based pagination, cursor pagination has several advantages:
+
+- **Performance**. Cursor pagination reduces the amount of data that needs to be retrieved from the
+  database, resulting in faster page load times and reduced server load.
+
+- **Stability**. Cursor pagination provides more stable and predictable pagination compared to
+  page-based pagination, which can result in inconsistent pagination if data is added or removed
+  while navigating pages.
+
+All that comes at a cost of **reduced flexibility**. Cursor pagination does NOT allow users to jump
+to any point in the data set without having to traverse all previous pages.
 
 ## Example
 

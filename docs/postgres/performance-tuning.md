@@ -1,8 +1,20 @@
 ---
 title: Tuning PostgreSQL performance [most important settings]
+description:
+  By following these tips, you can tune performance of your PostgreSQL database and ensure that it
+  is running efficiently.
+keywords:
+  - postgresql performance tuning
+  - tune postgresql performance
+  - postgresql performance tuning tools
 ---
 
-<CoverImage title="Tuning PostgreSQL settings for performance" />
+# Tuning PostgreSQL settings for performance
+
+PostgreSQL has many configuration options that can be adjusted to improve performance. Here are some
+tips for tuning PostgreSQL performance.
+
+![postgresql performance tuning](/performance-tuning/cover.png)
 
 [[toc]]
 
@@ -154,12 +166,42 @@ log_temp_files = 0
 log_lock_waits = on
 ```
 
+Also see
+[Monitor PostgreSQL 15 logs with Vector and Uptrace](https://uptrace.dev/blog/postgresql-vector-logs.html).
+
 ## Huge pages
 
 If your servers have 128+ GB of RAM, consider using huge pages to reduce the number of memory pages
 and to minimize the [overhead](https://blogs.oracle.com/linux/post/minimizing-struct-page-overhead)
 introduced by managing large amount of pages.
 
+## Use indexes
+
+Use Indexes can significantly speed up query performance by allowing PostgreSQL to quickly locate
+the data it needs. Ensure that your tables have appropriate indexes based on the queries being run.
+
+Use the EXPLAIN command to analyze queries and identify areas for optimization.
+
+```sql
+EXPLAIN ANALYZE SELECT ...;
+```
+
+## Partitioning
+
+If your tables are very large, consider partitioning them. Partitioning can improve query
+performance by allowing PostgreSQL to quickly access the relevant data.
+
+See [PostgreSQL Table Partitioning](/postgres/table-partition.html).
+
+## Cursor pagination
+
+When dealing with large data sets, such as in a web application that needs to display a large number
+of records. consider using [cursor pagination](/guide/cursor-pagination.html).
+
 ## Monitoring performance
+
+Regularly monitoring database activity can help identify performance issues. Use tables such as
+`pg_stat_activity`, `pg_stat_database`, and `pg_stat_user_tables` to monitor database activity and
+identify areas for optimization.
 
 !!!include(uptrace.md)!!!

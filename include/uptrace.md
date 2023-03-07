@@ -11,5 +11,3 @@ You can also check the following guides to monitor features specific to your RDB
 
 - [PostgreSQL performance monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
 - [MySQL performance monitoring](https://uptrace.dev/opentelemetry/mysql-monitoring.html)
-- [Redis performance monitoring](https://uptrace.dev/opentelemetry/redis-monitoring.html)
-- [OpenTelemetry GORM](https://uptrace.dev/opentelemetry/instrumentations/go-gorm.html)

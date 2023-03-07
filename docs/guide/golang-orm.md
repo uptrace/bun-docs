@@ -1,6 +1,11 @@
 ---
 title: Golang ORM for database/sql
-keywords: [golang orm, go orm, orm golang, orm go, golang database sql]
+keywords:
+  - golang orm
+  - go orm
+  - orm golang
+  - orm go
+  - golang database sql
 ---
 
 # Golang database/sql ORM
