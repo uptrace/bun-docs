@@ -112,6 +112,18 @@ export default defineUserConfig<DefaultThemeOptions>({
       canonical(page) {
         return 'https://bun.uptrace.dev' + page.path
       },
+      customHead(head, page) {
+        const keywords = page.frontmatter.keywords
+        if (keywords) {
+          head.push([
+            'meta',
+            {
+              name: 'keywords',
+              content: keywords.join(','),
+            },
+          ])
+        }
+      },
     }),
     redirectPlugin({
       hostname: 'https://bun.uptrace.dev',

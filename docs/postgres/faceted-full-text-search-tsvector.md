@@ -255,5 +255,5 @@ that demonstrates how to implement faceted search using Go and Bun database clie
 
 ## See also
 
-- [OpenTelemetry Redis monitoring](https://uptrace.dev/opentelemetry/redis-monitoring.html)
-- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
+- [OpenTelemetry Docker monitoring](https://uptrace.dev/get/opentelemetry-docker.html)
+- [OpenTelemetry Kubernetes monitoring](https://uptrace.dev/get/opentelemetry-kubernetes.html)

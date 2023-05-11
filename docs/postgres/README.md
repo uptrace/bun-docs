@@ -145,7 +145,7 @@ To backup PostgreSQL database, consider using [PgBackRest with S3](pgbackrest-s3
 
 ## See also
 
-- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/get/opentelemetry-postgresql.html)
 - [OpenTelemetry GORM](https://uptrace.dev/opentelemetry/instrumentations/go-gorm.html)
 - [OpenTelemetry database/sql](https://uptrace.dev/opentelemetry/instrumentations/go-database-sql.html)
 - [OpenTelemetry SQLAlchemy](https://uptrace.dev/opentelemetry/instrumentations/python-sqlalchemy.html)

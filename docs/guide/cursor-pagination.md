@@ -7,15 +7,15 @@ keywords:
   - postgres cursor pagination
   - mysql cursor pagination
   - cursor pagination vs offset pagination
-  - cursor pagination
+  - cursor based pagination postgresql
 ---
 
 <UptraceCta />
 
 # Cursor pagination for PostgreSQL/MySQL
 
-Cursor pagination is a useful technique for improving the performance and usability of web
-applications that display large sets of data.
+Cursor pagination is a useful technique for improving performance and usability of web applications
+that display large sets of data.
 
 With cursor pagination, the server sends a page of data to the client along with a cursor, which
 identifies the position of the last item in the page. The client can use this cursor to request the

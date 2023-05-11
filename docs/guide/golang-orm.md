@@ -1,14 +1,19 @@
 ---
-title: Golang ORM for database/sql
+title: Golang ORM for PostgreSQL and MySQL
+description: Bun is a Golang ORM for PostgreSQL and MySQL that is based on database/sql APIs.
 keywords:
   - golang orm
   - go orm
-  - orm golang
-  - orm go
-  - golang database sql
+  - golang database orm
+  - golang orm mysql
+  - golang orm postgresql
 ---
 
-# Golang database/sql ORM
+# Golang ORM for PostgreSQL and MySQL
+
+Bun is a SQL-first ORM (Object-Relational Mapping) library for Go that supports PostgreSQL, MySQL,
+MSSQL, and SQLite. It aims to provide a simple and efficient way to work with databases while
+utilizing Go's type safety and reducing boilerplate code.
 
 ![Golang ORM](/bun/cover.png)
 

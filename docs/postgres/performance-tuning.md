@@ -35,9 +35,10 @@ On SSD, set `max_connections` to the number of concurrent I/O requests the disk(
 
 `shared_buffers` controls how much memory PostgreSQL reserves for writing data to a disk. PostgreSQL
 picks a free page of RAM in shared buffers, writes the data into it, marks the page as dirty, and
-lets another process asynchronously write dirty pages to the disk in background. PostgreSQL also
-uses shared buffers as a cache if the data you are reading can be found there. For proper
-explanation, see
+lets another process asynchronously write dirty pages to the disk in background.
+
+PostgreSQL also uses shared buffers as a cache if the data you are reading can be found there. For
+proper explanation, see
 [this](https://www.2ndquadrant.com/wp-content/uploads/2019/05/Inside-the-PostgreSQL-Shared-Buffer-Cache.pdf).
 
 <!-- prettier-ignore -->
@@ -61,6 +62,10 @@ work_mem = <1-5% of RAM>
 
 If your queries often use temp files, consider increasing `work_mem` value and lowering the max
 number of concurrent queries via [max_connections](#max-connections).
+
+The optimal value for `work_mem` can vary depending on your specific workload, hardware resources,
+and available memory. Regular monitoring, benchmarking, and tuning are necessary to ensure optimal
+performance as your workload evolves over time.
 
 ## maintenance_work_mem
 
@@ -113,6 +118,13 @@ autovacuum_work_mem = <2-3% of RAM>
 
 ## WAL
 
+PostgreSQL WAL stands for Write-Ahead Logging. The Write-Ahead Log is a transaction log that records
+changes made to the database before they are written to the actual data files.
+
+When a transaction modifies the data in PostgreSQL, the changes are first written to the WAL before
+being applied to the actual database files. This process ensures that the changes are durably
+recorded on disk before considering the transaction committed.
+
 The following WAL settings work well most of the time and the only downside is increased recovery
 time when your database crashes:
 
@@ -127,7 +139,7 @@ checkpoint_completion_target = 0.9
 
 ## SSD
 
-If you using solid-state drives, consider tweaking the following settings:
+If you are using solid-state drives, consider tweaking the following settings:
 
 ```shell
 # Cost of a randomaly fetched disk page.
@@ -167,9 +179,14 @@ log_lock_waits = on
 ```
 
 Also see
-[Monitor PostgreSQL 15 logs with Vector and Uptrace](https://uptrace.dev/blog/postgresql-vector-logs.html).
+[Monitor PostgreSQL with OpenTelemetry](https://uptrace.dev/get/opentelemetry-postgresql.html).
 
 ## Huge pages
+
+Huge pages, also known as large pages, are a memory management feature in operating systems that
+allow applications to allocate and utilize larger page sizes than the standard small pages. In the
+context of databases like PostgreSQL, huge pages can offer performance benefits by reducing memory
+overhead and improving memory access efficiency.
 
 If your servers have 128+ GB of RAM, consider using huge pages to reduce the number of memory pages
 and to minimize the [overhead](https://blogs.oracle.com/linux/post/minimizing-struct-page-overhead)
@@ -177,8 +194,8 @@ introduced by managing large amount of pages.
 
 ## Use indexes
 
-Use Indexes can significantly speed up query performance by allowing PostgreSQL to quickly locate
-the data it needs. Ensure that your tables have appropriate indexes based on the queries being run.
+Indexes can significantly speed up query performance by allowing PostgreSQL to quickly locate the
+data it needs. Ensure that your tables have appropriate indexes based on the queries being run.
 
 Use the EXPLAIN command to analyze queries and identify areas for optimization.
 
@@ -191,12 +208,12 @@ EXPLAIN ANALYZE SELECT ...;
 If your tables are very large, consider partitioning them. Partitioning can improve query
 performance by allowing PostgreSQL to quickly access the relevant data.
 
-See [PostgreSQL Table Partitioning](/postgres/table-partition.html).
+See [PostgreSQL Table Partitioning](/postgres/table-partition.md).
 
 ## Cursor pagination
 
 When dealing with large data sets, such as in a web application that needs to display a large number
-of records. consider using [cursor pagination](/guide/cursor-pagination.html).
+of records. consider using [cursor pagination](/guide/cursor-pagination.md).
 
 ## Monitoring performance
 

@@ -76,6 +76,6 @@ Next, start using Uptrace by following the
 
 You can also check the following guides to monitor features specific to your RDBMS:
 
-- [PostgreSQL performance monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
-- [MySQL performance monitoring](https://uptrace.dev/opentelemetry/mysql-monitoring.html)
+- [OpenTelemetry-PostgreSQL monitoring](https://uptrace.dev/get/opentelemetry-postgresql.html)
+- [OpenTelemetry MySQL monitoring](https://uptrace.dev/get/opentelemetry-mysql.html)
 - [OpenTelemetry GORM](https://uptrace.dev/opentelemetry/instrumentations/go-gorm.html)

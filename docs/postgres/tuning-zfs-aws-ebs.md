@@ -201,5 +201,5 @@ But usually it is easier and cheaper to store backups on S3 using
 ## See also
 
 - [PostgreSQL + ZFS: Best Practices and Standard Procedures](https://people.freebsd.org/~seanc/postgresql/scale15x-2017-postgresql_zfs_best_practices.pdf)
-- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/opentelemetry/postgresql-monitoring.html)
-- [OpenTelemetry Redis monitoring](https://uptrace.dev/opentelemetry/redis-monitoring.html)
+- [OpenTelemetry PostgreSQL monitoring](https://uptrace.dev/get/opentelemetry-postgresql.html)
+- [OpenTelemetry Redis monitoring](https://uptrace.dev/get/opentelemetry-redis.html)
