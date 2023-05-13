@@ -54,3 +54,24 @@ db := bun.NewDB(sqldb, dialect)
 log := logrus.New()
 db.AddQueryHook(logrusbun.NewQueryHook(logrusbun.QueryHookOptions{Logger: log}))
 ```
+
+## Zap hook
+
+You can also use [bunzap](https://github.com/alexlast/bunzap) to log executed queries using
+[Zap](https://github.com/uber-go/zap)
+
+```shell
+go get github.com/alexlast/bunzap
+```
+
+Example:
+
+```go
+db := bun.NewDB(sqldb, dialect)
+
+logger, err := zap.NewProduction()
+db.AddQueryHook(bunzap.NewQueryHook(bunzap.QueryHookOptions{
+    Logger:       logger,
+    SlowDuration: 200 * time.Millisecond, // Omit to log all operations as debug
+}))
+```
