@@ -137,7 +137,7 @@ func (*Model) AfterDropTable(ctx context.Context, query *DropTableQuery) error {
 ## Query hooks
 
 Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
-for [logging queries](debugging.md) and for [tracing](tracing.md).
+for [logging queries](debugging.md) and for [performance monitoring](performance-monitoring.md).
 
 ```go
 type QueryHook struct{}

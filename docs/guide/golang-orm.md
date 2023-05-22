@@ -282,3 +282,6 @@ See [example](https://github.com/uptrace/bun/tree/master/example/basic) for deta
 
 By now, you should have basic understanding of Bun API. Next, learn how to
 [define models](models.md) and [write queries](queries.md).
+
+- [Top DataDog competitors](https://uptrace.dev/blog/datadog-competitors.html)
+- [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)

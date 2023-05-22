@@ -9,6 +9,7 @@ import { searchPlugin } from '@vuepress/plugin-search'
 import { sitemapPlugin } from 'vuepress-plugin-sitemap2'
 import { seoPlugin } from 'vuepress-plugin-seo2'
 import { redirectPlugin } from 'vuepress-plugin-redirect'
+import { mdEnhancePlugin } from 'vuepress-plugin-md-enhance'
 
 import Icons from 'unplugin-icons/vite'
 import IconsResolver from 'unplugin-icons/resolver'
@@ -125,6 +126,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         }
       },
     }),
+    mdEnhancePlugin(),
     redirectPlugin({
       hostname: 'https://bun.uptrace.dev',
       config: {
