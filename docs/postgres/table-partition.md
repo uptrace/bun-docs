@@ -186,4 +186,7 @@ type MeasureCold struct {
 
 ## See also
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-4.md)!!!
+
+- [OpenTelemetry Spring Boot](https://uptrace.dev/blog/opentelemetry-spring-boot.html)
+- [DataDog vs Prometheus](https://uptrace.dev/blog/datadog-vs-prometheus.html)

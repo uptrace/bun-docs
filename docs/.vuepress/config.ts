@@ -141,6 +141,7 @@ export default defineUserConfig<DefaultThemeOptions>({
         '/transactions/index.html': '/guide/transactions.html',
         '/queries/index.html': '/guide/queries.html',
         '/uuid/index.html': '/postgres/postgres-uuid-generate.html',
+        '/orm/has-many-relation/index.html': '/guide/relations.html',
 
         '/treemux/json-rest-api.html': 'https://uptrace.dev/blog/posts/go-json-rest-api.html',
         '/postgres/zfs-aws-ebs.html': '/postgres/tuning-zfs-aws-ebs.html',

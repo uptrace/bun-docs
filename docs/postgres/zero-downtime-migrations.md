@@ -104,4 +104,7 @@ ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 
 ## See also
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-1.md)!!!
+
+- [Open Source APM](https://uptrace.dev/get/open-source-apm.html)
+- [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html)

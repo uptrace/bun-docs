@@ -109,4 +109,7 @@ type Story struct {
 
 ## Monitoring performance
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-2.md)!!!
+
+- [Grafana alternatives](https://uptrace.dev/blog/grafana-alternatives.html)
+- [DataDog competitors](https://uptrace.dev/blog/datadog-competitors.html)

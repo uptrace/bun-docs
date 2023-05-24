@@ -192,4 +192,7 @@ go run cmd/bun/main.go -env=dev db status
 
 ## Monitoring performance
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-1.md)!!!
+
+- [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html)
+- [Open Source Datadog Alternatives](https://uptrace.dev/blog/open-source-datadog-alternatives.html)

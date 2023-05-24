@@ -131,4 +131,7 @@ differential/incremental backup daily.
 
 ## See also
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-2.md)!!!
+
+- [Redis Monitoring](https://uptrace.dev/blog/redis-monitoring.html)
+- [OpenTelemetry Redis](https://uptrace.dev/get/opentelemetry-redis.html)

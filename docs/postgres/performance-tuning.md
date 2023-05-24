@@ -221,4 +221,7 @@ Regularly monitoring database activity can help identify performance issues. Use
 `pg_stat_activity`, `pg_stat_database`, and `pg_stat_user_tables` to monitor database activity and
 identify areas for optimization.
 
-!!!include(uptrace.md)!!!
+!!!include(what-is-uptrace-3.md)!!!
+
+- [OpenTelemetry Backend](https://uptrace.dev/blog/opentelemetry-backend.html)
+- [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)
