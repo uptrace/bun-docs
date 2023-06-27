@@ -179,7 +179,7 @@ log_lock_waits = on
 ```
 
 Also see
-[Monitor PostgreSQL with OpenTelemetry](https://uptrace.dev/get/opentelemetry-postgresql.html).
+[Monitor PostgreSQL with OpenTelemetry](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html).
 
 ## Huge pages
 

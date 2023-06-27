@@ -152,5 +152,5 @@ See [example](https://github.com/uptrace/bun/tree/master/example/cursor-paginati
 
 !!!include(what-is-uptrace-3.md)!!!
 
-- [OpenTelemetry PostgreSQL metrics](https://uptrace.dev/get/opentelemetry-postgresql.html)
-- [OpenTelemetry MySQL metrics](https://uptrace.dev/get/opentelemetry-mysql.html)
+- [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html)
+- [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)

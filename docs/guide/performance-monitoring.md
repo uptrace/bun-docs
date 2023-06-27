@@ -95,6 +95,6 @@ compliance of your database environment. It enables you to proactively manage an
 infrastructure, leading to better application performance, efficient resource utilization, and
 enhanced user satisfaction.
 
-- [OpenTelemetry-PostgreSQL monitoring](https://uptrace.dev/get/opentelemetry-postgresql.html)
-- [OpenTelemetry MySQL monitoring](https://uptrace.dev/get/opentelemetry-mysql.html)
-- [OpenTelemetry GORM](https://uptrace.dev/opentelemetry/instrumentations/go-gorm.html)
+- [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html)
+- [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)
+- [OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)
