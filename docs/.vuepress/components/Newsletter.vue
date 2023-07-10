@@ -31,7 +31,7 @@
 
 <script lang="ts">
 import axios from 'axios'
-import { Check } from '@element-plus/icons'
+import { Check } from '@element-plus/icons-vue'
 import { ref, reactive, onMounted, proxyRefs, Ref } from 'vue'
 
 export default {
@@ -83,7 +83,7 @@ function useForm(form: Ref) {
     loading.value = true
 
     axios
-      .post('https://api2.uptrace.dev/api/v1/newsletter/subscriptions', {
+      .post('https://api2.uptrace.dev/internal/v1/newsletter/subscriptions', {
         topic: 'go',
         email: data.email,
         source: 'bun.uptrace.dev',
