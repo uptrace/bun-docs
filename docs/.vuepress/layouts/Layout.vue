@@ -5,26 +5,21 @@
 
       <div v-if="link" class="d-none d-sm-block">
         <span class="emoji">&#9889;</span>
-        <a :href="link.href" :target="link.href.startsWith('/') ? '_self' : '_blank'">{{
-          link.text
-        }}</a>
+        <a :href="link.href" :target="link.href.startsWith('/') ? '_self' : '_blank'">{{ link.text }}</a>
       </div>
 
       <div class="spacer"></div>
 
       <div class="links">
         <a href="https://uptrace.dev/get/open-source-apm.html" target="_blank">Open-source APM</a>
-        <a href="https://bunrouter.uptrace.dev/" target="_blank">Golang HTTP router</a>
+        <a href="https://bunrouter.uptrace.dev/guide/golang-router.html" target="_blank">Golang HTTP router</a>
         <a href="https://clickhouse.uptrace.dev/" target="_blank">Golang ClickHouse</a>
         <a href="https://uptrace.dev/blog/" target="_blank">Blog</a>
       </div>
     </div>
     <Layout>
       <template #page-bottom>
-        <div
-          class="theme-default-content d-flex justify-space-between"
-          style="padding-top: 40px; padding-bottom: 0"
-        >
+        <div class="theme-default-content d-flex justify-space-between" style="padding-top: 40px; padding-bottom: 0">
           <div>
             <a href="https://uptrace.dev/" target="_blank" title="Distributed tracing tool">
               <img src="/uptrace/logo-text.svg" style="width: 200px" />
