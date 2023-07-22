@@ -1,8 +1,6 @@
 ---
 title: Cursor pagination [PostgreSQL MySQL]
-description:
-  Cursor pagination is a useful technique for improving the performance and usability of web
-  applications that display large sets of data.
+description: Cursor pagination is a useful technique for improving the performance and usability of web applications that display large sets of data.
 keywords:
   - postgres cursor pagination
   - mysql cursor pagination
@@ -14,12 +12,9 @@ keywords:
 
 # Cursor pagination for PostgreSQL/MySQL
 
-Cursor pagination is a useful technique for improving performance and usability of web applications
-that display large sets of data.
+Cursor pagination is a useful technique for improving performance and usability of web applications that display large sets of data.
 
-With cursor pagination, the server sends a page of data to the client along with a cursor, which
-identifies the position of the last item in the page. The client can use this cursor to request the
-next page of data, passing the cursor as a parameter to the server.
+With cursor pagination, the server sends a page of data to the client along with a cursor, which identifies the position of the last item in the page. The client can use this cursor to request the next page of data, passing the cursor as a parameter to the server.
 
 ![Cursor pagination](/cursor-pagination/cover.png)
 
@@ -33,20 +28,13 @@ SELECT * FROM entries ORDER BY id ASC LIMIT 10 OFFSET 10; -- second page
 SELECT * FROM entries ORDER BY id ASC LIMIT 10 OFFSET 20; -- third page
 ```
 
-Such pagination method works well, but you may notice that the query becomes slower and slower as
-the offset grows. That happens because `OFFSET 100000` tells database to read and discard 100,000
-rows which makes performance with large offsets unacceptable. The usual response here is to limit
-the allowed offset range, for example, you could limit the number of allowed pages to 1000.
+Such pagination method works well, but you may notice that the query becomes slower and slower as the offset grows. That happens because `OFFSET 100000` tells database to read and discard 100,000 rows which makes performance with large offsets unacceptable. The usual response here is to limit the allowed offset range, for example, you could limit the number of allowed pages to 1000.
 
-But what if you can't limit the number of pages? For example, GitHub must allow users to view all
-commits in a repo no matter how big a repo can be. The answer is cursor pagination.
+But what if you can't limit the number of pages? For example, GitHub must allow users to view all commits in a repo no matter how big a repo can be. The answer is cursor pagination.
 
 ## Cursor pagination
 
-Cursor-based pagination works by returning to the client a pointer (cursor) to the last item on the
-page. To get the next page, the client passes the cursor to the server and the server returns
-results after the given cursor. The main limitation of this approach is that the client can't jump
-to a specific page and does not know the total number of pages.
+Cursor-based pagination works by returning to the client a pointer (cursor) to the last item on the page. To get the next page, the client passes the cursor to the server and the server returns results after the given cursor. The main limitation of this approach is that the client can't jump to a specific page and does not know the total number of pages.
 
 <!-- prettier-ignore -->
 ::: tip
@@ -54,23 +42,17 @@ Cursor-based pagination provides much worse user experience than the classic pag
 Use it only when you must.
 :::
 
-Because the cursor must unambiguously identify the row, you can only use cursor-based pagination on
-primary keys or columns with an unique constraint. That also ensures that the query uses an index
-and can quickly skip already paginated rows.
+Because the cursor must unambiguously identify the row, you can only use cursor-based pagination on primary keys or columns with an unique constraint. That also ensures that the query uses an index and can quickly skip already paginated rows.
 
 ## Cursor pagination vs Offset pagination
 
 Compared to traditional page-based pagination, cursor pagination has several advantages:
 
-- **Performance**. Cursor pagination reduces the amount of data that needs to be retrieved from the
-  database, resulting in faster page load times and reduced server load.
+- **Performance**. Cursor pagination reduces the amount of data that needs to be retrieved from the database, resulting in faster page load times and reduced server load.
 
-- **Stability**. Cursor pagination provides more stable and predictable pagination compared to
-  page-based pagination, which can result in inconsistent pagination if data is added or removed
-  while navigating pages.
+- **Stability**. Cursor pagination provides more stable and predictable pagination compared to page-based pagination, which can result in inconsistent pagination if data is added or removed while navigating pages.
 
-All that comes at a cost of **reduced flexibility**. Cursor pagination does NOT allow users to jump
-to any point in the data set without having to traverse all previous pages.
+All that comes at a cost of **reduced flexibility**. Cursor pagination does NOT allow users to jump to any point in the data set without having to traverse all previous pages.
 
 ## Example
 
@@ -109,8 +91,7 @@ func selectNextPage(ctx context.Context, db *bun.DB, cursor int64) ([]Entry, Cur
 }
 ```
 
-To retrieve the previous page, we need to iterate backwards starting from the cursor pointing to the
-first item:
+To retrieve the previous page, we need to iterate backwards starting from the cursor pointing to the first item:
 
 ```go
 func selectPrevPage(ctx context.Context, db *bun.DB, cursor int64) ([]Entry, Cursor, error) {

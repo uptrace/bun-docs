@@ -4,9 +4,7 @@
 
 ## timestamptz vs timestamp
 
-**TLDR** You should prefer using `timestamptz` over `timestamp`. None of the types store the
-provided timezone, but `timestamptz` at least properly parses the time with a timezone. To save user
-timezone, create a separate column for it.
+**TLDR** You should prefer using `timestamptz` over `timestamp`. None of the types store the provided timezone, but `timestamptz` at least properly parses the time with a timezone. To save user timezone, create a separate column for it.
 
 ---
 
@@ -19,8 +17,7 @@ CREATE TABLE test (
 );
 ```
 
-The first difference between `timestamptz` and `timestamp` is that `timestamp` discards/ignores the
-provided timezone:
+The first difference between `timestamptz` and `timestamp` is that `timestamp` discards/ignores the provided timezone:
 
 ```sql
 INSERT INTO test VALUES ('2021-01-01 02:00:00+02', '2021-01-01 02:00:00+02') RETURNING *;
@@ -48,8 +45,7 @@ SELECT * FROM test;
 
 ## JSONB
 
-Bun uses `JSONB` data type to store maps and slices. To change the default type, use `type` struct
-tag option:
+Bun uses `JSONB` data type to store maps and slices. To change the default type, use `type` struct tag option:
 
 ```go
 type Model struct {

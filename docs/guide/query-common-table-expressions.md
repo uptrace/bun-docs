@@ -79,8 +79,7 @@ INSERT INTO comments_backups SELECT * FROM src
 
 ## VALUES
 
-Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) to help
-building CTEs:
+Bun also provides [ValuesQuery](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery) to help building CTEs:
 
 ```go
 values := db.NewValues(&[]*Book{book1, book2})
@@ -105,8 +104,7 @@ WHERE book.id = _data.id
 
 ## WithOrder
 
-You can also use [WithOrder](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery.WithOrder) to
-include row rank in values:
+You can also use [WithOrder](https://pkg.go.dev/github.com/uptrace/bun#ValuesQuery.WithOrder) to include row rank in values:
 
 ```go
 users := []User{

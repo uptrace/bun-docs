@@ -8,8 +8,7 @@ title: Golang Select Query [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
+To see the full list of supported methods, see [SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery).
 
 ```go
 db.NewSelect().
@@ -65,8 +64,7 @@ db.NewSelect().
 
 ## Example
 
-To select into a struct, define a [model](models.md) and use
-[SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery):
+To select into a struct, define a [model](models.md) and use [SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery):
 
 ```go
 book := new(Book)
@@ -75,15 +73,13 @@ err := db.NewSelect().Model(book).Where("id = ?", 123).Scan(ctx)
 
 ## Count rows
 
-Bun provides [Count](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Count) helper to generate
-`count(*)` queries:
+Bun provides [Count](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Count) helper to generate `count(*)` queries:
 
 ```go
 count, err := db.NewSelect().Model((*User)(nil)).Count(ctx)
 ```
 
-Because selecting and counting rows is a common operation, Bun also provides
-[ScanAndCount](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.ScanAndCount):
+Because selecting and counting rows is a common operation, Bun also provides [ScanAndCount](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.ScanAndCount):
 
 ```go
 var users []User
@@ -96,8 +92,7 @@ fmt.Println(users, count)
 
 ## EXISTS
 
-You can also use [Exists](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Exists) helper to
-use the corresponding `EXISTS` SQL operator:
+You can also use [Exists](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery.Exists) helper to use the corresponding `EXISTS` SQL operator:
 
 ```go
 exists, err := db.NewSelect().Model((*User)(nil)).Where("name LIKE '%foo%'").Exists(ctx)

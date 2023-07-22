@@ -1,8 +1,6 @@
 ---
 title: Soft deletes [PostgreSQL MySQL]
-description:
-  Soft delete is a technique used in SQL databases to mark records as deleted without physically
-  removing them from the database.
+description: Soft delete is a technique used in SQL databases to mark records as deleted without physically removing them from the database.
 keywords:
   - postgres soft delete
   - mysql soft delete
@@ -13,10 +11,7 @@ keywords:
 
 # Soft deletes in PostgreSQL and MySQL
 
-Soft delete is a technique used in databases to mark records as deleted without physically removing
-them from the database. Instead of permanently deleting data, a flag or a separate column is used to
-indicate that a record is "deleted" or no longer active. This approach allows for the possibility of
-later recovering or restoring the deleted data if needed.
+Soft delete is a technique used in databases to mark records as deleted without physically removing them from the database. Instead of permanently deleting data, a flag or a separate column is used to indicate that a record is "deleted" or no longer active. This approach allows for the possibility of later recovering or restoring the deleted data if needed.
 
 ![Soft deletes](/soft-deletes/cover.png)
 
@@ -24,8 +19,7 @@ later recovering or restoring the deleted data if needed.
 
 ## Introduction
 
-Soft deletes allow marking rows as deleted without actually deleting them from a database. You can
-achieve that by using an auxiliary flag column and modifying queries to check the flag value.
+Soft deletes allow marking rows as deleted without actually deleting them from a database. You can achieve that by using an auxiliary flag column and modifying queries to check the flag value.
 
 For example, to soft delete a row using `deleted_at timestamptz` column as a flag:
 
@@ -39,11 +33,7 @@ To select undeleted (live) rows:
 SELECT * FROM users WHERE deleted_at IS NULL
 ```
 
-By implementing soft delete, you retain the deleted data in the database, allowing for potential
-future retrieval or analysis. It also maintains data integrity by preserving relationships and
-references to the deleted records. However, it's important to note that soft delete does consume
-storage space, so consider periodically purging or archiving the deleted data if it's no longer
-needed.
+By implementing soft delete, you retain the deleted data in the database, allowing for potential future retrieval or analysis. It also maintains data integrity by preserving relationships and references to the deleted records. However, it's important to note that soft delete does consume storage space, so consider periodically purging or archiving the deleted data if it's no longer needed.
 
 ## Using table views
 
@@ -91,8 +81,7 @@ err := db.NewSelect().
 
 ## Using Bun models
 
-Bun supports soft deletes using `time.Time` column as a flag that reports whether the row is deleted
-or not. Bun automatically adjust queries to check the flag.
+Bun supports soft deletes using `time.Time` column as a flag that reports whether the row is deleted or not. Bun automatically adjust queries to check the flag.
 
 To enable soft deletes on a model, add `DeletedAt` field with `soft_delete` tag:
 
@@ -156,8 +145,7 @@ DELETE FROM users WHERE id = 123
 
 ## Unique indexes
 
-Using soft deletes with unique indexes can cause conflicts on insert queries because soft-deleted
-rows are included in unique indexes just like normal rows.
+Using soft deletes with unique indexes can cause conflicts on insert queries because soft-deleted rows are included in unique indexes just like normal rows.
 
 With some DBMS, you can exclude soft-deleted rows from an index:
 
@@ -165,15 +153,13 @@ With some DBMS, you can exclude soft-deleted rows from an index:
 CREATE UNIQUE INDEX index_name ON table (column1) WHERE deleted_at IS NULL;
 ```
 
-Alternatively, you can include `deleted_at` column to indexed columns using `coalesce` function to
-convert `NULL` time because `NULL` is not equal to any other value including itself:
+Alternatively, you can include `deleted_at` column to indexed columns using `coalesce` function to convert `NULL` time because `NULL` is not equal to any other value including itself:
 
 ```sql
 CREATE UNIQUE INDEX index_name ON table (column1, coalesce(deleted_at, '1970-01-01 00:00:00'))
 ```
 
-If your DBMS does not allow to use expressions in indexed columns, you can configure Bun to append
-zero time as `1970-01-01 00:00:00+00:00` by removing nullzero option:
+If your DBMS does not allow to use expressions in indexed columns, you can configure Bun to append zero time as `1970-01-01 00:00:00+00:00` by removing nullzero option:
 
 ```diff
 type User struct {

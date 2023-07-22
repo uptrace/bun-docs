@@ -4,9 +4,7 @@ title: Complex parameterized queries
 
 # Writing complex parameterized queries
 
-A parameterized query is a query that is built dynamically based on incoming request params.
-Building complex database queries can be challenging but you can achieve better results by following
-the recommendations presented in this article.
+A parameterized query is a query that is built dynamically based on incoming request params. Building complex database queries can be challenging but you can achieve better results by following the recommendations presented in this article.
 
 ## Divide and conquer
 
@@ -16,8 +14,7 @@ The first and the main recommendation is to split the whole process into isolate
 
 ## Parsing request params
 
-The first think you need to do is to create a data structure that will hold incoming params, for
-example:
+The first think you need to do is to create a data structure that will hold incoming params, for example:
 
 ```go
 type ArticleFilter struct {
@@ -54,8 +51,7 @@ func articleFilterFromRequest(req *http.Request) (*ArticleFilter, error) {
 
 ## Params validation
 
-The purpose of this step is to ensure you have enough data to build a query or to set default
-values:
+The purpose of this step is to ensure you have enough data to build a query or to set default values:
 
 ```go
 func (f *ArticleFilter) Validate() error {
@@ -73,8 +69,7 @@ func (f *ArticleFilter) Validate() error {
 
 ## Query generation
 
-At this step you have enough data to build a query using Bun API. It is best to keep all query
-generation logic in a single method so it can be easily followed.
+At this step you have enough data to build a query using Bun API. It is best to keep all query generation logic in a single method so it can be easily followed.
 
 ```go
 func articleFilterQuery(q *bun.SelectQuery, f *ArticleFilter) (*bun.SelectQuery, error) {
@@ -90,8 +85,7 @@ func articleFilterQuery(q *bun.SelectQuery, f *ArticleFilter) (*bun.SelectQuery,
 
 ## Query execution
 
-Lastly, you need to execute the generated query and, optionally, do some post-processing. The end
-result may look like this:
+Lastly, you need to execute the generated query and, optionally, do some post-processing. The end result may look like this:
 
 ```go
 func handler(w http.ResponseWriter, req *http.Request) {

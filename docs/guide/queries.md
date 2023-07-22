@@ -6,15 +6,12 @@ title: 'Bun: Writing Queries'
 
 ## Design
 
-Bun's goal is to help you write idiomatic SQL, not to hide it behind awkward constructs. It is a
-good idea to start writing and testing queries using CLI for your database (for example, psql), and
-then re-construct resulting queries using Bun's query builder.
+Bun's goal is to help you write idiomatic SQL, not to hide it behind awkward constructs. It is a good idea to start writing and testing queries using CLI for your database (for example, psql), and then re-construct resulting queries using Bun's query builder.
 
 The main features are:
 
 - Splitting long queries into logically separated blocks.
-- Replacing [placeholders](placeholders.html) with properly escaped values (using
-  [bun.Ident](placeholders.html#bun-ident) and [bun.Safe](placeholders.html#bun-safe)).
+- Replacing [placeholders](placeholders.html) with properly escaped values (using [bun.Ident](placeholders.html#bun-ident) and [bun.Safe](placeholders.html#bun-safe)).
 - Generating s list of columns and some [joins](relations.html) from struct-based models.
 
 For example, the following Go code:
@@ -37,9 +34,7 @@ WHERE "id" = 'some-id'
 
 ## Scan and Exec
 
-You can create queries using [bun.DB](https://pkg.go.dev/github.com/uptrace/bun#DB),
-[bun.Tx](https://pkg.go.dev/github.com/uptrace/bun#Tx), or
-[bun.Conn](https://pkg.go.dev/github.com/uptrace/bun#Conn):
+You can create queries using [bun.DB](https://pkg.go.dev/github.com/uptrace/bun#DB), [bun.Tx](https://pkg.go.dev/github.com/uptrace/bun#Tx), or [bun.Conn](https://pkg.go.dev/github.com/uptrace/bun#Conn):
 
 - [db.NewSelect](https://pkg.go.dev/github.com/uptrace/bun#DB.NewSelect)
 - [db.NewInsert](https://pkg.go.dev/github.com/uptrace/bun#DB.NewInsert)
@@ -144,8 +139,7 @@ if err := rows.Err(); err != nil {
 
 ## Scanonly
 
-Sometimes, you want to ignore some fields when inserting or updating data, but still be able to scan
-columns into the ignored fields. You can achieve that with `scanonly` option:
+Sometimes, you want to ignore some fields when inserting or updating data, but still be able to scan columns into the ignored fields. You can achieve that with `scanonly` option:
 
 ```diff
 type Model struct {

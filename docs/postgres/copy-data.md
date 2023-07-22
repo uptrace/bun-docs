@@ -1,7 +1,6 @@
 # Copy data between tables and files
 
-PostgreSQL allows to efficiently copy data between tables and files using [COPY TO](#copy-to) and
-[COPY FROM](#copy-from) commands.
+PostgreSQL allows to efficiently copy data between tables and files using [COPY TO](#copy-to) and [COPY FROM](#copy-from) commands.
 
 ## COPY TO
 

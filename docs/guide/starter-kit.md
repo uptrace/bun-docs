@@ -6,11 +6,9 @@ Bun [starter kit](https://github.com/go-bun/bun-starter-kit) consists of:
 - [bun](https://github.com/uptrace/bun)
 - Hooks to decouple and initialize the app.
 - CLI to run migrations.
-- [example](https://github.com/go-bun/bun-starter-kit/tree/master/example) package that shows how to
-  load fixtures and test handlers.
+- [example](https://github.com/go-bun/bun-starter-kit/tree/master/example) package that shows how to load fixtures and test handlers.
 
-You can also check [bun-realworld-app](https://github.com/go-bun/bun-realworld-app) which is a JSON
-API built with Bun starter kit.
+You can also check [bun-realworld-app](https://github.com/go-bun/bun-realworld-app) which is a JSON API built with Bun starter kit.
 
 ## App structure
 
@@ -43,15 +41,12 @@ The starter kit has the following structure:
 
 The main entrypoints are:
 
-- `bunapp/app.go` contains `App` struct that maintains the app state. For example, `App.DB()`
-  creates `*bun.DB`.
-- `bunapp/config.go` contains the `Config` struct to parse YAML configuration, for example,
-  `bunapp/embed/config/dev.yaml`.
+- `bunapp/app.go` contains `App` struct that maintains the app state. For example, `App.DB()` creates `*bun.DB`.
+- `bunapp/config.go` contains the `Config` struct to parse YAML configuration, for example, `bunapp/embed/config/dev.yaml`.
 - `cmd/bun/migrations` contains database migrations.
 - `example/init.go` is the package entry point.
 
-You should keep HTTP handlers and DB models in the same package, but split the app into logically
-isolated packages. Each package should have `init.go` file with the module initialization logic.
+You should keep HTTP handlers and DB models in the same package, but split the app into logically isolated packages. Each package should have `init.go` file with the module initialization logic.
 
 ## Starting the app
 
@@ -67,8 +62,7 @@ func main() {
 }
 ```
 
-It also provides hooks to execute custom code on the app start/stop. You usually add hooks from the
-`init` function in your module's `init.go` file.
+It also provides hooks to execute custom code on the app start/stop. You usually add hooks from the `init` function in your module's `init.go` file.
 
 ```go
 func init() {

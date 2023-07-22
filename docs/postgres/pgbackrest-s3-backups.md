@@ -4,13 +4,11 @@ title: 'pgBackRest: S3 backups [full guide]'
 
 <CoverImage title="pgBackRest: PostgreSQL S3 backups" />
 
-This tutorial explains how to backup PostgreSQL database using [pgBackRest](https://pgbackrest.org/)
-and S3.
+This tutorial explains how to backup PostgreSQL database using [pgBackRest](https://pgbackrest.org/) and S3.
 
 ## Introduction
 
-pgBackRest is a modern PostgreSQL Backup & Restore solution that has all the features you may ever
-need:
+pgBackRest is a modern PostgreSQL Backup & Restore solution that has all the features you may ever need:
 
 - Parallel backup and restore.
 - Full, differential, and incremental backups.
@@ -29,8 +27,7 @@ sudo apt install pgbackrest
 
 ## Terms
 
-**Stanza** is a pgBackRest configuration for a PostgreSQL database cluster. Most db servers only
-have one db cluster and therefore one stanza.
+**Stanza** is a pgBackRest configuration for a PostgreSQL database cluster. Most db servers only have one db cluster and therefore one stanza.
 
 **Repository** is where pgBackRest stores backups and archives WAL segments.
 
@@ -73,8 +70,7 @@ log-level-console=info
 log-level-file=debug
 ```
 
-For [point-in-time recovery](https://www.postgresql.org/docs/current/continuous-archiving.html), you
-also need to configure PostgreSQL to upload WAL files to S3:
+For [point-in-time recovery](https://www.postgresql.org/docs/current/continuous-archiving.html), you also need to configure PostgreSQL to upload WAL files to S3:
 
 ```shell
 archive_mode = on
@@ -92,8 +88,7 @@ sudo -u postgres pgbackrest --type=full --stanza=demo backup
 
 ## Differential backup
 
-Differential backup only copies files that have changed since the last full backup. It is smaller
-than a full backup, but to restore it you will need the base full backup.
+Differential backup only copies files that have changed since the last full backup. It is smaller than a full backup, but to restore it you will need the base full backup.
 
 ```shell
 sudo -u postgres pgbackrest --type=diff --stanza=demo backup
@@ -101,9 +96,7 @@ sudo -u postgres pgbackrest --type=diff --stanza=demo backup
 
 ## Incremental backup
 
-Incremental backup only copies files that have changed since the last backup (full, differential, or
-incremental). It is smaller than a full or differential backup, but to restore it you will need all
-dependant backups.
+Incremental backup only copies files that have changed since the last backup (full, differential, or incremental). It is smaller than a full or differential backup, but to restore it you will need all dependant backups.
 
 ```shell
 sudo -u postgres pgbackrest --type=incr --stanza=demo backup
@@ -125,9 +118,7 @@ sudo -u postgres pgbackrest --stanza=demo info
 
 ## Conclusion
 
-pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance
-between backup size and restoration time, you can create a full backup weekly and a
-differential/incremental backup daily.
+pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance between backup size and restoration time, you can create a full backup weekly and a differential/incremental backup daily.
 
 ## See also
 

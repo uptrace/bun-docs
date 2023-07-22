@@ -4,8 +4,7 @@ title: 'Bun: Drivers and dialects'
 
 <CoverImage title="Drivers and dialects" />
 
-To connect to a database, you need a `database/sql` driver and a corrensponding SQL dialect that
-comes with bun.
+To connect to a database, you need a `database/sql` driver and a corrensponding SQL dialect that comes with bun.
 
 ## PostgreSQL
 
@@ -13,8 +12,7 @@ See [PostgreSQL](/postgres/) section for information about using Bun with Postgr
 
 ## MySQL
 
-Bun supports MySQL 5+ and MariaDB using [MySQL driver](https://github.com/go-sql-driver/mysql) and
-`mysqldialect`:
+Bun supports MySQL 5+ and MariaDB using [MySQL driver](https://github.com/go-sql-driver/mysql) and `mysqldialect`:
 
 ```go
 import (
@@ -33,8 +31,7 @@ db := bun.NewDB(sqldb, mysqldialect.New())
 
 ## MSSQL
 
-Bun supports SQL Server v2019.CU4 starting from v1.1.x. To connect to a SQL Server, use
-[go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver and `mssqldialect`:
+Bun supports SQL Server v2019.CU4 starting from v1.1.x. To connect to a SQL Server, use [go-mssqldb](https://github.com/denisenkom/go-mssqldb) driver and `mssqldialect`:
 
 ```go
 import (
@@ -53,10 +50,7 @@ db := bun.NewDB(sqldb, mssqldialect.New())
 
 ## SQLite
 
-To connect to a SQLite database, use
-[sqliteshim](https://github.com/uptrace/bun/tree/master/driver/sqliteshim) driver which
-automatically imports [modernc.org/sqlite](https://modernc.org/sqlite/) or
-[mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
+To connect to a SQLite database, use [sqliteshim](https://github.com/uptrace/bun/tree/master/driver/sqliteshim) driver which automatically imports [modernc.org/sqlite](https://modernc.org/sqlite/) or [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) depending on your platform.
 
 ```go
 import (
@@ -73,8 +67,7 @@ if err != nil {
 db := bun.NewDB(sqldb, sqlitedialect.New())
 ```
 
-If you are using an in-memory database, you need to configure `*sql.DB` to NOT close active
-connections. Otherwise, the database is deleted when the connection is closed.
+If you are using an in-memory database, you need to configure `*sql.DB` to NOT close active connections. Otherwise, the database is deleted when the connection is closed.
 
 ```go
 sqldb.SetMaxIdleConns(1000)
@@ -83,8 +76,7 @@ sqldb.SetConnMaxLifetime(0)
 
 ## Writing DMBS specific code
 
-Bun comes with [feature](https://pkg.go.dev/github.com/uptrace/bun/dialect/feature) package that
-allows you to discover features supported by your DBMS:
+Bun comes with [feature](https://pkg.go.dev/github.com/uptrace/bun/dialect/feature) package that allows you to discover features supported by your DBMS:
 
 ```go
 import "github.com/uptrace/bun/dialect/feature"

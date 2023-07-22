@@ -22,8 +22,7 @@ q = q.Where("? LIKE ?", bun.Ident("mycolumn"), "hello%")
 
 ## QueryBuilder
 
-Bun provides [QueryBuilder](https://pkg.go.dev/github.com/uptrace/bun#QueryBuilder) interface which
-supports common methods required to build queries, for example:
+Bun provides [QueryBuilder](https://pkg.go.dev/github.com/uptrace/bun#QueryBuilder) interface which supports common methods required to build queries, for example:
 
 ```go
 func addWhere(q bun.QueryBuilder) bun.QueryBuilder {
@@ -46,9 +45,7 @@ db.NewUpdate().ApplyQueryBuilder(addWhere)
 db.NewDelete().ApplyQueryBuilder(addWhere)
 ```
 
-Both the `QueryBuilder` and `ApplyQueryBuilder` functions return a struct of QueryBuilder interface type. 
-Once your query is built you need to retrieve the original Query struct in order to be able to call `Scan` or `Exec` functions. 
-To do that you have to Unwrap() your query builder struct and then cast it to desired type like so:
+Both the `QueryBuilder` and `ApplyQueryBuilder` functions return a struct of QueryBuilder interface type. Once your query is built you need to retrieve the original Query struct in order to be able to call `Scan` or `Exec` functions. To do that you have to Unwrap() your query builder struct and then cast it to desired type like so:
 
 ```go
 qb := db.NewSelect().QueryBuilder().Where("id = ?", 123)

@@ -2,22 +2,15 @@
 
 ## Introduction
 
-Hooks are user-defined functions that are called before and/or after certain operations, for
-example, before every processed query.
+Hooks are user-defined functions that are called before and/or after certain operations, for example, before every processed query.
 
-To ensure that your model implements a hook interface, use
-[compile time checks](https://medium.com/@matryer/golang-tip-compile-time-checks-to-ensure-your-type-satisfies-an-interface-c167afed3aae),
-for example, `var _ bun.QueryHook = (*MyHook)(nil)`.
+To ensure that your model implements a hook interface, use [compile time checks](https://medium.com/@matryer/golang-tip-compile-time-checks-to-ensure-your-type-satisfies-an-interface-c167afed3aae), for example, `var _ bun.QueryHook = (*MyHook)(nil)`.
 
 ## Disclaimer
 
-It may sound like a good idea to use hooks for validation or caching because this way you can't
-forget to sanitize data or check permissions. It gives false sense of safety.
+It may sound like a good idea to use hooks for validation or caching because this way you can't forget to sanitize data or check permissions. It gives false sense of safety.
 
-Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and
-error-prone. Instead, prefer writing simple code like
-[this](https://github.com/uptrace/bun/tree/master/example/tx-composition) even if that means
-repeating yourself:
+Don't do that. Code that uses hooks is harder to read, understand, and debug. It is more complex and error-prone. Instead, prefer writing simple code like [this](https://github.com/uptrace/bun/tree/master/example/tx-composition) even if that means repeating yourself:
 
 ```go
 func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
@@ -37,9 +30,7 @@ func InsertUser(ctx context.Context, db *bun.DB, user *User) error {
 
 ### BeforeAppendModel
 
-To update certain fields before inserting or updating a model, use `bun.BeforeAppendModelHook` which
-is called just before constructing a query. For
-[example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
+To update certain fields before inserting or updating a model, use `bun.BeforeAppendModelHook` which is called just before constructing a query. For [example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
 
 ```go
 type Model struct {
@@ -63,8 +54,7 @@ func (m *Model) BeforeAppendModel(ctx context.Context, query bun.Query) error {
 
 ### Before/AfterScanRow
 
-Bun also calls `BeforeScanRow` and `AfterScanRow` hooks before and after scanning row values. For
-[example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
+Bun also calls `BeforeScanRow` and `AfterScanRow` hooks before and after scanning row values. For [example](https://github.com/uptrace/bun/tree/master/example/model-hooks):
 
 ```go
 type Model struct{}
@@ -80,9 +70,7 @@ func (m *Model) AfterScanRow(ctx context.Context) error { return nil }
 
 ### Model query hooks
 
-You can also define model query hooks that are called before and after executing certain type of
-queries on a certain model. Such hooks are called once for a query and using a `nil` model. To
-access the query data, use `query.GetModel().Value()`.
+You can also define model query hooks that are called before and after executing certain type of queries on a certain model. Such hooks are called once for a query and using a `nil` model. To access the query data, use `query.GetModel().Value()`.
 
 ```go
 var _ bun.BeforeSelectHook = (*Model)(nil)
@@ -136,8 +124,7 @@ func (*Model) AfterDropTable(ctx context.Context, query *DropTableQuery) error {
 
 ## Query hooks
 
-Bun supports query hooks which are called before and after executing a query. Bun uses query hooks
-for [logging queries](debugging.md) and for [performance monitoring](performance-monitoring.md).
+Bun supports query hooks which are called before and after executing a query. Bun uses query hooks for [logging queries](debugging.md) and for [performance monitoring](performance-monitoring.md).
 
 ```go
 type QueryHook struct{}

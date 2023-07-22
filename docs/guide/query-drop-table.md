@@ -8,8 +8,7 @@ title: Golang Drop Table [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[DropTableQuery](https://pkg.go.dev/github.com/uptrace/bun#DropTableQuery).
+To see the full list of supported methods, see [DropTableQuery](https://pkg.go.dev/github.com/uptrace/bun#DropTableQuery).
 
 ```go
 db.NewDropTable().

@@ -8,8 +8,7 @@ title: Golang Update [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[API reference](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery).
+To see the full list of supported methods, see [API reference](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery).
 
 ```go
 db.NewUpdate().
@@ -57,8 +56,7 @@ db.NewUpdate().
 
 ## Example
 
-To update a row, define a [model](models.md) and use
-[UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery):
+To update a row, define a [model](models.md) and use [UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery):
 
 ```go
 book := &Book{ID: 123, Title: "hello"}
@@ -155,8 +153,7 @@ WHERE id = 1
 
 ## Omit zero values
 
-You can also tell Bun to omit zero struct fields, for example, the following query does not update
-`email` column because it contains an empty value:
+You can also tell Bun to omit zero struct fields, for example, the following query does not update `email` column because it contains an empty value:
 
 ```go
 type User struct {

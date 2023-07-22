@@ -1,7 +1,6 @@
 # Migrating from go-pg
 
-Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) that works with PostgreSQL, MySQL, and
-SQLite. It consists of:
+Bun is a rewrite of [go-pg](https://github.com/go-pg/pg) that works with PostgreSQL, MySQL, and SQLite. It consists of:
 
 - Bun core that provides a query builder and models.
 - [pgdriver](drivers.md#pgdriver) package to connect to PostgreSQL.
@@ -9,21 +8,13 @@ SQLite. It consists of:
 - [dbfixture](fixtures.md) to load initial data from YAML files.
 - Optional [starter kit](starter-kit.md) that provides modern app skeleton.
 
-Bun's query builder tries to be compatible with go-pg's builder, but some rarely used APIs are
-removed (for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
+Bun's query builder tries to be compatible with go-pg's builder, but some rarely used APIs are removed (for example, `WhereOrNotGroup`). In most cases, you won't need to rewrite your queries.
 
-go-pg is still maintained and there is no urgency in rewriting go-pg apps in Bun, but new projects
-should prefer Bun over go-pg. And once you are familiar with the updated API, you should be able to
-migrate a 80-100k lines go-pg app to Bun within a single day.
+go-pg is still maintained and there is no urgency in rewriting go-pg apps in Bun, but new projects should prefer Bun over go-pg. And once you are familiar with the updated API, you should be able to migrate a 80-100k lines go-pg app to Bun within a single day.
 
 ## New features
 
-- `*pg.Query` is split into smaller structs, for example,
-  [bun.SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery),
-  [bun.InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery),
-  [bun.UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery),
-  [bun.DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery) and so on. This is one of
-  the reasons Bun inserts/updates data faster than go-pg.
+- `*pg.Query` is split into smaller structs, for example, [bun.SelectQuery](https://pkg.go.dev/github.com/uptrace/bun#SelectQuery), [bun.InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery), [bun.UpdateQuery](https://pkg.go.dev/github.com/uptrace/bun#UpdateQuery), [bun.DeleteQuery](https://pkg.go.dev/github.com/uptrace/bun#DeleteQuery) and so on. This is one of the reasons Bun inserts/updates data faster than go-pg.
 
   go-pg API:
 
@@ -72,8 +63,7 @@ migrate a 80-100k lines go-pg app to Bun within a single day.
 
 ## Go zero values and NULL
 
-Unlike go-pg, Bun does not marshal Go zero values as SQL NULLs by default. To get the old behavior,
-use `nullzero` tag option:
+Unlike go-pg, Bun does not marshal Go zero values as SQL NULLs by default. To get the old behavior, use `nullzero` tag option:
 
 ```go
 type User struct {
@@ -94,12 +84,9 @@ type User struct {
 ## Other changes
 
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
-- Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg
-  used wrong names for those relations.
-- Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``. This
-  helps with linters that mark the field as unused.
-- To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not
-  marshal Go zero values as `NULL` any more.
+- Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg used wrong names for those relations.
+- Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``. This helps with linters that mark the field as unused.
+- To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not marshal Go zero values as `NULL` any more.
 - Replace `pg.ErrNoRows` with `sql.ErrNoRows`.
 - Replace `db.WithParam` with `db.WithNamedArg`.
 - Replace `orm.RegisterTable` with `db.RegisterModel`.
@@ -128,8 +115,7 @@ res, err := db.Model(&model).WherePK().UpdateNotZero()
 res, err := db.NewUpdate().Model(&model).WherePK().OmitZero().Exec(ctx)
 ```
 
-- Bun uses a database/sql pool, so use [sql.DBStats](https://pkg.go.dev/database/sql#DBStats)
-  instead of `pg.PoolStats.`
+- Bun uses a database/sql pool, so use [sql.DBStats](https://pkg.go.dev/database/sql#DBStats) instead of `pg.PoolStats.`
 - `WrapWith` is removed. Use `With` instead:
 
 ```go
@@ -141,8 +127,7 @@ q := db.NewSelect().
 
 ## Ignored columns
 
-Unlike go-pg, Bun does not allow scanning into explicitly ignored fields. For example, the following
-code does not work:
+Unlike go-pg, Bun does not allow scanning into explicitly ignored fields. For example, the following code does not work:
 
 ```go
 type Model struct {
@@ -167,12 +152,9 @@ You have 2 options if you need `pg.Listener`:
 
 ## Porting migrations
 
-Bun supports migrations via [bun/migrate](migrations.md) package. Because it uses timestamp-based
-migration names, you need to rename your migration files, for example, `1_initial.up.sql` should be
-renamed to `20210505110026_initial.up.sql`.
+Bun supports migrations via [bun/migrate](migrations.md) package. Because it uses timestamp-based migration names, you need to rename your migration files, for example, `1_initial.up.sql` should be renamed to `20210505110026_initial.up.sql`.
 
-After you are done porting migrations, you need to initialize Bun tables (use
-[starter kit](starter-kit.md)):
+After you are done porting migrations, you need to initialize Bun tables (use [starter kit](starter-kit.md)):
 
 ```go
 go run cmd/bun/main.go -env=dev db init

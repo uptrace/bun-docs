@@ -8,8 +8,7 @@ title: Golang Create Table [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[CreateTableQuery](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
+To see the full list of supported methods, see [CreateTableQuery](https://pkg.go.dev/github.com/uptrace/bun#CreateTableQuery).
 
 ```go
 db.NewCreateTable().

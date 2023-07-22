@@ -8,8 +8,7 @@ title: Transactions
 
 ## Starting transactions
 
-`bun.Tx` is a thin wrapper around `sql.Tx`. In addition to the features provided by `sql.Tx`,
-`bun.Tx` also supports [query hooks](hooks.md) and provides helpers to build queries.
+`bun.Tx` is a thin wrapper around `sql.Tx`. In addition to the features provided by `sql.Tx`, `bun.Tx` also supports [query hooks](hooks.md) and provides helpers to build queries.
 
 ```go
 type Tx struct {
@@ -46,8 +45,7 @@ err := tx.NewSelect().Model(&models).Limit(100).Scan(ctx)
 
 ## RunInTx
 
-Bun provides `RunInTx` helpers that runs the provided function in a transaction. If the function
-returns an error, the transaction is rolled back. Otherwise, the transaction is committed.
+Bun provides `RunInTx` helpers that runs the provided function in a transaction. If the function returns an error, the transaction is rolled back. Otherwise, the transaction is committed.
 
 ```go
 err := db.RunInTx(ctx, &sql.TxOptions{}, func(ctx context.Context, tx bun.Tx) error {
@@ -58,10 +56,7 @@ err := db.RunInTx(ctx, &sql.TxOptions{}, func(ctx context.Context, tx bun.Tx) er
 
 ## IDB interface
 
-Bun provides `bun.IDB` interface so the same methods can work with `*bun.DB`, `bun.Tx`, and
-`bun.Conn`. The following
-[example](https://github.com/uptrace/bun/tree/master/example/tx-composition) demonstrates how
-`InsertUser` uses the `bun.IDB` to support transactions:
+Bun provides `bun.IDB` interface so the same methods can work with `*bun.DB`, `bun.Tx`, and `bun.Conn`. The following [example](https://github.com/uptrace/bun/tree/master/example/tx-composition) demonstrates how `InsertUser` uses the `bun.IDB` to support transactions:
 
 ```go
 // Insert single user using bun.DB.

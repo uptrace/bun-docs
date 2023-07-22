@@ -8,8 +8,7 @@ title: Golang Insert [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
+To see the full list of supported methods, see [InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery).
 
 ```go
 db.NewInsert().
@@ -54,8 +53,7 @@ db.NewInsert().
 
 ## Example
 
-To insert data, define a [model](models.md) and use
-[InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery):
+To insert data, define a [model](models.md) and use [InsertQuery](https://pkg.go.dev/github.com/uptrace/bun#InsertQuery):
 
 ```go
 book := &Book{Title: "hello"}

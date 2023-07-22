@@ -10,9 +10,7 @@ title: PostgreSQL driver Golang
 
 ### pgdriver
 
-Bun comes with its own PostgreSQL driver called
-[pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver) that allows connecting to a
-PostgreSQL database using a DSN (connection string):
+Bun comes with its own PostgreSQL driver called [pgdriver](https://github.com/uptrace/bun/tree/master/driver/pgdriver) that allows connecting to a PostgreSQL database using a DSN (connection string):
 
 ```go
 import (
@@ -38,16 +36,13 @@ You can specify the following options in a DSN:
 - `?timeout=5s` - sets all three timeouts described above.
 - `?application_name=myapp` - PostgreSQL application name.
 
-pgdriver treats all unknown options as PostgreSQL configuration parameters, for example,
-`?search_path=my_search_path` executes the following query whenever a connection is created:
+pgdriver treats all unknown options as PostgreSQL configuration parameters, for example, `?search_path=my_search_path` executes the following query whenever a connection is created:
 
 ```sql
 SET search_path TO 'my_search_path'
 ```
 
-In addition to DSN, you can also use
-[pgdriver.Option](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Option) to configure the
-driver:
+In addition to DSN, you can also use [pgdriver.Option](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Option) to configure the driver:
 
 ```go
 pgconn := pgdriver.NewConnector(
@@ -79,8 +74,7 @@ pgconn := pgdriver.NewConnector(
 
 #### pgdriver.Error
 
-pgdriver exposes [Error](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Error) type to
-work with PostgreSQL errors:
+pgdriver exposes [Error](https://pkg.go.dev/github.com/uptrace/bun/driver/pgdriver#Error) type to work with PostgreSQL errors:
 
 ```go
 import "github.com/jackc/pgerrcode"
@@ -99,14 +93,11 @@ if err != nil {
 
 #### Debugging
 
-If you suspect an issue with pgdriver, try to replace it with [pgx](#pgx) and check if the problem
-goes away.
+If you suspect an issue with pgdriver, try to replace it with [pgx](#pgx) and check if the problem goes away.
 
 ### pgx
 
-As an alternative to pgdriver, you can also use [pgx](https://github.com/jackc/pgx) with
-`pgdialect`. With pgx, you can disable implicit prepared statements, because Bun does not benefit
-from using them:
+As an alternative to pgdriver, you can also use [pgx](https://github.com/jackc/pgx) with `pgdialect`. With pgx, you can disable implicit prepared statements, because Bun does not benefit from using them:
 
 ```go
 import (
@@ -127,14 +118,11 @@ db := bun.NewDB(sqldb, pgdialect.New())
 
 ## PgBouncer
 
-To achieve better performance, you can use a server-side connection pool like
-[PgBouncer](https://www.pgbouncer.org/). The pool that comes with `sql.DB` is a client-side pool and
-it doesn't replace a server-side pool provided by PgBouncer.
+To achieve better performance, you can use a server-side connection pool like [PgBouncer](https://www.pgbouncer.org/). The pool that comes with `sql.DB` is a client-side pool and it doesn't replace a server-side pool provided by PgBouncer.
 
 ## ZFS
 
-If you store large amounts of data (> 100 gigabytes), consider using ZFS filesystem which enables
-2-3x data compression and efficient ARC cache. See:
+If you store large amounts of data (> 100 gigabytes), consider using ZFS filesystem which enables 2-3x data compression and efficient ARC cache. See:
 
 - [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs.html)
 - [Running PostgreSQL on ZFS and AWS](tuning-zfs-aws-ebs.md)

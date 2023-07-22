@@ -2,8 +2,7 @@
 
 ## bundebug
 
-For quick debugging, you can print executed queries to stdout. First, you need to install `bundebug`
-package:
+For quick debugging, you can print executed queries to stdout. First, you need to install `bundebug` package:
 
 ```shell
 go get github.com/uptrace/bun/extra/bundebug
@@ -39,8 +38,7 @@ bundebug.NewQueryHook(
 
 ## Logrus hook
 
-You can also use [logrusbun](https://github.com/oiime/logrusbun) to log executed queries using
-[Logrus](https://github.com/sirupsen/logrus)
+You can also use [logrusbun](https://github.com/oiime/logrusbun) to log executed queries using [Logrus](https://github.com/sirupsen/logrus)
 
 ```shell
 go get github.com/oiime/logrusbun
@@ -57,8 +55,7 @@ db.AddQueryHook(logrusbun.NewQueryHook(logrusbun.QueryHookOptions{Logger: log}))
 
 ## Zap hook
 
-You can also use [bunzap](https://github.com/alexlast/bunzap) to log executed queries using
-[Zap](https://github.com/uber-go/zap)
+You can also use [bunzap](https://github.com/alexlast/bunzap) to log executed queries using [Zap](https://github.com/uber-go/zap)
 
 ```shell
 go get github.com/alexlast/bunzap

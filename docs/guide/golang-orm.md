@@ -11,9 +11,7 @@ keywords:
 
 # Golang ORM for PostgreSQL and MySQL
 
-Bun is a SQL-first ORM (Object-Relational Mapping) library for Go that supports PostgreSQL, MySQL,
-MSSQL, and SQLite. It aims to provide a simple and efficient way to work with databases while
-utilizing Go's type safety and reducing boilerplate code.
+Bun is a SQL-first ORM (Object-Relational Mapping) library for Go that supports PostgreSQL, MySQL, MSSQL, and SQLite. It aims to provide a simple and efficient way to work with databases while utilizing Go's type safety and reducing boilerplate code.
 
 ![Golang ORM](/bun/cover.png)
 
@@ -29,10 +27,7 @@ go get github.com/uptrace/bun@latest
 
 ## Connecting to a database
 
-Bun works on top of [database/sql](https://pkg.go.dev/database/sql) so the first thing you need to
-do is to create a `sql.DB`. In this tutorial we will be using [SQLite](drivers.html#sqlite) but Bun
-also works with [PostgreSQL](/postgres/), [MySQL](drivers.html#mysql), and
-[MSSQL](drivers.html#mssql).
+Bun works on top of [database/sql](https://pkg.go.dev/database/sql) so the first thing you need to do is to create a `sql.DB`. In this tutorial we will be using [SQLite](drivers.html#sqlite) but Bun also works with [PostgreSQL](/postgres/), [MySQL](drivers.html#mysql), and [MSSQL](drivers.html#mssql).
 
 ```go
 import (
@@ -47,8 +42,7 @@ if err != nil {
 }
 ```
 
-Having a `sql.DB`, you can create a `bun.DB` using the corresponding SQLite [dialect](drivers.html)
-that comes with Bun:
+Having a `sql.DB`, you can create a `bun.DB` using the corresponding SQLite [dialect](drivers.html) that comes with Bun:
 
 ```go
 import (
@@ -90,8 +84,7 @@ err := db.NewSelect().ColumnExpr("1").Scan(ctx, &num)
 
 ## Using Bun with existing code
 
-Learning all Bun capabilities may take some time, but you can start using it right away by executing
-manually crafted queries and allowing Bun to scan results for you:
+Learning all Bun capabilities may take some time, but you can start using it right away by executing manually crafted queries and allowing Bun to scan results for you:
 
 ```go
 type User struct {
@@ -111,8 +104,7 @@ err := bundb.NewRaw(
 SELECT id, name FROM "users" LIMIT 100
 ```
 
-If you already have code that uses `*sql.Tx` or `*sql.Conn`, you can still use Bun query builder
-without rewriting the existing code:
+If you already have code that uses `*sql.Tx` or `*sql.Conn`, you can still use Bun query builder without rewriting the existing code:
 
 ```go
 tx, err := sqldb.Begin()
@@ -132,8 +124,7 @@ res, err := bundb.NewInsert().
 
 ## Defining models
 
-Bun uses struct-based [models](models.md) to construct [queries](queries.md) and scan results. A
-typical Bun model looks like this:
+Bun uses struct-based [models](models.md) to construct [queries](queries.md) and scan results. A typical Bun model looks like this:
 
 ```go
 type User struct {
@@ -197,8 +188,7 @@ err := db.NewSelect().Model(&users).OrderExpr("id ASC").Limit(10).Scan(ctx)
 
 ## Scanning query results
 
-When it comes to [scanning](queries.html#scan-and-exec) query results, Bun is very flexible and
-allows scanning into structs:
+When it comes to [scanning](queries.html#scan-and-exec) query results, Bun is very flexible and allows scanning into structs:
 
 ```go
 user := new(User)
@@ -243,8 +233,7 @@ res, err := db.NewDelete().Model((*User)(nil)).Returning("id").Exec(ctx, &ids)
 
 ## Table relationships
 
-Bun also recognizes common [table relationships](relations.html), for example, you can define a
-[belongs-to](relations.html#belongs-to) relation:
+Bun also recognizes common [table relationships](relations.html), for example, you can define a [belongs-to](relations.html#belongs-to) relation:
 
 ```go
 type Story struct {
@@ -280,8 +269,7 @@ See [example](https://github.com/uptrace/bun/tree/master/example/basic) for deta
 
 ## What's next
 
-By now, you should have basic understanding of Bun API. Next, learn how to
-[define models](models.md) and [write queries](queries.md).
+By now, you should have basic understanding of Bun API. Next, learn how to [define models](models.md) and [write queries](queries.md).
 
 - [Top DataDog competitors](https://uptrace.dev/blog/datadog-competitors.html)
 - [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)

@@ -12,14 +12,11 @@ with Bun.
 
 ## Why partition a table?
 
-Table partitioning allows to split one large table into smaller ones bringing the following
-benefits:
+Table partitioning allows to split one large table into smaller ones bringing the following benefits:
 
 - Smaller tables are faster both for reading and writing.
 - You can very efficiently drop the whole partition instead of deleting data row by row.
-- Because PostgreSQL knows how to prune unused partitions, you can use partitions as a crude index.
-  For example, by paritioning a table by date, you may not need an index on the date field any more
-  and use a sequential scan instead.
+- Because PostgreSQL knows how to prune unused partitions, you can use partitions as a crude index. For example, by paritioning a table by date, you may not need an index on the date field any more and use a sequential scan instead.
 - Rarely used partitions can be moved to a cheaper storage.
 
 ## Partitioning methods
@@ -44,13 +41,11 @@ CREATE TABLE measurements (
 ) PARTITION BY RANGE (date);
 ```
 
-PostgreSQL supports several partitioning methods which only differ in the way they specify row
-values for the partition key.
+PostgreSQL supports several partitioning methods which only differ in the way they specify row values for the partition key.
 
 ### Partition by range
 
-Partitioning by range allows to specify a range of values for the partition, for example, we can
-store data for each month in a separate partition:
+Partitioning by range allows to specify a range of values for the partition, for example, we can store data for each month in a separate partition:
 
 ```sql
 CREATE TABLE measurements_y2021m01 PARTITION OF measurements
@@ -59,9 +54,7 @@ FOR VALUES FROM ('2021-01-01') TO ('2021-02-01');
 
 ### Partition by list
 
-List partitioning allows to specify a list of values for the partition, for example, we can store
-small fraction of the frequently accessed data in the hot partition and move the rest to the cold
-partition:
+List partitioning allows to specify a list of values for the partition, for example, we can store small fraction of the frequently accessed data in the hot partition and move the rest to the cold partition:
 
 ```sql{5-6,8-9,11-12}
 CREATE TABLE measurements (
@@ -90,9 +83,7 @@ UPDATE measurements SET hot = NULL;
 
 ### Partition by hash
 
-Partitioning by hash allows to uniformly distribute rows into a set of tables, for example, we can
-create 3 partitions for our table and pick a partition for the row using a hash and a remainder of
-division:
+Partitioning by hash allows to uniformly distribute rows into a set of tables, for example, we can create 3 partitions for our table and pick a partition for the row using a hash and a remainder of division:
 
 ```sql{5,7-8,10-11,13-14}
 CREATE TABLE measurements (

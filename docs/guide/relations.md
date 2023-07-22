@@ -2,8 +2,7 @@
 
 ## Introduction
 
-Bun can help you join and query other tables if you are using one of the 4 supported table
-relations:
+Bun can help you join and query other tables if you are using one of the 4 supported table relations:
 
 - [has-one](#has-one-relation)
 - [belongs-to](#belongs-to-relation)
@@ -125,9 +124,7 @@ err := db.NewSelect().
 
 ## Has one relation
 
-To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/rel-has-one), we have `User` model that
-has one `Profile` model.
+To define a has-one relationship, add `bun:"rel:has-one"` tag to the field. In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-has-one), we have `User` model that has one `Profile` model.
 
 ```go
 // Profile belongs to User.
@@ -148,9 +145,7 @@ You can specify multiple join columns, for example, `join:id=user_id,join:vendor
 
 ## Belongs to relation
 
-To define a belongs-to relationship, you need to add `bun:"rel:belongs-to"` tag to the field. In the
-the following [example](https://github.com/uptrace/bun/tree/master/example/rel-belongs-to) we define
-`Profile` model that belongs to `User` model.
+To define a belongs-to relationship, you need to add `bun:"rel:belongs-to"` tag to the field. In the the following [example](https://github.com/uptrace/bun/tree/master/example/rel-belongs-to) we define `Profile` model that belongs to `User` model.
 
 ```go
 type Profile struct {
@@ -171,9 +166,7 @@ You can specify multiple join columns, for example, `join:profile_id=id,join:ven
 
 ## Has many relation
 
-To define a has-many relationship, add `bun:"rel:has-many"` to the field. In the following
-[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many), we have `User` model
-that has many `Profile` models.
+To define a has-many relationship, add `bun:"rel:has-many"` to the field. In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-has-many), we have `User` model that has many `Profile` models.
 
 ```go
 type Profile struct {
@@ -195,13 +188,9 @@ You can specify multiple join columns, for example, `join:id=user_id,join:vendor
 
 ## Polymorphic has many relation
 
-You can also define a polymorphic has-many relationship by using `type` virtual column and
-`polymorphic` option.
+You can also define a polymorphic has-many relationship by using `type` virtual column and `polymorphic` option.
 
-In the following
-[example](https://github.com/uptrace/bun/tree/master/example/rel-has-many-polymorphic), we store all
-comments in a single table but use `trackable_type` column to save the model table to which this
-comment belongs to.
+In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-has-many-polymorphic), we store all comments in a single table but use `trackable_type` column to save the model table to which this comment belongs to.
 
 ```go
 type Article struct {
@@ -227,13 +216,9 @@ type Comment struct {
 
 ## Many to many relation
 
-To define a many-to-many relationship, add `bun:"m2m:order_to_items"` to the field. You also need to
-define two has-one relationships on the intermediary model and manually register the model
-(`db.RegisterModel`).
+To define a many-to-many relationship, add `bun:"m2m:order_to_items"` to the field. You also need to define two has-one relationships on the intermediary model and manually register the model (`db.RegisterModel`).
 
-In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-many-to-many), we
-have `Order` model that can have many items and each `Item` can be added to multiple orders. We also
-use `OrderToItem` model as an intermediary table to join orders and items.
+In the following [example](https://github.com/uptrace/bun/tree/master/example/rel-many-to-many), we have `Order` model that can have many items and each `Item` can be added to multiple orders. We also use `OrderToItem` model as an intermediary table to join orders and items.
 
 ```go
 func init() {

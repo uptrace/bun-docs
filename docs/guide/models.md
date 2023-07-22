@@ -8,8 +8,7 @@ title: 'Bun: Defining models'
 
 ## Mapping tables to structs
 
-For each table you need to define a corresponding Go struct (model). Bun maps the exported struct
-fields to the table columns and ignores the unexported fields.
+For each table you need to define a corresponding Go struct (model). Bun maps the exported struct fields to the table columns and ignores the unexported fields.
 
 ```go
 type User struct {
@@ -23,8 +22,7 @@ type User struct {
 
 ## Struct tags
 
-Bun uses sensible defaults to generate names and deduct types, but you can use the following struct
-tags to override the defaults.
+Bun uses sensible defaults to generate names and deduct types, but you can use the following struct tags to override the defaults.
 
 | Tag                                        | Comment                                                                                                               |
 | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
@@ -50,9 +48,7 @@ tags to override the defaults.
 
 ## Table names
 
-Bun generates table names and aliases from struct names by underscoring them. It also pluralizes
-table names, for example, struct `ArticleCategory` gets table name `article_categories` and alias
-`article_category`.
+Bun generates table names and aliases from struct names by underscoring them. It also pluralizes table names, for example, struct `ArticleCategory` gets table name `article_categories` and alias `article_category`.
 
 To override the generated name and the alias:
 
@@ -72,8 +68,7 @@ type User struct {
 
 ### ModelTableExpr
 
-Using the `ModelTableExpr` method, you can override the struct table name, but not the alias.
-`ModelTableExpr` should always use the same table alias, for example:
+Using the `ModelTableExpr` method, you can override the struct table name, but not the alias. `ModelTableExpr` should always use the same table alias, for example:
 
 ```go
 type User struct {
@@ -91,8 +86,7 @@ db.NewSelect().Model(&User{}).ModelTableExpr("deleted_users AS deleted")
 
 ## Column names
 
-Bun generates column names from struct field names by underscoring them. For example, struct field
-`UserID` gets column name `user_id`.
+Bun generates column names from struct field names by underscoring them. For example, struct field `UserID` gets column name `user_id`.
 
 To override the generated column name:
 
@@ -104,9 +98,7 @@ type User struct {
 
 ## SQL naming convention
 
-Use [snake_case](https://en.wikipedia.org/wiki/Snake_case) identifiers for table and column names.
-If you get spurious SQL parser errors, try to quote the identifier with double quotes (backticks for
-MySQL) to check if the problem goes away.
+Use [snake_case](https://en.wikipedia.org/wiki/Snake_case) identifiers for table and column names. If you get spurious SQL parser errors, try to quote the identifier with double quotes (backticks for MySQL) to check if the problem goes away.
 
 <!-- prettier-ignore -->
 ::: warning
@@ -122,8 +114,7 @@ Don't use case-sensitive names because such names are folded to lower case, for 
 
 ## Column types
 
-Bun generates column types from the struct field types. For example, Go type `string` is translated
-to SQL type `varchar`.
+Bun generates column types from the struct field types. For example, Go type `string` is translated to SQL type `varchar`.
 
 To override the generated column type:
 
@@ -163,8 +154,7 @@ type User struct {
 
 ## DEFAULT
 
-To specify a default SQL expression, use the combination of `nullzero`, `notnull`, and `default`
-tags:
+To specify a default SQL expression, use the combination of `nullzero`, `notnull`, and `default` tags:
 
 ```go
 type User struct {
@@ -218,8 +208,7 @@ func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
 
 ## Extending models
 
-You can add/remove fields to/from an existing model by using `extend` tag option. The new model will
-inherit the table name and the alias from the original model.
+You can add/remove fields to/from an existing model by using `extend` tag option. The new model will inherit the table name and the alias from the original model.
 
 ```go
 type UserWithCount struct {

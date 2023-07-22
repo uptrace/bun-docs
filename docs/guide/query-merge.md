@@ -8,8 +8,7 @@ title: Golang Merge [PostgreSQL MySQL]
 
 ## API
 
-To see the full list of supported methods, see
-[MergeQuery](https://pkg.go.dev/github.com/uptrace/bun#MergeQuery).
+To see the full list of supported methods, see [MergeQuery](https://pkg.go.dev/github.com/uptrace/bun#MergeQuery).
 
 ```go
 db.NewMerge().

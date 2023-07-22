@@ -8,10 +8,7 @@ title: PostgreSQL Faceted navigation and search
 
 <img src="/img/faceted-search.png" style="float: right" />
 
-Faceted search or faceted navigation allows users to narrow down search results by applying multiple
-filters generated from some attributes or tags. In this article we will implement faceted search
-using PostgreSQL [full text search](https://www.postgresql.org/docs/current/textsearch.html) and
-`ts_stat` function.
+Faceted search or faceted navigation allows users to narrow down search results by applying multiple filters generated from some attributes or tags. In this article we will implement faceted search using PostgreSQL [full text search](https://www.postgresql.org/docs/current/textsearch.html) and `ts_stat` function.
 
 GitHub search is a good example of faceted navigation (see the image on the right).
 
@@ -32,9 +29,7 @@ CREATE TABLE books (
 );
 ```
 
-[tsvector](https://www.postgresql.org/docs/current/datatype-textsearch.html#DATATYPE-TSVECTOR) is a
-sorted list of distinct normalized words (lexemes) that are used for searching. You can create a
-tsvector using `to_tsvector` function:
+[tsvector](https://www.postgresql.org/docs/current/datatype-textsearch.html#DATATYPE-TSVECTOR) is a sorted list of distinct normalized words (lexemes) that are used for searching. You can create a tsvector using `to_tsvector` function:
 
 ```sql
 SELECT to_tsvector('english', 'The Fat Rats');
@@ -70,8 +65,7 @@ WHERE tsv @@ websearch_to_tsquery('english', 'hello');
   1 | hello word |      | 'hello':1 'world':2
 ```
 
-That query can be slow if your dataset is large, but you can make it faster by adding an inverted
-index on `tsv` column:
+That query can be slow if your dataset is large, but you can make it faster by adding an inverted index on `tsv` column:
 
 ```sql
 CREATE INDEX books_tsv_idx ON books USING GIN (tsv);
@@ -180,13 +174,11 @@ ORDER BY attr, value, count DESC;
  pace  | medium      |     4
 ```
 
-But it is rather slow and inefficient because we need to select all `tags` to build the facet. Can
-we do better? Yes, using `ts_stat` function to get the required data directly from the `tsv` column.
+But it is rather slow and inefficient because we need to select all `tags` to build the facet. Can we do better? Yes, using `ts_stat` function to get the required data directly from the `tsv` column.
 
 ## Retrieving document stats
 
-The function `ts_stat` allows to retrieve document statistics that are maitained by PostgreSQL full
-text search engine in `tsvector` columns.
+The function `ts_stat` allows to retrieve document statistics that are maitained by PostgreSQL full text search engine in `tsvector` columns.
 
 ```sql
 SELECT word, ndoc FROM ts_stat($$ SELECT tsv FROM books $$) ORDER BY word;
@@ -201,8 +193,7 @@ SELECT word, ndoc FROM ts_stat($$ SELECT tsv FROM books $$) ORDER BY word;
  pace:medium       |    4
 ```
 
-As you can see, PostgreSQL already maintains the stats we need to build the facet only using the
-`tsv` column:
+As you can see, PostgreSQL already maintains the stats we need to build the facet only using the `tsv` column:
 
 ```sql
 SELECT
@@ -222,8 +213,7 @@ ORDER BY word;
  pace  | medium      |     4
 ```
 
-To build a refined facet, you can use a fast filter over the same `tsv` column that is covered by
-the index we created earlier:
+To build a refined facet, you can use a fast filter over the same `tsv` column that is covered by the index we created earlier:
 
 ```sql
 SELECT
@@ -245,13 +235,9 @@ ORDER BY word;
 
 ## Conclusion
 
-PostgreSQL provides everything you need to build fast faceted search for datasets up to 1 million
-rows. With larger datasets the processing time becomes an issue and you may need to shard your
-database.
+PostgreSQL provides everything you need to build fast faceted search for datasets up to 1 million rows. With larger datasets the processing time becomes an issue and you may need to shard your database.
 
-You can also check
-[pg-faceted-search](https://github.com/uptrace/bun/tree/master/example/pg-faceted-search) example
-that demonstrates how to implement faceted search using Go and Bun database client.
+You can also check [pg-faceted-search](https://github.com/uptrace/bun/tree/master/example/pg-faceted-search) example that demonstrates how to implement faceted search using Go and Bun database client.
 
 ## See also
 

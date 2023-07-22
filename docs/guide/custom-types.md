@@ -1,7 +1,6 @@
 # Extending Bun with custom types
 
-Bun uses database/sql to work with different DBMS and so you can extend it with custom types using
-[sql.Scanner](#sql-scanner) and [driver.Valuer](#driver-valuer) interfaces.
+Bun uses database/sql to work with different DBMS and so you can extend it with custom types using [sql.Scanner](#sql-scanner) and [driver.Valuer](#driver-valuer) interfaces.
 
 In this tutorial we will write a simple type to work with time that does not have a date:
 
@@ -15,8 +14,7 @@ type Time struct {
 
 ## sql.Scanner
 
-[sql.Scanner](https://pkg.go.dev/database/sql#Scanner) assigns a value from a database driver. The
-value can be one of the following types:
+[sql.Scanner](https://pkg.go.dev/database/sql#Scanner) assigns a value from a database driver. The value can be one of the following types:
 
 - `int64`
 - `float64`
@@ -50,13 +48,11 @@ func (tm *Time) Scan(src interface{}) (err error) {
 }
 ```
 
-You can find the full example at
-[GitHub](https://github.com/uptrace/bun/tree/master/example/custom-type).
+You can find the full example at [GitHub](https://github.com/uptrace/bun/tree/master/example/custom-type).
 
 ## driver.Valuer
 
-[driver.Valuer](https://pkg.go.dev/database/sql/driver#Valuer) returns a value for a database
-driver. The value must be one of the following types:
+[driver.Valuer](https://pkg.go.dev/database/sql/driver#Valuer) returns a value for a database driver. The value must be one of the following types:
 
 - `int64`
 - `float64`
@@ -75,13 +71,11 @@ func (tm Time) Value() (driver.Value, error) {
 }
 ```
 
-You can find the full example at
-[GitHub](https://github.com/uptrace/bun/tree/master/example/custom-type).
+You can find the full example at [GitHub](https://github.com/uptrace/bun/tree/master/example/custom-type).
 
 ## Conclusion
 
-You can easily extend Bun with custom types to fully utilize your DBMS capabilities, for example,
-[bunbig](https://github.com/uptrace/bun/tree/master/extra/bunbig) adds support for `big.Int` to Bun.
+You can easily extend Bun with custom types to fully utilize your DBMS capabilities, for example, [bunbig](https://github.com/uptrace/bun/tree/master/extra/bunbig) adds support for `big.Int` to Bun.
 
 See also:
 

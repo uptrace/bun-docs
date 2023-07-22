@@ -6,8 +6,7 @@ title: SQL Placeholders
 
 ## Introduction
 
-Bun recognizes `?` in queries as placeholders and replaces them with provided args. Bun quotes and
-escapes stringly values and removes null bytes.
+Bun recognizes `?` in queries as placeholders and replaces them with provided args. Bun quotes and escapes stringly values and removes null bytes.
 
 ## Basic and positional placeholders
 
@@ -78,11 +77,9 @@ Bun also supports the following model placeholders:
 - `?PKs` - table primary keys, for example, `"id"`
 - `?TablePKs` - table primary keys with the alias, for example, `"user"."id"`
 - `?Columns` - table columns, for example, `"id", "name", "emails"`.
-- `?TableColumns` - table columns with the alias, for example,
-  `"user"."id", "user"."name", "user"."emails"`.
+- `?TableColumns` - table columns with the alias, for example, `"user"."id", "user"."name", "user"."emails"`.
 
-See [placeholders](https://github.com/uptrace/bun/tree/master/example/placeholders) example for
-details.
+See [placeholders](https://github.com/uptrace/bun/tree/master/example/placeholders) example for details.
 
 ## Global placeholders
 
