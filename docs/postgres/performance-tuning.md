@@ -155,8 +155,6 @@ log_temp_files = 0
 log_lock_waits = on
 ```
 
-Also see [Monitor PostgreSQL with OpenTelemetry](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html).
-
 ## Huge pages
 
 Huge pages, also known as large pages, are a memory management feature in operating systems that allow applications to allocate and utilize larger page sizes than the standard small pages. In the context of databases like PostgreSQL, huge pages can offer performance benefits by reducing memory overhead and improving memory access efficiency.
@@ -187,7 +185,17 @@ When dealing with large data sets, such as in a web application that needs to di
 
 Regularly monitoring database activity can help identify performance issues. Use tables such as `pg_stat_activity`, `pg_stat_database`, and `pg_stat_user_tables` to monitor database activity and identify areas for optimization.
 
-!!!include(what-is-uptrace-3.md)!!!
+To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+
+Uptrace is a [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
 - [OpenTelemetry Backend](https://uptrace.dev/blog/opentelemetry-backend.html)
 - [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)

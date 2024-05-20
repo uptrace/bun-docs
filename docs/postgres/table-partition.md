@@ -4,9 +4,7 @@ title: PostgreSQL Table Partitioning
 
 <CoverImage title="PostgreSQL Table Partitioning" />
 
-This tutorial explains how to use PostgreSQL
-[Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE)
-with Bun.
+This tutorial explains how to use PostgreSQL [Table Partitioning](https://www.postgresql.org/docs/current/ddl-partitioning.html#DDL-PARTITIONING-DECLARATIVE) with Bun.
 
 [[toc]]
 
@@ -175,9 +173,21 @@ type MeasureCold struct {
 }
 ```
 
-## See also
+## PostgreSQL monitoring
 
-!!!include(what-is-uptrace-4.md)!!!
+To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is commonly used for monitoring and observability purposes in modern software applications and distributed systems. It plays a crucial role in gathering telemetry data from various sources, processing that data, and exporting it to monitoring and observability backends for analysis and visualization.
+
+Uptrace is a [Grafana alternative](https://uptrace.dev/blog/grafana-alternatives.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
 - [OpenTelemetry Spring Boot](https://uptrace.dev/blog/opentelemetry-spring-boot.html)
 - [DataDog vs Prometheus](https://uptrace.dev/blog/datadog-vs-prometheus.html)

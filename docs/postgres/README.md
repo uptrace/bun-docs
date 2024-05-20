@@ -103,7 +103,7 @@ As an alternative to pgdriver, you can also use [pgx](https://github.com/jackc/p
 import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/pgdialect"
-	"github.com/jackc/pgx/v4/stdlib"
+	"github.com/jackc/pgx/v5/stdlib"
 )
 
 config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode=disable")
@@ -114,6 +114,20 @@ config.PreferSimpleProtocol = true
 
 sqldb := stdlib.OpenDB(*config)
 db := bun.NewDB(sqldb, pgdialect.New())
+```
+
+Starting from v5, you can also use pgxpool like this:
+
+```go
+import "github.com/jackc/pgx/v5/stdlib"
+
+pool, err := pgxpool.NewWithConfig(context.Background(), config)
+if err != nil {
+	panic(err)
+}
+
+sqldb := stdlib.OpenDBFromPool(pool)
+db := bun.NewDB(db, pgdialect.New())
 ```
 
 ## PgBouncer
@@ -133,7 +147,6 @@ To backup PostgreSQL database, consider using [PgBackRest with S3](pgbackrest-s3
 
 ## See also
 
-- [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html)
-- [OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)
 - [OpenTelemetry database/sql](https://uptrace.dev/get/instrument/opentelemetry-database-sql.html)
+- [OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)
 - [OpenTelemetry SQLAlchemy](https://uptrace.dev/get/instrument/opentelemetry-sqlalchemy.html)

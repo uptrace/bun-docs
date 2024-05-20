@@ -42,15 +42,15 @@ err := db.NewSelect().Scan(ctx)
 
 ## Uptrace
 
-Uptrace is an [open-source APM](https://uptrace.dev/get/open-source-apm.html) and a popular [DataDog competitor](https://uptrace.dev/blog/datadog-competitors.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and set up automatic alerts to receive notifications via email, Slack, Telegram, and more.
+Uptrace is an [open source APM](https://uptrace.dev/get/open-source-apm.html) for OpenTelemetry that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
-You can [install Uptrace](https://uptrace.dev/get/install.html) by downloading a DEB/RPM package or a pre-compiled binary.
+![Uptrace Overview](/uptrace/home.png)
 
-As expected, otelbun creates [spans](https://uptrace.dev/opentelemetry/distributed-tracing.html#spans) for processed queries and records any errors as they occur. Here is how the collected information is displayed at [Uptrace](https://app.uptrace.dev/explore/1/?system=db%3Apostgresql&utm_source=bun&utm_campaign=bun-tracing):
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules, notifications, and integrations for most languages and frameworks.
 
-![Bun trace](/img/bun-trace.png)
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
 
-You can find a runnable example at [GitHub](https://github.com/uptrace/bun/tree/master/example/opentelemetry).
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
 ## Prometheus
 
@@ -64,6 +64,5 @@ You can send OpenTelemetry metrics to Prometheus using [OpenTelemetry Prometheus
 
 Overall, monitoring SQL performance is crucial for optimizing query execution, improving application responsiveness, ensuring scalability, troubleshooting issues, and maintaining the security and compliance of your database environment. It enables you to proactively manage and optimize your SQL infrastructure, leading to better application performance, efficient resource utilization, and enhanced user satisfaction.
 
-- [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html)
+- [otelgorm: OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)
 - [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)
-- [OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)

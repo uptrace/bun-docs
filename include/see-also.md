@@ -1,4 +1,0 @@
-- [Monitoring Bun performance](/guide/performance-monitoring.html)
-- [Running Bun in production](/guide/running-bun-in-production.html)
-- [Soft deletes](/guide/soft-deletes.html)
-- [Efficient pagination using cursors](/guide/cursor-pagination.html)

@@ -1,6 +1,6 @@
 ---
 title: 'PostgreSQL: Generate UUID Primary Keys'
-description:
+description: UUID is a 128-bit identifier used to uniquely identify information in computer systems and applications.
 keywords:
   - postgresql generate uuid
   - postgres uuid primary key
@@ -21,6 +21,10 @@ In PostgreSQL, you can generate UUIDs using the `uuid_generate_v4` function from
 [[toc]]
 
 ## What is UUID?
+
+UUID stands for Universally Unique Identifier. It is a 128-bit identifier used to uniquely identify information in computer systems and applications. UUIDs are often represented as a string of 36 characters, typically in a format such as "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", where each "x" represents a hexadecimal digit.
+
+The purpose of UUIDs is to provide a way to generate identifiers that are highly unlikely to collide with other identifiers, even if they are created on different systems or at different times. This makes UUIDs particularly useful in scenarios where there is a need to uniquely identify objects, entities, or resources in distributed systems, databases, or other applications.
 
 ## When to use UUIDs?
 
@@ -99,7 +103,19 @@ type Story struct {
 
 ## Monitoring performance
 
-!!!include(what-is-uptrace-2.md)!!!
+To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is a valuable component for monitoring applications and infrastructure in distributed environments. It enables efficient data collection, processing, and export to improve observability, troubleshooting, and performance of software systems.
+
+Uptrace is an [open source APM](https://uptrace.dev/get/open-source-apm.html) for OpenTelemetry that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules, notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
 - [Grafana alternatives](https://uptrace.dev/blog/grafana-alternatives.html)
 - [DataDog competitors](https://uptrace.dev/blog/datadog-competitors.html)

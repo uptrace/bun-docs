@@ -116,13 +116,25 @@ To view all available backups:
 sudo -u postgres pgbackrest --stanza=demo info
 ```
 
+## PostgreSQL monitoring
+
+To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is designed to collect, process, and export telemetry data from multiple sources. It acts as a centralized and flexible data pipeline that simplifies the management of telemetry data in distributed systems.
+
+Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
+
 ## Conclusion
 
 pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance between backup size and restoration time, you can create a full backup weekly and a differential/incremental backup daily.
-
-## See also
-
-!!!include(what-is-uptrace-2.md)!!!
 
 - [Redis Monitoring](https://uptrace.dev/blog/redis-monitoring.html)
 - [OpenTelemetry Redis](https://uptrace.dev/get/opentelemetry-redis.html)

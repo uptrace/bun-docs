@@ -131,7 +131,19 @@ See [example](https://github.com/uptrace/bun/tree/master/example/cursor-paginati
 
 ## Monitoring performance
 
-!!!include(what-is-uptrace-3.md)!!!
+To [monitor Bun performance](/guide/performance-monitoring.html), you can use OpenTelemetry instrumentation that comes with Bun.
 
-- [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html)
+By using OpenTelemetry, developers can gain valuable insight into the performance of their applications and the interactions between different components, making it easier to troubleshoot problems, optimize performance, and improve the overall reliability of distributed systems.
+
+Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
+
 - [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)
+- [OpenTelemetry vs Prometheus](https://uptrace.dev/blog/opentelemetry-vs-prometheus.html)

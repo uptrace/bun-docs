@@ -174,7 +174,16 @@ go run cmd/bun/main.go -env=dev db status
 
 ## Monitoring performance
 
-!!!include(what-is-uptrace-1.md)!!!
+To [monitor Bun performance](/guide/performance-monitoring.html), you can use OpenTelemetry instrumentation that comes with Bun.
 
-- [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html)
-- [Open Source Datadog Alternatives](https://uptrace.dev/blog/open-source-datadog-alternatives.html)
+OpenTelemetry is an open source project that aims to provide a unified set of APIs, libraries, agents, and instrumentation to enable observability in modern software applications. It allows developers to collect, instrument, and export telemetry data from their applications to gain insight into the performance and behavior of distributed systems.
+
+Uptrace is a [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).

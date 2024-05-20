@@ -11,7 +11,7 @@ keywords:
 
 # Golang ORM for PostgreSQL and MySQL
 
-Bun is a SQL-first ORM (Object-Relational Mapping) library for Go that supports PostgreSQL, MySQL, MSSQL, and SQLite. It aims to provide a simple and efficient way to work with databases while utilizing Go's type safety and reducing boilerplate code.
+Bun is a SQL-first Golang ORM (Object-Relational Mapping) that supports PostgreSQL, MySQL, MSSQL, and SQLite. It aims to provide a simple and efficient way to work with databases while utilizing Go's type safety and reducing boilerplate code.
 
 ![Golang ORM](/bun/cover.png)
 

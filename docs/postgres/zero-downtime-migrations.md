@@ -6,14 +6,19 @@ title: Zero-downtime PostgreSQL migrations [5 practical tips]
 
 <CoverImage title="Zero-downtime PostgreSQL migrations" />
 
-Follow these simple rules to avoid common pitfalls and apply changes to your database without
-_unplanned_ downtime.
+Zero-downtime PostgreSQL migrations are essential for maintaining the availability and reliability of your application while making changes to the database schema or performing other maintenance tasks.
+
+Follow these simple rules to avoid common pitfalls and apply changes to your database without _unplanned_ downtime.
 
 [[toc]]
 
+## Use transactions
+
+Enclose your migration scripts in a transaction block. If any part of the migration fails, the entire transaction will be rolled back, ensuring that your database remains in its previous state.
+
 ## Avoid long-running transactions
 
-Running a migration in a transaction means that changes made within a transaction are not visible until the end of a transaction. That is exactly what we need when we apply a migration, but in practise it does not work well.
+Running a migration in a transaction means that changes made within a transaction are not visible until the end of a transaction. That is exactly what we need when we apply a migration, but in practice it does not work well.
 
 Using a transaction causes PostgreSQL to maintain two versions of a database for the duration of a transaction. One version with your changes and one without. PostgreSQL [transactions](https://www.postgresql.org/docs/13/tutorial-transactions.html) are well-suited for such task but they have their limits too.
 
@@ -29,7 +34,7 @@ For example, you need to update 1 million rows. Don't do it with a single `UPDAT
 
 ## Update rows in a consistent order
 
-When possible, update rows in a consistent order. This helps avoiding deadlocks when 2 conurrent transactions try to update the same rows but in a different order.
+When possible, update rows in a consistent order. This helps avoiding deadlocks when 2 concurrent transactions try to update the same rows but in a different order.
 
 For example, deadlock happens when transaction 1 locks row #1 and transaction 2 locks row #2. Now transaction 1 waits for a lock on row #2 and transaction 2 waits for a lock on row #1. They lock each other and PostgreSQL has to kill one of them.
 
@@ -82,9 +87,33 @@ UPDATE test SET foo = '';
 ALTER TABLE test ALTER COLUMN foo SET NOT NULL;
 ```
 
-## See also
+## Create temporary tables
 
-!!!include(what-is-uptrace-1.md)!!!
+In some cases, you can create temporary tables with the new schema, copy data from the old table, and then swap the tables atomically. This minimizes the downtime during migration.
+
+## Rolling deployments
+
+Implement rolling deployments for your application. This involves deploying new code and migrating the database incrementally, one instance or node at a time, while keeping the others running.
+
+## Monitoring PostgreSQL
+
+To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is an agent that pulls telemetry data from systems you want to monitor and sends it to an [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) using the OpenTelemetry protocol (OTLP).
+
+Uptrace is a [DataDog competitor](https://uptrace.dev/blog/datadog-competitors.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+
+![Uptrace Overview](/uptrace/home.png)
+
+Uptrace comes with an intuitive query builder, rich dashboards, alerting rules with notifications, and integrations for most languages and frameworks.
+
+Uptrace can process billions of spans and metrics on a single server and allows you to monitor your applications at 10x lower cost.
+
+In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
+
+## Conclusion
+
+Zero-downtime PostgreSQL migrations require careful planning, testing, and coordination. It's crucial to balance the need for making schema changes with the goal of maintaining a highly available and performant application.
 
 - [Open Source APM](https://uptrace.dev/get/open-source-apm.html)
-- [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html)
+- [Grafana alternatives](https://uptrace.dev/blog/grafana-alternatives.html)

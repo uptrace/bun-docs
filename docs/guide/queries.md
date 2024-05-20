@@ -168,4 +168,6 @@ err := db.NewSelect().
 
 ## See also
 
-!!!include(see-also.md)!!!
+- [Monitoring Bun performance](/guide/performance-monitoring.md)
+- [Running Bun in production](/guide/running-bun-in-production.md)
+- [DataDog alternatives](https://uptrace.dev/blog/datadog-alternatives.html)
