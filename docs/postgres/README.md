@@ -110,7 +110,7 @@ config, err := pgx.ParseConfig("postgres://postgres:@localhost:5432/test?sslmode
 if err != nil {
 	panic(err)
 }
-config.PreferSimpleProtocol = true
+config.DefaultQueryExecMode = pgx.QueryExecModeSimpleProtocol
 
 sqldb := stdlib.OpenDB(*config)
 db := bun.NewDB(sqldb, pgdialect.New())

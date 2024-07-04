@@ -1,16 +1,21 @@
 # Bun documentation
 
-This repository contains [Bun](https://github.com/uptrace/bun)
-[documentation](https://bun.uptrace.dev/).
+## Getting started
 
-To build docs locally, install dependencies:
+This project requires pnpm with [shamefully-hoist](https://pnpm.io/npmrc#shamefully-hoist):
 
-```shell
-yarn install
+```ini
+shamefully-hoist=true
 ```
 
-And start development server:
+Install dependencies:
 
 ```shell
-yarn docs:dev
+pnpm install
+```
+
+Serve the site:
+
+```shell
+pnpm docs:dev
 ```
