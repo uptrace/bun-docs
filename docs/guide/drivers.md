@@ -6,6 +6,8 @@ title: 'Bun: Drivers and dialects'
 
 To connect to a database, you need a `database/sql` driver and a corrensponding SQL dialect that comes with bun.
 
+[[toc]]
+
 ## PostgreSQL
 
 See [PostgreSQL](/postgres/) section for information about using Bun with PostgreSQL.
@@ -37,7 +39,7 @@ Bun supports SQL Server v2019.CU4 starting from v1.1.x. To connect to a SQL Serv
 import (
 	"github.com/uptrace/bun"
 	"github.com/uptrace/bun/dialect/mssqldialect"
-    _ "github.com/denisenkom/go-mssqldb"
+	_ "github.com/denisenkom/go-mssqldb"
 )
 
 sqldb, err := sql.Open("sqlserver", "sqlserver://sa:passWORD1@localhost:1433?database=test")
@@ -72,6 +74,25 @@ If you are using an in-memory database, you need to configure `*sql.DB` to NOT c
 ```go
 sqldb.SetMaxIdleConns(1000)
 sqldb.SetConnMaxLifetime(0)
+```
+
+## Oracle
+
+To connect to an Oracle database, use [go-oci8](https://github.com/mattn/go-oci8) driver and `oracledialect`:
+
+```go
+import (
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/oracledialect"
+	_ "github.com/mattn/go-oci8"
+)
+
+sqldb, err := sql.Open("oci8", "127.0.0.1")
+if err != nil {
+	panic(err)
+}
+
+db := bun.NewDB(sqldb, oracledialect.New())
 ```
 
 ## Writing DMBS specific code
