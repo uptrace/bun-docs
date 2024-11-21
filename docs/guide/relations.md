@@ -214,6 +214,25 @@ type Comment struct {
 }
 ```
 
+To override polymorphic model name that Bun stores in the database, you can use `polymorphic:model_name`:
+
+```go
+type Article struct {
+	ID   int64
+	Name string
+
+	Comments []Comment `bun:"rel:has-many,join:id=trackable_id,join:type=trackable_type,polymorphic:mycomment"`
+}
+```
+
+The Bun will generate the following query:
+
+```sql
+SELECT "comment"."trackable_id", "comment"."trackable_type", "comment"."text"
+FROM "comments" AS "comment"
+WHERE ("comment"."trackable_id" IN (1)) AND ("trackable_type" = 'mycomment')
+```
+
 ## Many to many relation
 
 To define a many-to-many relationship, add `bun:"m2m:order_to_items"` to the field. You also need to define two has-one relationships on the intermediary model and manually register the model (`db.RegisterModel`).
