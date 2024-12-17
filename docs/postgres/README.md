@@ -119,7 +119,14 @@ db := bun.NewDB(sqldb, pgdialect.New())
 Starting from v5, you can also use pgxpool like this:
 
 ```go
-import "github.com/jackc/pgx/v5/stdlib"
+import (
+	"context"
+
+	"github.com/jackc/pgx/v5/pgxpool"
+	"github.com/jackc/pgx/v5/stdlib"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/pgdialect"
+)
 
 pool, err := pgxpool.NewWithConfig(context.Background(), config)
 if err != nil {
@@ -127,7 +134,7 @@ if err != nil {
 }
 
 sqldb := stdlib.OpenDBFromPool(pool)
-db := bun.NewDB(db, pgdialect.New())
+db := bun.NewDB(sqldb, pgdialect.New())
 ```
 
 ## PgBouncer
