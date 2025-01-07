@@ -163,7 +163,8 @@ res, err := db.NewInsert().Model(&users).Exec(ctx)
 [Update](query-update.html) rows:
 
 ```go
-user := &User{ID: 1, Name: "admin"}
+// Based on the primary key (ID), update the name field to "admin2"
+user := &User{ID: 1, Name: "admin2"}
 res, err := db.NewUpdate().Model(user).Column("name").WherePK().Exec(ctx)
 ```
 
