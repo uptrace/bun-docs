@@ -16,7 +16,7 @@ OpenTelemetry also provides exporters and integrations to send telemetry data to
 
 By using OpenTelemetry, developers can adopt a standardized approach to observability, making it easier to collect and analyze telemetry data across different components of a distributed system. It helps improve troubleshooting, performance optimization, and monitoring of applications, providing valuable insights into their behavior and performance.
 
-## OpenTelemetry instrumentaton
+## OpenTelemetry instrumentation
 
 Bun comes with an OpenTelemetry instrumentation called [bunotel](https://github.com/uptrace/bun/tree/master/extra/bunotel) that is distributed as a separate module:
 

@@ -2,7 +2,7 @@
 
 Bun [starter kit](https://github.com/go-bun/bun-starter-kit) consists of:
 
-- [bunrouter](https://bunrouter.uptrace.dev/) is an exremely fast and flexible HTTP router.
+- [bunrouter](https://bunrouter.uptrace.dev/) is an extremely fast and flexible HTTP router.
 - [bun](https://github.com/uptrace/bun)
 - Hooks to decouple and initialize the app.
 - CLI to run migrations.
