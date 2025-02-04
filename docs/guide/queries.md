@@ -12,7 +12,7 @@ The main features are:
 
 - Splitting long queries into logically separated blocks.
 - Replacing [placeholders](placeholders.html) with properly escaped values (using [bun.Ident](placeholders.html#bun-ident) and [bun.Safe](placeholders.html#bun-safe)).
-- Generating s list of columns and some [joins](relations.html) from struct-based models.
+- Generating a list of columns and some [joins](relations.html) from struct-based models.
 
 For example, the following Go code:
 
@@ -24,7 +24,7 @@ err := db.NewSelect().
 	Scan(ctx)
 ```
 
-Unsurprsingly generates the following query:
+Unsurprisingly generates the following query:
 
 ```sql
 SELECT lower(name)

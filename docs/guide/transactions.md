@@ -31,7 +31,7 @@ err := tx.Commit()
 err := tx.Rollback()
 ```
 
-## Running queries in a trasaction
+## Running queries in a transaction
 
 Just like with `bun.DB`, you can use `bun.Tx` to run queries:
 
