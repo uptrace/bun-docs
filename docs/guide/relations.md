@@ -50,7 +50,7 @@ type Profile struct {
 	ID     int64 `bun:",pk"`
 	Lang   string
 	UserID int64
-	User *User `rel:"belongs-to"`
+	User *User `bun:"rel:belongs-to"`
 }
 
 type User struct {
