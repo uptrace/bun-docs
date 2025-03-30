@@ -85,7 +85,7 @@ type User struct {
 
 - Replace `pg` struct tags with `bun`, for example, `bun:"my_column_name"`.
 - Replace `rel:"has-one"` with `rel:"belongs-to"` and `rel:"belongs-to"` with `rel:"has-one"`. go-pg used wrong names for those relations.
-- Replace `` tableName struct{} `pg:"mytable`" `` with `` bun.BaseModel `bun:"mytable"` ``. This helps with linters that mark the field as unused.
+- Replace ``tableName struct{} `pg:"mytable`"`` with `` bun.BaseModel `bun:"mytable"` ``. This helps with linters that mark the field as unused.
 - To marshal Go zero values as NULLs, use `bun:",nullzero"` field tag. By default, Bun does not marshal Go zero values as `NULL` any more.
 - Replace `pg.ErrNoRows` with `sql.ErrNoRows`.
 - Replace `db.WithParam` with `db.WithNamedArg`.
@@ -178,7 +178,7 @@ To [monitor Bun performance](/guide/performance-monitoring.html), you can use Op
 
 OpenTelemetry is an open source project that aims to provide a unified set of APIs, libraries, agents, and instrumentation to enable observability in modern software applications. It allows developers to collect, instrument, and export telemetry data from their applications to gain insight into the performance and behavior of distributed systems.
 
-Uptrace is a [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [OpenTelemetry APM](https://uptrace.dev/opentelemetry/apm) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 

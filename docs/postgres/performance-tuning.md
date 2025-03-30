@@ -185,9 +185,9 @@ When dealing with large data sets, such as in a web application that needs to di
 
 Regularly monitoring database activity can help identify performance issues. Use tables such as `pg_stat_activity`, `pg_stat_database`, and `pg_stat_user_tables` to monitor database activity and identify areas for optimization.
 
-To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+To [monitor PostgreSQL](https://uptrace.dev/tools/postgresql-monitoring-tools), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/guides/opentelemetry-postgresql) receiver that comes with OpenTelemetry Collector.
 
-Uptrace is a [OpenTelemetry APM](https://uptrace.dev/get/opentelemetry-apm.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [OpenTelemetry APM](https://uptrace.dev/opentelemetry/apm) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 
@@ -197,5 +197,5 @@ Uptrace can process billions of spans and metrics on a single server and allows 
 
 In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
-- [OpenTelemetry Backend](https://uptrace.dev/blog/opentelemetry-backend.html)
-- [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)
+- [OpenTelemetry Backend](https://uptrace.dev/blog/opentelemetry-backend)
+- [Distributed tracing tools](https://uptrace.dev/tools/distributed-tracing-tools)

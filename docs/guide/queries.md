@@ -170,4 +170,4 @@ err := db.NewSelect().
 
 - [Monitoring Bun performance](/guide/performance-monitoring.md)
 - [Running Bun in production](/guide/running-bun-in-production.md)
-- [DataDog alternatives](https://uptrace.dev/blog/datadog-alternatives.html)
+- [DataDog alternatives](https://uptrace.dev/comparisons/datadog-alternatives)

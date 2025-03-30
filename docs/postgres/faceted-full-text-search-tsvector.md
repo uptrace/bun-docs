@@ -241,5 +241,5 @@ You can also check [pg-faceted-search](https://github.com/uptrace/bun/tree/maste
 
 ## See also
 
-- [OpenTelemetry Docker monitoring](https://uptrace.dev/get/opentelemetry-docker.html)
-- [OpenTelemetry Kubernetes monitoring](https://uptrace.dev/get/opentelemetry-kubernetes.html)
+- [OpenTelemetry Docker monitoring](https://uptrace.dev/guides/opentelemetry-docker)
+- [OpenTelemetry Kubernetes monitoring](https://uptrace.dev/guides/opentelemetry-kubernetes)

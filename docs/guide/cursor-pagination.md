@@ -135,7 +135,7 @@ To [monitor Bun performance](/guide/performance-monitoring.html), you can use Op
 
 By using OpenTelemetry, developers can gain valuable insight into the performance of their applications and the interactions between different components, making it easier to troubleshoot problems, optimize performance, and improve the overall reliability of distributed systems.
 
-Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 
@@ -145,5 +145,5 @@ Uptrace can process billions of spans and metrics on a single server and allows 
 
 In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
-- [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)
-- [OpenTelemetry vs Prometheus](https://uptrace.dev/blog/opentelemetry-vs-prometheus.html)
+- [OpenTelemetry MySQL](https://uptrace.dev/guides/opentelemetry-mysql)
+- [OpenTelemetry vs Prometheus](https://uptrace.dev/comparisons/opentelemetry-vs-prometheus)

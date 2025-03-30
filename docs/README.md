@@ -253,5 +253,5 @@ func main() {
   </CodeGroupItem>
 </CodeGroup>
 
-- [Open Source APM](https://uptrace.dev/get/open-source-apm.html)
-- [Distributed tracing tools](https://uptrace.dev/blog/distributed-tracing-tools.html)
+- [Open Source APM](https://uptrace.dev/get/hosted/open-source-apm)
+- [Distributed tracing tools](https://uptrace.dev/tools/distributed-tracing-tools)

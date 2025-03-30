@@ -118,11 +118,11 @@ sudo -u postgres pgbackrest --stanza=demo info
 
 ## PostgreSQL monitoring
 
-To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+To [monitor PostgreSQL](https://uptrace.dev/tools/postgresql-monitoring-tools), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/guides/opentelemetry-postgresql) receiver that comes with OpenTelemetry Collector.
 
-[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is designed to collect, process, and export telemetry data from multiple sources. It acts as a centralized and flexible data pipeline that simplifies the management of telemetry data in distributed systems.
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector) is designed to collect, process, and export telemetry data from multiple sources. It acts as a centralized and flexible data pipeline that simplifies the management of telemetry data in distributed systems.
 
-Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 
@@ -136,5 +136,5 @@ In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://
 
 pgBackRest is a reliable backup tool that requires miminum configuration. To achieve a good balance between backup size and restoration time, you can create a full backup weekly and a differential/incremental backup daily.
 
-- [Redis Monitoring](https://uptrace.dev/blog/redis-monitoring.html)
-- [OpenTelemetry Redis](https://uptrace.dev/get/opentelemetry-redis.html)
+- [Redis Monitoring](https://uptrace.dev/blog/redis-monitoring)
+- [OpenTelemetry Redis](https://uptrace.dev/guides/opentelemetry-redis)

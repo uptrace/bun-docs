@@ -175,11 +175,11 @@ type MeasureCold struct {
 
 ## PostgreSQL monitoring
 
-To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+To [monitor PostgreSQL](https://uptrace.dev/tools/postgresql-monitoring-tools), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/guides/opentelemetry-postgresql) receiver that comes with OpenTelemetry Collector.
 
-[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is commonly used for monitoring and observability purposes in modern software applications and distributed systems. It plays a crucial role in gathering telemetry data from various sources, processing that data, and exporting it to monitoring and observability backends for analysis and visualization.
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector) is commonly used for monitoring and observability purposes in modern software applications and distributed systems. It plays a crucial role in gathering telemetry data from various sources, processing that data, and exporting it to monitoring and observability backends for analysis and visualization.
 
-Uptrace is a [Grafana alternative](https://uptrace.dev/blog/grafana-alternatives.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [Grafana alternative](https://uptrace.dev/comparisons/grafana-alternatives) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 
@@ -189,5 +189,5 @@ Uptrace can process billions of spans and metrics on a single server and allows 
 
 In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://app.uptrace.dev/play) (no login required) or running it locally with [Docker](https://github.com/uptrace/uptrace/tree/master/example/docker). The source code is available on [GitHub](https://github.com/uptrace/uptrace).
 
-- [OpenTelemetry Spring Boot](https://uptrace.dev/blog/opentelemetry-spring-boot.html)
-- [DataDog vs Prometheus](https://uptrace.dev/blog/datadog-vs-prometheus.html)
+- [OpenTelemetry Spring Boot](https://uptrace.dev/guides/opentelemetry-spring-boot)
+- [DataDog vs Prometheus](https://uptrace.dev/comparisons/datadog-vs-prometheus)

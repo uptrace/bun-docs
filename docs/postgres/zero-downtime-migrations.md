@@ -97,11 +97,11 @@ Implement rolling deployments for your application. This involves deploying new 
 
 ## Monitoring PostgreSQL
 
-To [monitor PostgreSQL](https://uptrace.dev/blog/postgresql-monitoring-tools.html), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/get/monitor/opentelemetry-postgresql.html) receiver that comes with OpenTelemetry Collector.
+To [monitor PostgreSQL](https://uptrace.dev/tools/postgresql-monitoring-tools), you can use [OpenTelemetry PostgreSQL](https://uptrace.dev/guides/opentelemetry-postgresql) receiver that comes with OpenTelemetry Collector.
 
-[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector.html) is an agent that pulls telemetry data from systems you want to monitor and sends it to an [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend.html) using the OpenTelemetry protocol (OTLP).
+[OpenTelemetry Collector](https://uptrace.dev/opentelemetry/collector) is an agent that pulls telemetry data from systems you want to monitor and sends it to an [OpenTelemetry backend](https://uptrace.dev/blog/opentelemetry-backend) using the OpenTelemetry protocol (OTLP).
 
-Uptrace is a [DataDog competitor](https://uptrace.dev/blog/datadog-competitors.html) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
+Uptrace is a [DataDog competitor](https://uptrace.dev/blog/datadog-competitors) that supports distributed tracing, metrics, and logs. You can use it to monitor applications and troubleshoot issues.
 
 ![Uptrace Overview](/uptrace/home.png)
 
@@ -115,5 +115,5 @@ In just a few minutes, you can try Uptrace by visiting the [cloud demo](https://
 
 Zero-downtime PostgreSQL migrations require careful planning, testing, and coordination. It's crucial to balance the need for making schema changes with the goal of maintaining a highly available and performant application.
 
-- [Open Source APM](https://uptrace.dev/get/open-source-apm.html)
-- [Grafana alternatives](https://uptrace.dev/blog/grafana-alternatives.html)
+- [Open Source APM](https://uptrace.dev/get/hosted/open-source-apm)
+- [Grafana alternatives](https://uptrace.dev/comparisons/grafana-alternatives)

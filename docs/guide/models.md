@@ -266,4 +266,4 @@ CREATE TABLE roles (
 
 - [Monitoring Bun performance](/guide/performance-monitoring.md)
 - [Running Bun in production](/guide/running-bun-in-production.md)
-- [Context deadline exceeded](https://uptrace.dev/blog/context-deadline-exceeded.html)
+- [Context deadline exceeded](https://uptrace.dev/glossary/context-deadline-exceeded)

@@ -128,5 +128,5 @@ switch db.Dialect().Name() {
 
 ## Useful links
 
-- [OpenTelemetry Kafka](https://uptrace.dev/get/monitor/opentelemetry-kafka.html)
-- [OpenTelemetry MySQL](https://uptrace.dev/get/monitor/opentelemetry-mysql.html)
+- [OpenTelemetry Kafka](https://uptrace.dev/guides/opentelemetry-kafka)
+- [OpenTelemetry MySQL](https://uptrace.dev/guides/opentelemetry-mysql)

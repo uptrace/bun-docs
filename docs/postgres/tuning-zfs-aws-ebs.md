@@ -6,7 +6,7 @@ title: PostgreSQL and ZFS filesystem
 
 <CoverImage title="Running PostgreSQL using ZFS and AWS EBS" />
 
-This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs.html).
+This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs).
 
 [[toc]]
 
@@ -164,5 +164,5 @@ But usually it is easier and cheaper to store backups on S3 using [pgbackrest](p
 ## See also
 
 - [PostgreSQL + ZFS: Best Practices and Standard Procedures](https://people.freebsd.org/~seanc/postgresql/scale15x-2017-postgresql_zfs_best_practices.pdf)
-- [OpenTelemetry Redis](https://uptrace.dev/get/monitor/opentelemetry-redis.html)
-- [OpenTelemetry Kubernetes](https://uptrace.dev/get/monitor/opentelemetry-kubernetes.html)
+- [OpenTelemetry Redis](https://uptrace.dev/guides/opentelemetry-redis)
+- [OpenTelemetry Kubernetes](https://uptrace.dev/guides/opentelemetry-kubernetes)

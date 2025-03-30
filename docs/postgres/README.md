@@ -145,7 +145,7 @@ To achieve better performance, you can use a server-side connection pool like [P
 
 If you store large amounts of data (> 100 gigabytes), consider using ZFS filesystem which enables 2-3x data compression and efficient ARC cache. See:
 
-- [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs.html)
+- [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs)
 - [Running PostgreSQL on ZFS and AWS](tuning-zfs-aws-ebs.md)
 
 ## Backups
@@ -154,6 +154,6 @@ To backup PostgreSQL database, consider using [PgBackRest with S3](pgbackrest-s3
 
 ## See also
 
-- [OpenTelemetry database/sql](https://uptrace.dev/get/instrument/opentelemetry-database-sql.html)
-- [OpenTelemetry GORM](https://uptrace.dev/get/instrument/opentelemetry-gorm.html)
-- [OpenTelemetry SQLAlchemy](https://uptrace.dev/get/instrument/opentelemetry-sqlalchemy.html)
+- [OpenTelemetry database/sql](https://uptrace.dev/guides/opentelemetry-database-sql)
+- [OpenTelemetry GORM](https://uptrace.dev/guides/opentelemetry-gorm)
+- [OpenTelemetry SQLAlchemy](https://uptrace.dev/guides/opentelemetry-sqlalchemy)
