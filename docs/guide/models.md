@@ -140,7 +140,7 @@ For example:
 
 - `(*bool)(nil)` and `sql.NullBool{}` represent `NULL`.
 - `(*bool)(false)` and `sql.NullBool{Valid: true}` represent `FALSE`.
-- `(*bool)(true)` and `sql.NullBool{Valid: true, Value: true}` represent `TRUE`.
+- `(*bool)(true)` and `sql.NullBool{Valid: true, Bool: true}` represent `TRUE`.
 
 ## Go zero values and NULL
 
