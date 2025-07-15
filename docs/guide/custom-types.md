@@ -65,7 +65,7 @@ You can find the full example at [GitHub](https://github.com/uptrace/bun/tree/ma
 ```go
 var _ driver.Valuer = (*Time)(nil)
 
-// Scan scans the time parsing it if necessary using timeFormat.
+// Value formats the value using timeFormat.
 func (tm Time) Value() (driver.Value, error) {
 	return tm.UTC().Format(timeFormat), nil
 }
