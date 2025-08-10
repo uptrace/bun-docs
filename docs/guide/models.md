@@ -4,266 +4,747 @@ title: 'Bun: Defining models'
 
 <CoverImage title="Defining models" />
 
-[[toc]]
+Models in Bun are Go structs that represent database tables. They serve as the bridge between your Go application and the database, defining how data is structured, validated, and manipulated. This guide covers everything you need to know about creating and working with Bun models.
 
-## Mapping tables to structs
+## Quick Start
 
-For each table you need to define a corresponding Go struct (model). Bun maps the exported struct fields to the table columns and ignores the unexported fields.
-
-```go
-type User struct {
-	bun.BaseModel `bun:"table:users,alias:u"`
-
-    ID    int64  `bun:"id,pk,autoincrement"`
-    Name  string `bun:"name,notnull"`
-    email string // unexported fields are ignored
-}
-```
-
-## Struct tags
-
-Bun uses sensible defaults to generate names and deduct types, but you can use the following struct tags to override the defaults.
-
-| Tag                                        | Comment                                                                                                               |
-| ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------- |
-| bun.BaseModel \`bun:"table:table_name"\`   | Override default table name.                                                                                          |
-| bun.BaseModel \`bun:"alias:table_alias"\`  | Override default table alias.                                                                                         |
-| bun.BaseModel \`bun:"select:view_name"\`   | Override table name for SELECT queries.                                                                               |
-| bun:"-"                                    | Ignore the field.                                                                                                     |
-| bun:"column_name"                          | Override default column name.                                                                                         |
-| bun:"alt:alt_name"                         | Alternative column name. Useful during migrations.                                                                    |
-| bun:",pk"                                  | Mark column as a primary key and apply `notnull` option. Multiple/composite primary keys are supported.               |
-| bun:",autoincrement"                       | Mark column as a serial in PostgreSQL, autoincrement in MySQL, and identity in MSSQL. Also applies `nullzero` option. |
-| bun:"type:uuid"                            | Override default SQL type.                                                                                            |
-| bun:"default:gen_random_uuid()"            | Tell `CreateTable` to set `DEFAULT` expression.                                                                       |
-| bun:",notnull"                             | Tell `CreateTable` to add `NOT NULL` constraint.                                                                      |
-| bun:",unique"                              | Tell `CreateTable` to add an unique constraint.                                                                       |
-| bun:",unique:group_name"                   | Unique constraint for a group of columns.                                                                             |
-| bun:",nullzero"                            | Marshal Go zero values as SQL `NULL` or `DEFAULT` (when supported).                                                   |
-| bun:",scanonly"                            | Only use this field to scan query results and ignore in SELECT/INSERT/UPDATE/DELETE.                                  |
-| bun:",array"                               | Use PostgreSQL array.                                                                                                 |
-| bun:",json_use_number"                     | Use `json.Decoder.UseNumber` to decode JSON.                                                                          |
-| bun:",msgpack"                             | Encode/decode data using MessagePack.                                                                                 |
-| DeletedAt time.Time \`bun:",soft_delete"\` | Enable soft deletes on the model.                                                                                     |
-
-## Table names
-
-Bun generates table names and aliases from struct names by underscoring them. It also pluralizes table names, for example, struct `ArticleCategory` gets table name `article_categories` and alias `article_category`.
-
-To override the generated name and the alias:
+The simplest model maps a Go struct to a database table:
 
 ```go
 type User struct {
-	bun.BaseModel `bun:"table:myusers,alias:u"`
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID   int64  `bun:"id,pk,autoincrement"`
+    Name string `bun:"name,notnull"`
+    Email string `bun:"email,unique"`
 }
 ```
 
-To specify a different table name for `SELECT` queries:
+This creates a `users` table with three columns: `id` (primary key), `name` (required), and `email` (unique).
+
+## Mapping Tables to Structs
+
+For each database table, you define a corresponding Go struct (model). Bun automatically maps exported struct fields to table columns while ignoring unexported fields.
+
+### Basic Model Structure
 
 ```go
 type User struct {
-	bun.BaseModel `bun:"select:users_view,alias:u"`
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    // Exported fields become database columns
+    ID       int64     `bun:"id,pk,autoincrement"`
+    Name     string    `bun:"name,notnull"`
+    Email    string    `bun:"email,unique"`
+    IsActive bool      `bun:"is_active,default:true"`
+
+    // Unexported fields are ignored by Bun
+    password string
+    cache    map[string]interface{}
 }
 ```
 
-### ModelTableExpr
+### Why Use bun.BaseModel?
 
-Using the `ModelTableExpr` method, you can override the struct table name, but not the alias. `ModelTableExpr` should always use the same table alias, for example:
+The `bun.BaseModel` field provides:
+
+- Table name and alias configuration
+- Consistent interface across all models
+- Support for advanced features like soft deletes
+- Better error handling and debugging information
+
+## Complete Struct Tags Reference
+
+Bun uses sensible defaults but allows fine-grained control through struct tags. Here's the complete reference:
+
+### Table-Level Tags
+
+| Tag           | Example                   | Description                            |
+| ------------- | ------------------------- | -------------------------------------- |
+| `table:name`  | `bun:"table:users"`       | Override default table name            |
+| `alias:name`  | `bun:"alias:u"`           | Set table alias for queries            |
+| `select:name` | `bun:"select:users_view"` | Use different table for SELECT queries |
+
+### Field-Level Tags
+
+| Tag           | Example              | Description                            |
+| ------------- | -------------------- | -------------------------------------- |
+| `bun:"-"`     | `bun:"-"`            | Completely ignore this field           |
+| `column_name` | `bun:"user_name"`    | Override column name                   |
+| `alt:name`    | `bun:"alt:old_name"` | Alternative column name for migrations |
+
+### Primary Keys and Identity
+
+| Tag             | Example                | Description                                   |
+| --------------- | ---------------------- | --------------------------------------------- |
+| `pk`            | `bun:",pk"`            | Mark as primary key (implies `notnull`)       |
+| `autoincrement` | `bun:",autoincrement"` | Auto-incrementing column (implies `nullzero`) |
+
+```go
+// Single primary key
+type User struct {
+    ID int64 `bun:"id,pk,autoincrement"`
+}
+
+// Composite primary key
+type UserRole struct {
+    UserID int64 `bun:"user_id,pk"`
+    RoleID int64 `bun:"role_id,pk"`
+}
+```
+
+### Data Types and Validation
+
+| Tag             | Example                           | Description              |
+| --------------- | --------------------------------- | ------------------------ |
+| `type:sql_type` | `bun:"type:uuid"`                 | Override SQL column type |
+| `notnull`       | `bun:",notnull"`                  | Add NOT NULL constraint  |
+| `unique`        | `bun:",unique"`                   | Add unique constraint    |
+| `unique:group`  | `bun:",unique:email_domain"`      | Group unique constraint  |
+| `default:value` | `bun:"default:gen_random_uuid()"` | Set DEFAULT expression   |
+
+### Special Behaviors
+
+| Tag               | Example                  | Description                                            |
+| ----------------- | ------------------------ | ------------------------------------------------------ |
+| `nullzero`        | `bun:",nullzero"`        | Convert Go zero values to SQL NULL                     |
+| `scanonly`        | `bun:",scanonly"`        | Only use for scanning results, ignore in modifications |
+| `array`           | `bun:",array"`           | Use PostgreSQL arrays                                  |
+| `json_use_number` | `bun:",json_use_number"` | Use precise numbers in JSON decoding                   |
+| `msgpack`         | `bun:",msgpack"`         | Use MessagePack encoding                               |
+| `soft_delete`     | `bun:",soft_delete"`     | Enable soft deletion                                   |
+
+## Advanced Examples
+
+### E-commerce Product Model
+
+```go
+type Product struct {
+    bun.BaseModel `bun:"table:products,alias:p"`
+
+    ID          int64           `bun:"id,pk,autoincrement"`
+    SKU         string          `bun:"sku,unique,notnull"`
+    Name        string          `bun:"name,notnull"`
+    Description *string         `bun:"description"` // nullable
+    Price       decimal.Decimal `bun:"type:decimal(10,2),notnull"`
+    Stock       int             `bun:"stock,default:0"`
+    Tags        []string        `bun:"tags,array"` // PostgreSQL array
+    Metadata    map[string]any  `bun:"metadata,type:jsonb"`
+
+    CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+    UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+    DeletedAt bun.NullTime `bun:"deleted_at,soft_delete"`
+}
+```
+
+### User Profile with Relationships
 
 ```go
 type User struct {
-	bun.BaseModel `bun:"table:myusers,alias:u"`
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID       int64  `bun:"id,pk,autoincrement"`
+    Username string `bun:"username,unique,notnull"`
+    Email    string `bun:"email,unique,notnull"`
+
+    // Profile relationship
+    ProfileID *int64  `bun:"profile_id"`
+    Profile   *Profile `bun:"rel:belongs-to,join:profile_id=id"`
+
+    // Posts relationship
+    Posts []Post `bun:"rel:has-many,join:id=user_id"`
 }
 
-// Good.
-db.NewSelect().Model(&User{}).ModelTableExpr("all_users AS u")
-db.NewSelect().Model(&User{}).ModelTableExpr("deleted_users AS u")
+type Profile struct {
+    bun.BaseModel `bun:"table:profiles,alias:prof"`
 
-// Bad.
-db.NewSelect().Model(&User{}).ModelTableExpr("all_users AS user")
-db.NewSelect().Model(&User{}).ModelTableExpr("deleted_users AS deleted")
+    ID        int64   `bun:"id,pk,autoincrement"`
+    FirstName string  `bun:"first_name,notnull"`
+    LastName  string  `bun:"last_name,notnull"`
+    Bio       *string `bun:"bio"`
+    Avatar    *string `bun:"avatar"`
+}
 ```
 
-## Column names
+## Table and Column Names
 
-Bun generates column names from struct field names by underscoring them. For example, struct field `UserID` gets column name `user_id`.
+### Naming Convention Best Practices
 
-To override the generated column name:
+Bun automatically converts struct names to table names and field names to column names using these rules:
+
+1. **CamelCase to snake_case**: `UserProfile` → `user_profile`
+2. **Pluralization**: `User` → `users`
+3. **Field conversion**: `FirstName` → `first_name`
+
+```go
+// Struct name: ArticleCategory
+// Generated table: article_categories
+// Generated alias: article_category
+
+type ArticleCategory struct {
+    ID          int64  `bun:"id,pk,autoincrement"`          // Column: id
+    Title       string `bun:"title,notnull"`                // Column: title
+    CategoryID  int64  `bun:"category_id"`                  // Column: category_id
+    PublishedAt *time.Time `bun:"published_at"`             // Column: published_at
+}
+```
+
+### Custom Names
+
+Override defaults when needed:
 
 ```go
 type User struct {
-	Name string `bun:"myname"`
+    bun.BaseModel `bun:"table:app_users,alias:au"`
+
+    ID       int64  `bun:"user_id,pk,autoincrement"`
+    FullName string `bun:"display_name,notnull"`
 }
 ```
 
-## SQL naming convention
+### Dynamic Table Names with ModelTableExpr
 
-Use [snake_case](https://en.wikipedia.org/wiki/Snake_case) identifiers for table and column names. If you get spurious SQL parser errors, try to quote the identifier with double quotes (backticks for MySQL) to check if the problem goes away.
-
-<!-- prettier-ignore -->
-::: warning
-Don't use [SQL keywords](https://www.postgresql.org/docs/13/sql-keywords-appendix.html) (for example
-`order`, `user`) as identifiers.
-:::
-
-<!-- prettier-ignore -->
-::: warning
-Don't use case-sensitive names because such names are folded to lower case, for example,
-`UserOrders` becomes `userorders`.
-:::
-
-## Column types
-
-Bun generates column types from the struct field types. For example, Go type `string` is translated to SQL type `varchar`.
-
-To override the generated column type:
+Use `ModelTableExpr` for runtime table selection while maintaining consistent aliases:
 
 ```go
 type User struct {
-    ID int64 `bun:"type:integer"`
+    bun.BaseModel `bun:"table:users,alias:u"`
+    ID   int64  `bun:"id,pk"`
+    Name string `bun:"name"`
 }
+
+// ✅ Correct - same alias 'u'
+db.NewSelect().Model(&User{}).ModelTableExpr("active_users AS u")
+db.NewSelect().Model(&User{}).ModelTableExpr("archived_users AS u")
+
+// ❌ Wrong - different aliases break relationships
+db.NewSelect().Model(&User{}).ModelTableExpr("active_users AS active")
 ```
 
-## NULLs
+**Use Cases for ModelTableExpr:**
 
-To represent SQL `NULL`, you can use pointers or `sql.Null*` types:
+- Table partitioning: `users_2024`, `users_2025`
+- Views: `active_users`, `premium_users`
+- A/B testing: `users_test`, `users_control`
 
-```go
-type Item struct {
-    Active *bool
-    // or
-    Active sql.NullBool
-}
-```
+## Working with NULL Values
 
-For example:
-
-- `(*bool)(nil)` and `sql.NullBool{}` represent `NULL`.
-- `(*bool)(false)` and `sql.NullBool{Valid: true}` represent `FALSE`.
-- `(*bool)(true)` and `sql.NullBool{Valid: true, Value: true}` represent `TRUE`.
-
-## Go zero values and NULL
-
-To marshal a zero Go value as `NULL`, use `nullzero` tag:
+### Pointer Types (Recommended)
 
 ```go
 type User struct {
-	Name string `bun:",nullzero"`
+    Name     *string    // NULL when nil
+    Age      *int       // NULL when nil
+    IsActive *bool      // NULL when nil
+    JoinedAt *time.Time // NULL when nil
+}
+
+// Usage
+user := User{
+    Name: &"John Doe",        // NOT NULL
+    Age: nil,                 // NULL
+    IsActive: &true,          // NOT NULL, true
 }
 ```
 
-## DEFAULT
+### sql.Null\* Types
 
-To specify a default SQL expression, use the combination of `nullzero`, `notnull`, and `default` tags:
+```go
+import "database/sql"
+
+type User struct {
+    Name     sql.NullString
+    Age      sql.NullInt64
+    IsActive sql.NullBool
+    JoinedAt sql.NullTime
+}
+
+// Usage
+user := User{
+    Name:     sql.NullString{String: "John", Valid: true},  // NOT NULL
+    Age:      sql.NullInt64{},                              // NULL (Valid: false)
+    IsActive: sql.NullBool{Bool: true, Valid: true},        // NOT NULL, true
+}
+```
+
+### Bun-Specific NULL Types
 
 ```go
 type User struct {
-	Name string `bun:",nullzero,notnull,default:'unknown'"`
+    Name     bun.NullString
+    JoinedAt bun.NullTime
 }
-
-err := db.NewCreateTable().Model((*User)(nil)).Exec(ctx)
 ```
+
+## Zero Values and NULL Handling
+
+### The nullzero Tag
+
+Convert Go zero values to SQL NULL:
+
+```go
+type User struct {
+    Name  string `bun:"name,nullzero"`     // "" becomes NULL
+    Age   int    `bun:"age,nullzero"`      // 0 becomes NULL
+    Score *int   `bun:"score,nullzero"`    // nil becomes NULL, 0 becomes NULL
+}
+```
+
+### Complex DEFAULT Expressions
+
+```go
+type User struct {
+    ID        int64     `bun:"id,pk,autoincrement"`
+    Name      string    `bun:"name,nullzero,notnull,default:'Anonymous'"`
+    Email     string    `bun:"email,unique,notnull"`
+    CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+    UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+    Score     int       `bun:"score,default:0"`
+    UUID      string    `bun:"uuid,type:uuid,default:gen_random_uuid()"`
+}
+```
+
+Generated SQL:
 
 ```sql
 CREATE TABLE users (
-  name text NOT NULL DEFAULT 'unknown'
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL DEFAULT 'Anonymous',
+    email TEXT UNIQUE NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    updated_at TIMESTAMP NOT NULL DEFAULT current_timestamp,
+    score INTEGER DEFAULT 0,
+    uuid UUID DEFAULT gen_random_uuid()
 );
 ```
 
-## Automatic timestamps
+## Automatic Timestamps
 
-Use the following code to automatically set creation and update time on `INSERT`:
-
-```go
-type User struct {
-	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	UpdatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-}
-```
-
-If you don't want to set update time, use `bun.NullTime`:
+### Method 1: Database Defaults (Recommended)
 
 ```go
 type User struct {
-	CreatedAt time.Time `bun:",nullzero,notnull,default:current_timestamp"`
-	UpdatedAt bun.NullTime
+    CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+    UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
 }
 ```
 
-You can also use [hooks](hooks.md) to set struct fields:
+### Method 2: Application-Level with Hooks
 
 ```go
+type User struct {
+    ID        int64        `bun:"id,pk,autoincrement"`
+    Name      string       `bun:"name,notnull"`
+    CreatedAt time.Time    `bun:"created_at,nullzero,notnull"`
+    UpdatedAt bun.NullTime `bun:"updated_at,nullzero"`
+}
+
+// Implement the hook interface
 var _ bun.BeforeAppendModelHook = (*User)(nil)
 
 func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
-	switch query.(type) {
-	case *bun.InsertQuery:
-		u.CreatedAt = time.Now()
-	case *bun.UpdateQuery:
-		u.UpdatedAt = time.Now()
-	}
-	return nil
+    switch query.(type) {
+    case *bun.InsertQuery:
+        u.CreatedAt = time.Now()
+        u.UpdatedAt = bun.NullTime{Time: time.Now(), Valid: true}
+    case *bun.UpdateQuery:
+        u.UpdatedAt = bun.NullTime{Time: time.Now(), Valid: true}
+    }
+    return nil
 }
 ```
 
-## Extending models
-
-You can add/remove fields to/from an existing model by using `extend` tag option. The new model will inherit the table name and the alias from the original model.
+### Method 3: Manual Control
 
 ```go
-type UserWithCount struct {
-	User `bun:",extend"`
-
-	Name		string `bun:"-"` // remove this field
-	AvatarCount int				 // add a new field
+type User struct {
+    CreatedAt bun.NullTime `bun:"created_at"`
+    UpdatedAt bun.NullTime `bun:"updated_at"`
 }
+
+// Set manually when needed
+user.CreatedAt = bun.NullTime{Time: time.Now(), Valid: true}
 ```
 
-## Embedding structs
+## Model Composition and Inheritance
 
-Bun allows to embed a model in another model using a prefix, for example:
+### Extending Models
+
+Create variations of existing models:
 
 ```go
-type Role struct {
-	Name     string
-	Users    Permissions `bun:"embed:users_"`
-	Profiles Permissions `bun:"embed:profiles_"`
-	Roles    Permissions `bun:"embed:roles_"`
+type User struct {
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID   int64  `bun:"id,pk,autoincrement"`
+    Name string `bun:"name,notnull"`
+    Email string `bun:"email,unique"`
 }
 
-type Permissions struct {
-	View   bool
-	Create bool
-	Update bool
-	Delete bool
+// Extended model for analytics
+type UserWithStats struct {
+    User `bun:",extend"`
+
+    // Override/remove fields from base model
+    Email string `bun:"-"` // Remove email from this view
+
+    // Add new computed fields
+    PostCount    int       `bun:"post_count"`
+    LastLogin    time.Time `bun:"last_login"`
+    TotalRevenue float64   `bun:"total_revenue"`
 }
 ```
 
-The code above generates the following table:
+### Embedded Structs with Prefixes
+
+Create flattened table structures:
+
+```go
+type Address struct {
+    Street  string `bun:"street"`
+    City    string `bun:"city"`
+    State   string `bun:"state"`
+    ZipCode string `bun:"zip_code"`
+}
+
+type User struct {
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID              int64   `bun:"id,pk,autoincrement"`
+    Name            string  `bun:"name,notnull"`
+
+    HomeAddress     Address `bun:"embed:home_"`
+    BillingAddress  Address `bun:"embed:billing_"`
+    ShippingAddress Address `bun:"embed:shipping_"`
+}
+```
+
+Generated table structure:
 
 ```sql
-CREATE TABLE roles (
-    name TEXT,
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
 
-    users_view BOOLEAN,
-    users_create BOOLEAN,
-    users_update BOOLEAN,
-    users_delete BOOLEAN,
+    -- Home address fields
+    home_street TEXT,
+    home_city TEXT,
+    home_state TEXT,
+    home_zip_code TEXT,
 
-    profiles_view BOOLEAN,
-    profiles_create BOOLEAN,
-    profiles_update BOOLEAN,
-    profiles_delete BOOLEAN,
+    -- Billing address fields
+    billing_street TEXT,
+    billing_city TEXT,
+    billing_state TEXT,
+    billing_zip_code TEXT,
 
-    roles_view BOOLEAN,
-    roles_create BOOLEAN,
-    roles_update BOOLEAN,
-    roles_delete BOOLEAN
+    -- Shipping address fields
+    shipping_street TEXT,
+    shipping_city TEXT,
+    shipping_state TEXT,
+    shipping_zip_code TEXT
 );
 ```
 
-## See also
+## Advanced Column Types
 
-- [Monitoring Bun performance](/guide/performance-monitoring.md)
-- [Running Bun in production](/guide/running-bun-in-production.md)
-- [Context deadline exceeded](https://uptrace.dev/glossary/context-deadline-exceeded)
+### JSON and JSONB
+
+```go
+type Product struct {
+    ID       int64          `bun:"id,pk,autoincrement"`
+    Metadata map[string]any `bun:"metadata,type:jsonb"`
+    Config   ProductConfig  `bun:"config,type:json"`
+    Tags     []string       `bun:"tags,type:json"`
+}
+
+type ProductConfig struct {
+    Enabled  bool     `json:"enabled"`
+    Features []string `json:"features"`
+    Limits   struct {
+        MaxUsers int `json:"max_users"`
+        Storage  int `json:"storage_gb"`
+    } `json:"limits"`
+}
+```
+
+### Arrays (PostgreSQL)
+
+```go
+type Article struct {
+    ID       int64    `bun:"id,pk,autoincrement"`
+    Title    string   `bun:"title,notnull"`
+    Tags     []string `bun:"tags,array"`            // TEXT[]
+    Scores   []int    `bun:"scores,array"`          // INTEGER[]
+    Metadata []byte   `bun:"metadata,type:jsonb"`   // JSONB
+}
+```
+
+### Custom Types
+
+```go
+import "github.com/google/uuid"
+
+type User struct {
+    ID      uuid.UUID `bun:"id,pk,type:uuid,default:gen_random_uuid()"`
+    Name    string    `bun:"name,notnull"`
+    Balance decimal.Decimal `bun:"balance,type:decimal(15,2),default:0.00"`
+}
+```
+
+## Common Patterns and Best Practices
+
+### Base Model Pattern
+
+```go
+type BaseModel struct {
+    ID        int64        `bun:"id,pk,autoincrement"`
+    CreatedAt time.Time    `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+    UpdatedAt time.Time    `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+    DeletedAt bun.NullTime `bun:"deleted_at,soft_delete"`
+}
+
+type User struct {
+    BaseModel
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    Username string `bun:"username,unique,notnull"`
+    Email    string `bun:"email,unique,notnull"`
+}
+
+type Post struct {
+    BaseModel
+    bun.BaseModel `bun:"table:posts,alias:p"`
+
+    Title   string `bun:"title,notnull"`
+    Content string `bun:"content,type:text"`
+    UserID  int64  `bun:"user_id,notnull"`
+}
+```
+
+### Audit Trail Pattern
+
+```go
+type AuditableModel struct {
+    CreatedAt time.Time `bun:"created_at,nullzero,notnull,default:current_timestamp"`
+    CreatedBy int64     `bun:"created_by,notnull"`
+    UpdatedAt time.Time `bun:"updated_at,nullzero,notnull,default:current_timestamp"`
+    UpdatedBy int64     `bun:"updated_by,notnull"`
+    Version   int       `bun:"version,default:1"`
+}
+
+type Document struct {
+    AuditableModel
+    bun.BaseModel `bun:"table:documents,alias:d"`
+
+    ID      int64  `bun:"id,pk,autoincrement"`
+    Title   string `bun:"title,notnull"`
+    Content string `bun:"content,type:text"`
+}
+```
+
+## Validation and Constraints
+
+### Database-Level Constraints
+
+```go
+type User struct {
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID       int64  `bun:"id,pk,autoincrement"`
+    Email    string `bun:"email,unique,notnull"`
+    Username string `bun:"username,unique,notnull"`
+    Age      int    `bun:"age,notnull"` // Add CHECK constraint via migration
+}
+```
+
+### Application-Level Validation with Hooks
+
+```go
+import "net/mail"
+
+var _ bun.BeforeAppendModelHook = (*User)(nil)
+
+func (u *User) BeforeAppendModel(ctx context.Context, query bun.Query) error {
+    // Validate email format
+    if u.Email != "" {
+        if _, err := mail.ParseAddress(u.Email); err != nil {
+            return fmt.Errorf("invalid email format: %w", err)
+        }
+    }
+
+    // Validate age range
+    if u.Age < 13 || u.Age > 120 {
+        return fmt.Errorf("age must be between 13 and 120")
+    }
+
+    return nil
+}
+```
+
+## SQL Naming Conventions
+
+### Recommended Naming
+
+Use **snake_case** for all database identifiers:
+
+```go
+// ✅ Good
+type UserProfile struct {
+    ID          int64  `bun:"id,pk"`              // id
+    FirstName   string `bun:"first_name"`         // first_name
+    LastName    string `bun:"last_name"`          // last_name
+    PhoneNumber string `bun:"phone_number"`       // phone_number
+}
+```
+
+### Avoid These Patterns
+
+```go
+// ❌ Bad - SQL keywords
+type Order struct {
+    User string `bun:"user"` // 'user' is a SQL keyword
+}
+
+// ❌ Bad - Case-sensitive names get folded
+type User struct {
+    UserID string `bun:"UserID"` // becomes 'userid', not 'UserID'
+}
+
+// ❌ Bad - Mixed naming conventions
+type User struct {
+    firstName string `bun:"firstName"` // Use first_name instead
+}
+```
+
+### Handling SQL Keywords
+
+When you must use SQL keywords, quote them:
+
+```sql
+-- PostgreSQL/SQLite
+CREATE TABLE "order" ("user" TEXT);
+
+-- MySQL
+CREATE TABLE `order` (`user` TEXT);
+```
+
+## Troubleshooting Common Issues
+
+### Issue: "Column not found" errors
+
+**Cause**: Mismatch between struct field names and database columns.
+
+**Solution**:
+
+```go
+// Check field visibility and tags
+type User struct {
+    ID   int64  `bun:"id,pk"`     // ✅ Exported field
+    name string `bun:"name"`      // ❌ Unexported - won't work
+    Name string `bun:"user_name"` // ✅ Custom column name
+}
+```
+
+### Issue: Zero values not handling correctly
+
+**Cause**: Missing `nullzero` tag or incorrect NULL handling.
+
+**Solution**:
+
+```go
+type User struct {
+    Name  string `bun:"name,nullzero"`        // "" becomes NULL
+    Score *int   `bun:"score"`                // Use pointer for optional
+    Count int    `bun:"count,default:0"`      // Explicit default
+}
+```
+
+### Issue: Primary key not working with autoincrement
+
+**Cause**: Database-specific autoincrement syntax.
+
+**Solution**:
+
+```go
+type User struct {
+    // PostgreSQL: SERIAL/BIGSERIAL
+    ID int64 `bun:"id,pk,autoincrement"`
+
+    // Or specify the exact type
+    ID int64 `bun:"id,pk,type:bigserial"`
+}
+```
+
+## Performance Considerations
+
+### Index-Friendly Models
+
+```go
+type User struct {
+    bun.BaseModel `bun:"table:users,alias:u"`
+
+    ID        int64     `bun:"id,pk,autoincrement"`
+    Email     string    `bun:"email,unique"`           // Automatic index
+    Username  string    `bun:"username,unique"`        // Automatic index
+    Status    string    `bun:"status"`                 // Add index via migration
+    CreatedAt time.Time `bun:"created_at,nullzero,default:current_timestamp"` // Index for time queries
+
+    // Composite indexes via migration:
+    // CREATE INDEX idx_users_status_created ON users(status, created_at);
+}
+```
+
+### Selective Field Loading
+
+```go
+type UserSummary struct {
+    ID       int64  `bun:"id"`
+    Username string `bun:"username"`
+    Email    string `bun:"email"`
+    // Omit heavy fields like bio, avatar_data, etc.
+}
+
+// Use for listing operations
+var users []UserSummary
+err := db.NewSelect().Model(&users).Limit(100).Scan(ctx)
+```
+
+## FAQ
+
+**Q: When should I use pointers vs sql.Null\* types?**
+A: Use pointers for simplicity and when you control the data flow. Use `sql.Null*` when you need to distinguish between zero values and NULL, or when working with existing APIs that use these types.
+
+**Q: Can I have multiple primary keys?**
+A: Yes, Bun supports composite primary keys:
+
+```go
+type UserRole struct {
+    UserID int64 `bun:"user_id,pk"`
+    RoleID int64 `bun:"role_id,pk"`
+}
+```
+
+**Q: How do I handle database migrations with model changes?**
+A: Use Bun's migration system. When you change model fields, create corresponding migration files to alter the database schema.
+
+**Q: What's the difference between `nullzero` and using pointers?**
+A: `nullzero` converts Go zero values to SQL NULL at query time. Pointers represent NULL as `nil` and allow distinguishing between zero values and NULL.
+
+**Q: Can I use the same struct for different tables?**
+A: Yes, use `ModelTableExpr()` to specify different tables at runtime while keeping the same struct definition.
+
+**Q: How do I debug struct tag issues?**
+A: Enable Bun's debug mode to see generated SQL queries:
+
+```go
+db := bun.NewDB(sqldb, bunpgdriver.New())
+db.AddQueryHook(bundebug.NewQueryHook(bundebug.WithVerbose(true)))
+```
+
+## Related Topics
+
+- [Relationships and Associations](relations.md) - Define relationships between models
+- [Hooks and Lifecycle Events](hooks.md) - Execute code during model operations
+- [Migrations](migrations.md) - Manage database schema changes
+- [Query Building](queries.md) - Build and execute database queries
