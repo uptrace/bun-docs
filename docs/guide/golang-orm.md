@@ -131,7 +131,7 @@ import (
 )
 
 // Using pgdriver (recommended)
-sqldb := sql.NewDB(pgdriver.NewConnector(
+sqldb := sql.OpenDB(pgdriver.NewConnector(
     pgdriver.WithDSN("postgres://user:password@localhost:5432/dbname?sslmode=disable"),
 ))
 db := bun.NewDB(sqldb, pgdialect.New())
