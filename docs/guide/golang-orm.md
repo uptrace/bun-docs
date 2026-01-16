@@ -1061,13 +1061,11 @@ By now, you should have a comprehensive understanding of Bun's capabilities. To 
 ### Essential Next Steps
 
 1. **Read the Core Documentation**
-
    - [Defining Models](models.md) - Deep dive into model configuration and struct tags
    - [Writing Queries](queries.md) - Advanced query building techniques
    - [Relationships](relations.html) - Master table relationships and joins
 
 2. **Explore Advanced Features**
-
    - [Migrations](migrations.md) - Database schema versioning and management
    - [Hooks](hooks.html) - Middleware and query lifecycle hooks
    - [Fixtures](fixtures.md) - Test data management
@@ -1083,9 +1081,3 @@ By now, you should have a comprehensive understanding of Bun's capabilities. To 
 - [Basic CRUD Application](https://github.com/uptrace/bun/tree/master/example/basic) - Complete example with all CRUD operations
 - [REST API with Bun](https://github.com/uptrace/bun/tree/master/example/rest-api) - Building a production-ready API
 - [Migration Example](https://github.com/uptrace/bun/tree/master/example/migrate) - Database migration patterns
-
-### Related Tools and Ecosystem
-
-- [Uptrace](https://uptrace.dev) - Distributed tracing and performance monitoring
-- [Top DataDog competitors](https://uptrace.dev/blog/datadog-competitors) - APM and monitoring solutions
-- [Distributed tracing tools](https://uptrace.dev/tools/distributed-tracing-tools) - Observability ecosystem

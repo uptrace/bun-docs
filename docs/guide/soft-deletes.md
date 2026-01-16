@@ -7,8 +7,6 @@ keywords:
   - soft delete sql
 ---
 
-<UptraceCta />
-
 # Soft deletes in PostgreSQL and MySQL
 
 Soft delete is a technique used in databases to mark records as deleted without physically removing them from the database. Instead of permanently deleting data, a flag or a separate column is used to indicate that a record is "deleted" or no longer active. This approach allows for the possibility of later recovering or restoring the deleted data if needed.

@@ -2,8 +2,6 @@
 title: Zero-downtime PostgreSQL migrations [5 practical tips]
 ---
 
-<UptraceCta />
-
 <CoverImage title="Zero-downtime PostgreSQL migrations" />
 
 Zero-downtime PostgreSQL migrations are essential for maintaining the availability and reliability of your application while making changes to the database schema or performing other maintenance tasks.

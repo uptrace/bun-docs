@@ -2,10 +2,6 @@
 title: PostgreSQL and ZFS filesystem
 ---
 
-<UptraceCta />
-
-<CoverImage title="Running PostgreSQL using ZFS and AWS EBS" />
-
 This guide explains how to run PostgreSQL using ZFS filesystem. If you also need to install ZFS, see [Installing ZFS on Ubuntu](https://uptrace.dev/blog/ubuntu-install-zfs).
 
 [[toc]]

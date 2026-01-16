@@ -299,13 +299,6 @@ func init() {
 }
 ```
 
-## Performance & monitoring
-
-Take your application to the next level with integrated observability:
-
-- **[Uptrace APM](https://uptrace.dev/get/hosted/open-source-apm)** - Open source application performance monitoring
-- **[Distributed Tracing](https://uptrace.dev/tools/distributed-tracing-tools)** - Debug complex queries across services
-
 ---
 
 **Ready to write better SQL with Go?** [Get started in 5 minutes →](/guide/golang-orm.html)

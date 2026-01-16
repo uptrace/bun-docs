@@ -152,7 +152,7 @@ If you store large amounts of data (> 100 gigabytes), consider using ZFS filesys
 
 To backup PostgreSQL database, consider using [PgBackRest with S3](pgbackrest-s3-backups.md).
 
-## See also
+## Monitoring your database
 
 - [OpenTelemetry database/sql](https://uptrace.dev/guides/opentelemetry-database-sql)
 - [OpenTelemetry GORM](https://uptrace.dev/guides/opentelemetry-gorm)
